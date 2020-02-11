@@ -1,6 +1,10 @@
+import java.io.File;
+import java.io.FileNotFoundException;
+import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.LinkedList;
 import java.util.NoSuchElementException;
+import java.util.Scanner;
 
 /**
  * GrafoNoDirigido
@@ -9,6 +13,7 @@ public class GrafoNoDirigido implements Grafo {
 
     private HashSet<Integer> nodeIDs;
     private HashSet<Integer> sideIDs;
+    private ArrayList<Lado> gLados;
 
     // Usamos HashSet porque el get del hashset es O(1) si se mantiene un buen load
     // factor
@@ -31,26 +36,70 @@ public class GrafoNoDirigido implements Grafo {
     }
 
     @Override
-    public boolean loadGraph(Grafo g, String file) {
-        // TODO Auto-generated method stub
-        return false;
+    public boolean cargarGrafo(Grafo g, String file) throws FileNotFoundException {
+        int n = 0;
+        int m = 0;
+        Scanner scan = new Scanner(new File(file));
+        String line = scan.nextLine();
+        if (line.equals("ND")){
+            g = new GrafoNoDirigido();
+        }
+        else{
+            scan.close();
+            return false;
+        }
+
+        line = scan.nextLine();
+        n = Integer.parseInt(line);
+        line = scan.nextLine();
+        m = Integer.parseInt(line);
+
+        for (int i = 0; i < n; i++){
+            line = scan.nextLine();
+            String[] results = line.split("\\s+");
+            if (results.length != 5){
+                scan.close();
+                return false;
+            }
+            Vertice toAdd = new Vertice(Integer.parseInt(results[0]), results[1], Integer.parseInt(results[2]), 
+                Integer.parseInt(results[3]), Integer.parseInt(results[4]));
+            if (!g.agregarVertice(g, toAdd)){
+                scan.close();
+                return false;
+            }
+        }
+        for (int i = 0; i < m; i++){
+            line = scan.nextLine();
+            String[] results = line.split("\\s+");
+            if (results.length != 4 || Integer.parseInt(results[2]) != 0){
+                scan.close();
+                return false;
+            }
+            Arista toAdd = null;//new Arista(id, iVertice, fVertice, weight)
+            if (!((GrafoNoDirigido) g).agregarArista(g, toAdd)){
+                scan.close();
+                return false;
+            }
+        }
+        scan.close();
+        return true;
     }
 
     @Override
-    public boolean addVertex(Grafo g, Vertice v) {
-        if (g.isVertex(g, Vertice.getID(v))) {
+    public boolean agregarVertice(Grafo g, Vertice v) {
+        if (g.estaVertice(g, Vertice.obtenerID(v))) {
             return false;
         } else {
             ALNode toAddd = new ALNode(v);
-            nodeIDs.add(Vertice.getID(v));
+            nodeIDs.add(Vertice.obtenerID(v));
             graph.add(toAddd);
             return true;
         }
     }
 
     @Override
-    public boolean addVertex(Grafo g, int id, String name, double x, double y, double w) {
-        if (g.isVertex(g, id)) {
+    public boolean agregarVertice(Grafo g, int id, String name, double x, double y, double w) {
+        if (g.estaVertice(g, id)) {
             return false;
         } else {
             Vertice v = new Vertice(id, name, x, y, w);
@@ -62,18 +111,18 @@ public class GrafoNoDirigido implements Grafo {
     }
 
     @Override
-    public boolean removeVertex(Grafo g, int id) {
-        if (!g.isVertex(g, id)) {
+    public boolean eliminarVertice(Grafo g, int id) {
+        if (!g.estaVertice(g, id)) {
             return false;
         } else {
             GrafoNoDirigido gND = (GrafoNoDirigido) g;
             for (ALNode alNode : graph) {
-                if (alNode.getID() == id) {
+                if (alNode.obtenerID() == id) {
                     graph.remove(alNode);
                 } else {
-                    LinkedList<Vertice> adjacencies = alNode.getAdjacencies();
+                    LinkedList<Vertice> adjacencies = alNode.obtenerAdyacencias();
                     for (Vertice v : adjacencies) {
-                        if (Vertice.getID(v) == id) {
+                        if (Vertice.obtenerID(v) == id) {
                             adjacencies.remove(v);
                             break;
                         }
@@ -86,19 +135,30 @@ public class GrafoNoDirigido implements Grafo {
     }
 
     @Override
-    public boolean isVertex(Grafo g, int id) {
+    public boolean estaVertice(Grafo g, int id) {
         return ((GrafoNoDirigido) g).nodeIDs.contains(id);
     }
 
+    ////// COMENTAR ESTE ES NUEVO
+    public boolean estaVertice(Grafo g, String nombre){
+        LinkedList<ALNode> nodos = ((GrafoNoDirigido)g).graph;
+        for (ALNode alNode : nodos) {
+            if (Vertice.obtenerNombre(alNode.obtenerVertice()) == nombre){
+                return true;
+            }
+        }
+        return false;
+    }
+
     @Override
-    public Vertice getVertex(Grafo g, int id) throws NoSuchElementException {
-        if (!g.isVertex(g, id)) {
+    public Vertice obtenerVertice(Grafo g, int id) throws NoSuchElementException {
+        if (!g.estaVertice(g, id)) {
             throw new NoSuchElementException();
         } else {
             LinkedList<ALNode> graph = ((GrafoNoDirigido) g).graph;
             for (ALNode alNode : graph) {
-                if (alNode.getID() == id) {
-                    return alNode.getVertex();
+                if (alNode.obtenerID() == id) {
+                    return alNode.obtenerVertice();
                 }
             }
         }
@@ -107,60 +167,99 @@ public class GrafoNoDirigido implements Grafo {
 
     @Override
     public LinkedList<Vertice> vertices(Grafo g) {
-        // TODO Auto-generated method stub
-        return null;
+        LinkedList<Vertice> verts = new LinkedList<Vertice>();
+        for (ALNode alNode : ((GrafoNoDirigido) g).graph) {
+            verts.add(alNode.obtenerVertice());
+        }
+        return verts;
     }
 
-    public boolean addAxis(Grafo g, Arista a){
-        Vertice vi = Arista.getVertex1(a);
-        Vertice vf = Arista.getVertex2(a);
-        if (!g.isVertex(g, Vertice.getID(vi)) || !g.isVertex(g, Vertice.getID(vf)) ||
-        ((GrafoNoDirigido)g).sideIDs.contains(Lado.getID(a))) {
+    public boolean agregarArista(Grafo g, Arista a){
+        Vertice vi = Arista.obtenerVertice1(a);
+        Vertice vf = Arista.obtenerVertice2(a);
+        if (!g.estaVertice(g, Vertice.obtenerID(vi)) || !g.estaVertice(g, Vertice.obtenerID(vf)) ||
+        ((GrafoNoDirigido)g).sideIDs.contains(Lado.obtenerID(a))) {
             return false;
         }
         return false;
     }
 
-    public boolean isAxis(Grafo g, String u, String v, int tipo){
-        return true;
+    public boolean agregarArista(Grafo g, int u, int v, int tipo, double p){
+        if (estaArista(g, u, v, tipo)){
+            return false;
+        }
+        if (!((GrafoNoDirigido)g).estaVertice(g, u) || !((GrafoNoDirigido)g).estaVertice(g, v)){
+            return false;
+        }
+        else{
+
+        }
+        return false;
     }
 
-    public boolean isAxis(Grafo g, int id){
+    public boolean estaArista(Grafo g, int u, int v, int tipo){
+        for (ALNode alNode : ((GrafoNoDirigido)g).graph) {
+            Vertice ver = alNode.obtenerVertice();
+            if (Vertice.obtenerID(ver) == u){
+                LinkedList<Vertice> adjacents = alNode.obtenerAdyacencias();
+                for (Vertice adj : adjacents) {
+                    if (Vertice.obtenerID(adj) == v){
+                        return true;
+                    }
+                }
+            }
+        }
+        return false;
+    }
+
+    public boolean estaArista(Grafo g, int id){
         return ((GrafoNoDirigido)g).sideIDs.contains(id);
     }
 
     @Override
-    public LinkedList<Lado> sides(Grafo g) {
-        // TODO Auto-generated method stub
-        return null;
+    public ArrayList<Lado> lados(Grafo g) {
+        return ((GrafoNoDirigido) g).gLados;
     }
 
     @Override
-    public int vertexNumber(Grafo g) {
+    public int numeroVertices(Grafo g) {
         return ((GrafoNoDirigido) g).graph.size();
     }
 
     @Override
-    public int sideNumber(Grafo g) {
-        // TODO Auto-generated method stub
-        return 0;
+    public int numeroLados(Grafo g) {
+        return ((GrafoNoDirigido)g).gLados.size();
     }
 
     @Override
-    public int degree(Grafo g, int id) throws NoSuchElementException {
-        // TODO Auto-generated method stub
-        return 0;
+    public int grado(Grafo g, int id) throws NoSuchElementException {
+        try {
+            if (!estaVertice(g, id)){
+                throw new NoSuchElementException();
+            }
+            else{
+                for (ALNode alNode : graph) {
+                    if (alNode.obtenerID() == id){
+                        return alNode.obtenerAdyacencias().size();
+                    }
+                }
+                return 0;
+            }
+        } catch (NoSuchElementException e) {
+            System.out.println("El nodo con identificador: " + id + " no pertenece al grafo!");
+            return -1;
+        }
     }
 
     @Override
-    public LinkedList<Vertice> adjacents(Grafo g, int id) throws NoSuchElementException {
-        if (!g.isVertex(g, id)) {
+    public LinkedList<Vertice> adyacentes(Grafo g, int id) throws NoSuchElementException {
+        if (!g.estaVertice(g, id)) {
             throw new NoSuchElementException();
         } else {
             LinkedList<ALNode> graph = ((GrafoNoDirigido) g).graph;
             for (ALNode alNode : graph) {
-                if (alNode.getID() == id) {
-                    return alNode.getAdjacencies();
+                if (alNode.obtenerID() == id) {
+                    return alNode.obtenerAdyacencias();
                 }
             }
         }
@@ -168,15 +267,24 @@ public class GrafoNoDirigido implements Grafo {
     }
 
     @Override
-    public LinkedList<Lado> incidents(Grafo g, int id) throws NoSuchElementException {
-        // TODO Auto-generated method stub
+    public LinkedList<Lado> incidentes(Grafo g, int id) throws NoSuchElementException {
+        if (!((GrafoNoDirigido)g).nodeIDs.contains(id)){
+            throw new NoSuchElementException();
+        }
+        else{
+
+        }
         return null;
     }
 
     @Override
     public Grafo clone(Grafo g) {
-        // TODO Auto-generated method stub
-        return null;
+        GrafoNoDirigido xd = new GrafoNoDirigido();
+        xd.graph = new LinkedList<ALNode>(((GrafoNoDirigido)g).graph);
+        xd.nodeIDs = new HashSet<Integer>(((GrafoNoDirigido)g).nodeIDs);
+        xd.sideIDs = new HashSet<Integer>(((GrafoNoDirigido)g).sideIDs);
+        xd.gLados = new ArrayList<Lado>(((GrafoNoDirigido)g).gLados);
+        return xd;
     }
 
     @Override

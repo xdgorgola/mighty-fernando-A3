@@ -1,43 +1,43 @@
 /** */
 public class Vertice {
     private int id;
-    private String name;
+    private String nombre;
     
     private double xCord;
     private double yCord;
 
-    private double weight;
+    private double peso;
 
-    public static int getID(Vertice v){
+    public static int obtenerID(Vertice v){
         return v.id;
     }
 
-    public static double getWeight(Vertice v){
-        return v.weight;
+    public static double obtenerPeso(Vertice v){
+        return v.peso;
     }
 
-    public static String getName(Vertice v){
-        return v.name;
+    public static String obtenerNombre(Vertice v){
+        return v.nombre;
     }
 
-    public static double getX(Vertice v){
+    public static double obtenerX(Vertice v){
         return v.xCord;
     }
 
-    public static double getY(Vertice v){
+    public static double obtenerY(Vertice v){
         return v.yCord;
     }
 
     public static String toString(Vertice v){
-        return "id: " + v.id + " name: " + v.name + " xCord: " + v.xCord + 
-            " yCord: " + v.yCord + " weight: " + v.weight;
+        return "id: " + v.id + " name: " + v.nombre + " xCord: " + v.xCord + 
+            " yCord: " + v.yCord + " weight: " + v.peso;
     }
 
-    public Vertice(int id, String name, double xCord, double yCord, double weight) {
+    public Vertice(int id, String nombre, double xCord, double yCord, double peso) {
         this.id = id;
-        this.name = name;
+        this.nombre = nombre;
         this.xCord = xCord;
         this.yCord = yCord;
-        this.weight = weight;
+        this.peso = peso;
     }
 }
