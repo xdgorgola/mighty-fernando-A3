@@ -139,6 +139,7 @@ class ALNode {
     }
 
     public ALNode(Vertice v){
+        adyacencias = new LinkedList<Vertice>();
         this.vertex = v;
     }
 }

@@ -14,8 +14,8 @@ public class Arista extends Lado{
 
     @Override
     public String toString(Lado l) {
-        return "id: " + l.id + "iNode: (" + Vertice.toString(l.iVertice) + ", " +
-                Vertice.toString(fVertice) + ") weight: " + l.peso;
+        return "Arista id: " + l.id + "\nNodos: \niNode: (" + Vertice.toString(l.iVertice) + "\nfNode: (" +
+                Vertice.toString(fVertice) + ") \nweight: " + l.peso;
     }
 
     public Arista(int id, Vertice iVertice, Vertice fVertice, double weight) {

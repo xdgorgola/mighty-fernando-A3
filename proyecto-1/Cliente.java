@@ -22,6 +22,16 @@ public class Cliente {
     /////////// PAPEL Y ES ESO. VOY A COPIAR EL METODO Y TE LO VOY A AGREGAR DE UNA
     ////////////// PARA QUE NO MUERAS XD
     ////////////////
+
+    ////////////// PEDRO
+    /////////// PON 
+    ////////////// LOS
+    /////////////// SWITCH
+    ////////////// POR
+    /////////// FAVOR
+    ////////////////////// HAS UN FACTORY PEDRO
+    /////////// SE OYE INTERESANTE Y UTIL
+
     private ArrayList<Grafo> grafosND = new ArrayList<Grafo>();
     private ArrayList<Grafo> grafosD = new ArrayList<Grafo>();
     private Scanner scan = new Scanner(System.in);

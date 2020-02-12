@@ -91,11 +91,13 @@ public class GrafoNoDirigido implements Grafo {
 
     @Override
     public boolean agregarVertice(Grafo g, Vertice v) {
-        if (g.estaVertice(g, Vertice.obtenerID(v))) {
+        GrafoNoDirigido gnd = (GrafoNoDirigido) g;
+        if (gnd.estaVertice(g, Vertice.obtenerID(v)) || gnd.estaVertice(g, Vertice.obtenerNombre(v))) {
             return false;
         } else {
             ALNode toAddd = new ALNode(v);
             nodeIDs.add(Vertice.obtenerID(v));
+            nodeNames.add(Vertice.obtenerNombre(v));
             graph.add(toAddd);
             return true;
         }
@@ -103,12 +105,14 @@ public class GrafoNoDirigido implements Grafo {
 
     @Override
     public boolean agregarVertice(Grafo g, int id, String name, double x, double y, double w) {
-        if (g.estaVertice(g, id)) {
+        GrafoNoDirigido gnd = (GrafoNoDirigido) g;
+        if (gnd.estaVertice(g, id) || gnd.estaVertice(g, name)) {
             return false;
         } else {
             Vertice v = new Vertice(id, name, x, y, w);
             ALNode toAdd = new ALNode(v);
             nodeIDs.add(id);
+            nodeNames.add(name);
             graph.add(toAdd);
             return true;
         }
@@ -143,7 +147,6 @@ public class GrafoNoDirigido implements Grafo {
         return ((GrafoNoDirigido) g).nodeIDs.contains(id);
     }
 
-    ////// COMENTAR ESTE ES NUEVO
     public boolean estaVertice(Grafo g, String nombre) {
         return ((GrafoNoDirigido) g).nodeNames.contains(nombre);
     }
@@ -163,8 +166,9 @@ public class GrafoNoDirigido implements Grafo {
         return null;
     }
 
+    // nuevo comentar
     public Vertice obtenerVertice(Grafo g, String nombre) throws NoSuchElementException {
-        GrafoNoDirigido gnd = (GrafoNoDirigido)g;
+        GrafoNoDirigido gnd = (GrafoNoDirigido) g;
         if (!gnd.estaVertice(g, nombre)) {
             throw new NoSuchElementException();
         } else {
@@ -174,7 +178,6 @@ public class GrafoNoDirigido implements Grafo {
                     return alNode.obtenerVertice();
                 }
             }
-
         }
         return null;
     }
@@ -192,8 +195,8 @@ public class GrafoNoDirigido implements Grafo {
         GrafoNoDirigido gnd = (GrafoNoDirigido) g;
         Vertice vi = Arista.obtenerVertice1(a);
         Vertice vf = Arista.obtenerVertice2(a);
-        if (!g.estaVertice(g, Vertice.obtenerID(vi)) || !g.estaVertice(g, Vertice.obtenerID(vf)) || 
-            estaArista(g, Vertice.obtenerNombre(vi), Vertice.obtenerNombre(vf), 0)) {
+        if (!g.estaVertice(g, Vertice.obtenerID(vi)) || !g.estaVertice(g, Vertice.obtenerID(vf))
+                || estaArista(g, Vertice.obtenerNombre(vi), Vertice.obtenerNombre(vf), 0)) {
             return false;
         } else {
 
@@ -201,21 +204,35 @@ public class GrafoNoDirigido implements Grafo {
         return false;
     }
 
-    public boolean agregarArista(Grafo g, String u, String v, int tipo, double p){
-        if (estaArista(g, u, v, tipo)){
+    public boolean agregarArista(Grafo g, String u, String v, int tipo, double p) {
+        GrafoNoDirigido gnd = (GrafoNoDirigido)g;
+        if (estaArista(g, u, v, tipo) || !gnd.estaVertice(g, u) || !gnd.estaVertice(g, v)){
             return false;
-        }
-        else{
-            //Arista toAdd = new Arista(, iVertice, fVertice, weight)
+        } else {
+            Vertice iVertice = gnd.obtenerVertice(g, u);
+            Vertice fVertice = gnd.obtenerVertice(g, v);
+            Arista toAdd = new Arista(tipo, iVertice, fVertice, p);
+            gnd.gLados.add(toAdd);
+            gnd.sideIDs.add(tipo);
+
+            for (ALNode alNode : gnd.graph) {
+                if (alNode.obtenerNombre() == u){
+                    alNode.agregarVertice(fVertice);
+                }
+                else if (alNode.obtenerNombre() == v){
+                    alNode.agregarVertice(iVertice);
+                }
+            }
         }
         return false;
     }
 
     public boolean estaArista(Grafo g, String u, String v, int tipo) {
-        if (!((GrafoNoDirigido) g).estaVertice(g, u) || !((GrafoNoDirigido) g).estaVertice(g, v)) {
+        GrafoNoDirigido gnd = (GrafoNoDirigido) g;
+        if (!gnd.estaVertice(g, u) || !gnd.estaVertice(g, v) || !gnd.estaArista(g, tipo)) {
             return false;
         } else {
-            for (ALNode alNode : ((GrafoNoDirigido) g).graph) {
+            for (ALNode alNode : gnd.graph) {
                 Vertice ver = alNode.obtenerVertice();
                 if (Vertice.obtenerNombre(ver) == u) {
                     LinkedList<Vertice> adjacents = alNode.obtenerAdyacencias();
@@ -286,14 +303,14 @@ public class GrafoNoDirigido implements Grafo {
 
     @Override
     public LinkedList<Lado> incidentes(Grafo g, int id) throws NoSuchElementException {
-        GrafoNoDirigido gnd = (GrafoNoDirigido)g;
+        GrafoNoDirigido gnd = (GrafoNoDirigido) g;
         if (!gnd.nodeIDs.contains(id)) {
             throw new NoSuchElementException();
         } else {
             LinkedList<Lado> incidentes = new LinkedList<Lado>();
             for (Lado lado : gnd.gLados) {
-                if (Vertice.obtenerID(Arista.obtenerVertice1((Arista)lado)) == id ||
-                    Vertice.obtenerID(Arista.obtenerVertice2((Arista)lado)) == id){
+                if (Vertice.obtenerID(Arista.obtenerVertice1((Arista) lado)) == id
+                        || Vertice.obtenerID(Arista.obtenerVertice2((Arista) lado)) == id) {
                     incidentes.add(lado);
                 }
             }
@@ -318,29 +335,35 @@ public class GrafoNoDirigido implements Grafo {
         GrafoNoDirigido gnd = (GrafoNoDirigido) g;
         for (ALNode alNode : gnd.graph) {
             aux += Vertice.toString(alNode.obtenerVertice());
-            aux += "\n"; 
+            aux += "\n";
         }
-        aux += "--------------------------------------------------------------";
-        for (Lado lado : gnd.gLados){
-            aux += ((Arista)lado).toString();
-            aux += "\n"; 
+        aux += "--------------------------------------------------------------\n";
+        for (Lado lado : gnd.gLados) {
+            aux += ((Arista) lado).toString(lado);
+            aux += "\n";
         }
         aux += "--------------------------------------------------------------";
         return aux;
     }
 
-    public GrafoNoDirigido(){
+    public GrafoNoDirigido() {
         nodeIDs = new HashSet<Integer>();
-        nodeNames = new HashSet<String>();;
-        sideIDs = new HashSet<Integer>();;
+        nodeNames = new HashSet<String>();
+        ;
+        sideIDs = new HashSet<Integer>();
+        ;
         gLados = new ArrayList<Lado>();
         graph = new LinkedList<ALNode>();
     }
 
     public static void main(String[] args) {
         GrafoNoDirigido g = new GrafoNoDirigido();
-        g.agregarVertice(g, 0, "elhuevopeluo", 0, 0, 10);
-        g.agregarVertice(g, 1, "lacucapelua", 0, 0, 10);
+        g.agregarVertice(g, 0, "mano", 0, 0, 10);
+        g.agregarVertice(g, 1, "que", 0, 0, 10);
+        g.agregarVertice(g, 2, "chorizos", 0, 0, 10);
+        g.agregarArista(g, "que", "chorizos", 1, 10);
+        g.agregarArista(g, "que", "chorizos", 1, 10);
+        g.agregarArista(g, "que", "chorizos", 2, 10);
         System.out.println(g.toString(g));
     }
 }
