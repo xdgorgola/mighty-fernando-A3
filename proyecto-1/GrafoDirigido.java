@@ -418,6 +418,14 @@ public class GrafoDirigido implements Grafo {
         return aux.toString();
     }
 
+    public GrafoDirigido(){
+        nodeIDs = new HashSet<Integer>();
+        nodeNames = new HashSet<String>();
+        sideIDs = new HashSet<Integer>();
+        gLados = new ArrayList<Lado>();
+        graph = new LinkedList<ALNode>();
+    }
+
     public static void main(String[] args) {
         GrafoDirigido g = new GrafoDirigido();
         g.agregarVertice(g, 0, "mano", 0, 0, 10);
@@ -426,6 +434,8 @@ public class GrafoDirigido implements Grafo {
         g.agregarArco(g, "que", "chorizos", 1, 10);
         g.agregarArco(g, "que", "chorizos", 1, 10);
         g.agregarArco(g, "que", "chorizos", 2, 10);
+        System.out.println(g.toString(g));
+        g.eliminarVertice(g, 2);
         System.out.println(g.toString(g));
     }
 }
