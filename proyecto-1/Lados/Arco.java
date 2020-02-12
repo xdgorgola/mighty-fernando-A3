@@ -1,3 +1,7 @@
+package Lados;
+
+import Vertice.Vertice; 
+
 public class Arco extends Lado{
 
     public static Vertice obtenerVerticeInicial(Arco a) {

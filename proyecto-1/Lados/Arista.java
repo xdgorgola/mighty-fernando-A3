@@ -1,3 +1,7 @@
+package Lados;
+
+import Vertice.Vertice; 
+
 public class Arista extends Lado{
 
     public static Vertice obtenerVertice1(Arista a) {

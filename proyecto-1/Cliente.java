@@ -4,6 +4,9 @@ import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.Scanner;
 
+import Lados.Lado;
+import Vertice.Vertice;
+
 public class Cliente {
 
     ////////////// DISCULPA ESTE COMENTARIO FEISIMO PERO ES PARA QUE NO LO PASES DE
@@ -66,6 +69,7 @@ public class Cliente {
      * <li><b>Editar un grafo: Menu de edicion de un grafo.</b></li>
      * <li><b>Ver propiedades/atributos del grafo: Menu de propiedades de un
      * grafo.</b></li>
+     * <li><b>Clonar un grafo: Menu de clonacion de un grafo.</b></li>
      * <li><b>Regresar al menu principal</b></li>
      * </ul>
      */
@@ -83,15 +87,19 @@ public class Cliente {
                     System.out.println((i + grafosND.size()) + ")" + grafosD.get(i).toString());
                 }
                 System.out.println("--------------------------------------------------------------");
-
                 System.out.println("1) Editar un grafo.");
-                System.out.println("2) Ver propiedades/atributos del grafo.");
+                System.out.println("2) Ver propiedades/atributos de un grafo.");
+                System.out.println("3) Clonar un grafo.");
                 System.out.println("-1) Regresar al menu principal.");
                 System.out.println("Elige una opcion: ");
                 opcion = Integer.parseInt(scan.nextLine());
 
                 if (opcion == 1) {
                     selGrafoEditar();
+                } else if (opcion == 2) {
+                    selGrafoVer();
+                } else if (opcion == 3) {
+
                 } else if (opcion == -1) {
                     return;
                 }
@@ -238,6 +246,29 @@ public class Cliente {
         }
     }
 
+    public void selGrafoVer() {
+        try {
+            System.out.println("Introduzca un numero de la lista de grafos: ");
+            Integer selInt = Integer.parseInt(scan.nextLine());
+            if (selInt < 0 || (grafosND.size() + grafosD.size()) <= selInt) {
+                System.out.println("Grafo no en la lista! Regresando a lista de grafos.");
+                return;
+            } else {
+                if (selInt < grafosND.size()){
+                    viendoGrafoND(selInt);
+                }
+                else if (selInt >= grafosND.size()){
+                    viendoGrafoD(selInt);
+                }
+            }
+            return;
+        } catch (NumberFormatException e) {
+            System.out.println("Introduce un numero por favor!");
+            selGrafoVer();
+            return;
+        }
+    }
+    
     /**
      * Ciclo del menu donde se visualizan los distintos atributos/propiedades de un
      * grafo no dirigido. Estos son:
@@ -267,7 +298,6 @@ public class Cliente {
                 System.out.println("3) Adyacencias de un vertice.");
                 System.out.println("4) Incidencias de un vertice.");
                 System.out.println("5) Grado de un vertice.");
-                System.out.println("6) Eliminar arista.");
                 System.out.println("-1) Regresar a visualizacion de grafos.");
                 System.out.println("Elige una opcion: ");
                 opcion = Integer.parseInt(scan.nextLine());
@@ -379,15 +409,13 @@ public class Cliente {
     public void agregarArista(Grafo g) {
         try {
             int id = Integer.parseInt(scan.nextLine());
-            String nombre = scan.nextLine();
-            int idV1 = Integer.parseInt(scan.nextLine());
-            int idV2 = Integer.parseInt(scan.nextLine());
+            String idV1 = scan.nextLine();
+            String idV2 = scan.nextLine();
             double w = Double.parseDouble(scan.nextLine());
-            if (((GrafoNoDirigido) g).agregarArista(g, idV1, idV2, 0, w)) {
+            if (((GrafoNoDirigido) g).agregarArista(g, idV1, idV2, id, w)) {
                 System.out.println("Arista agregada exitosamente!");
             } else {
                 System.out.println("Una arista entre los dos vertices ya existe :(");
-                agregarVertice(g);
                 return;
             }
         } catch (NumberFormatException e) {

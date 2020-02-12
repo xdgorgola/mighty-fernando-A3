@@ -1,3 +1,5 @@
+package Vertice;
+
 /** */
 public class Vertice {
     private int id;

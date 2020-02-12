@@ -1,3 +1,6 @@
+package Lados;
+import Vertice.Vertice;
+
 public abstract class Lado {
     
     protected int id;
@@ -20,14 +23,7 @@ public abstract class Lado {
     }
 
     public static int obtenerTipo(Lado l){
-        if (l.getClass().getSimpleName() == "Arista"){
-            // 0 para arista
-            return 0;
-        }
-        else{
-            // 1 para arco
-            return 1;
-        }
+        return l.id;
     }
 
     public abstract String toString(Lado l);
@@ -38,6 +34,4 @@ public abstract class Lado {
         this.fVertice = fVertice;
         this.peso = peso;
     }
-
-    
 }

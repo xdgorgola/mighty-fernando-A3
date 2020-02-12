@@ -3,6 +3,9 @@ import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.NoSuchElementException;
 
+import Lados.Lado;
+import Vertice.Vertice;
+
 public interface Grafo {
 
     /**
@@ -123,6 +126,10 @@ class ALNode {
         return Vertice.obtenerID(vertex);
     }
 
+    public String obtenerNombre(){
+        return Vertice.obtenerNombre(vertex);
+    }
+    
     public void agregarVertice(Vertice v){
         adyacencias.add(v);
     }
