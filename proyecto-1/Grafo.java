@@ -160,6 +160,11 @@ class ALNode {
     }
 
     public void agregarVertice(Vertice v) {
+        for (Vertice vertice : adyacencias) {
+            if (Vertice.obtenerID(vertice) == Vertice.obtenerID(v)){
+                return;
+            }
+        }
         adyacencias.add(v);
     }
 
@@ -174,7 +179,6 @@ class ALNode {
     public LinkedList<Vertice> obtenerPredecesores() {
         return predecesores;
     }
-
 
     public ALNode(Vertice v) {
         adyacencias = new LinkedList<Vertice>();
