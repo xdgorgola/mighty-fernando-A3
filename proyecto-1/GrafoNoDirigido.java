@@ -3,9 +3,9 @@ import java.io.FileNotFoundException;
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.LinkedList;
+import java.util.ListIterator;
 import java.util.NoSuchElementException;
 import java.util.Scanner;
-
 import Lados.Arista;
 import Lados.Lado;
 import Vertice.Vertice;
@@ -123,21 +123,37 @@ public class GrafoNoDirigido implements Grafo {
         if (!g.estaVertice(g, id)) {
             return false;
         } else {
-            GrafoNoDirigido gND = (GrafoNoDirigido) g;
-            for (ALNode alNode : graph) {
-                if (alNode.obtenerID() == id) {
-                    graph.remove(alNode);
-                } else {
-                    LinkedList<Vertice> adjacencies = alNode.obtenerAdyacencias();
-                    for (Vertice v : adjacencies) {
-                        if (Vertice.obtenerID(v) == id) {
-                            adjacencies.remove(v);
+            GrafoNoDirigido gnd = (GrafoNoDirigido) g;
+            gnd.nodeNames.remove(Vertice.obtenerNombre(gnd.obtenerVertice(g, id)));
+            gnd.nodeIDs.remove((Integer) id);
+            
+            ListIterator<ALNode> gIterator = gnd.graph.listIterator();
+            while (gIterator.hasNext()){
+                ALNode actAlNode = gIterator.next();
+                if (actAlNode.obtenerID() == id){
+                    gIterator.remove();
+                }
+                else{
+                    ListIterator<Vertice> adjIterator = actAlNode.obtenerAdyacencias().listIterator();
+                    while (adjIterator.hasNext()){
+                        Vertice actVertice = adjIterator.next();
+                        if (Vertice.obtenerID(actVertice) == id){
+                            adjIterator.remove();
                             break;
                         }
                     }
                 }
             }
-            gND.nodeIDs.remove((Integer) id);
+
+            ListIterator<Lado> iterator = gnd.gLados.listIterator();
+            while (iterator.hasNext()) {
+                Arista a = (Arista) iterator.next();
+                if (Vertice.obtenerID(Arista.obtenerVertice1(a)) == id
+                    || Vertice.obtenerID(Arista.obtenerVertice2(a)) == id) {
+                    gnd.sideIDs.remove(Arista.obtenerTipo(a));
+                    iterator.remove();
+                }
+            }
             return true;
         }
     }
@@ -195,18 +211,27 @@ public class GrafoNoDirigido implements Grafo {
         GrafoNoDirigido gnd = (GrafoNoDirigido) g;
         Vertice vi = Arista.obtenerVertice1(a);
         Vertice vf = Arista.obtenerVertice2(a);
-        if (!g.estaVertice(g, Vertice.obtenerID(vi)) || !g.estaVertice(g, Vertice.obtenerID(vf))
-                || estaArista(g, Vertice.obtenerNombre(vi), Vertice.obtenerNombre(vf), 0)) {
+        if (!g.estaVertice(gnd, Vertice.obtenerID(vi)) || !gnd.estaVertice(gnd, Vertice.obtenerID(vf))
+                || estaArista(gnd, Vertice.obtenerNombre(vi), Vertice.obtenerNombre(vf), Arista.obtenerTipo(a))) {
             return false;
         } else {
-
+            gnd.gLados.add(a);
+            gnd.sideIDs.add(Arista.obtenerTipo(a));
+            for (ALNode alNode : gnd.graph) {
+                if (alNode.obtenerNombre() == Vertice.obtenerNombre(vi)) {
+                    alNode.agregarVertice(vf);
+                } else if (alNode.obtenerNombre() == Vertice.obtenerNombre(vf)) {
+                    alNode.agregarVertice(vi);
+                }
+            }
         }
         return false;
     }
 
     public boolean agregarArista(Grafo g, String u, String v, int tipo, double p) {
-        GrafoNoDirigido gnd = (GrafoNoDirigido)g;
-        if (estaArista(g, u, v, tipo) || !gnd.estaVertice(g, u) || !gnd.estaVertice(g, v)){
+        GrafoNoDirigido gnd = (GrafoNoDirigido) g;
+        if (estaArista(g, u, v, tipo) || !gnd.estaVertice(g, u) || !gnd.estaVertice(g, v) ||
+            estaArista(g, tipo)){
             return false;
         } else {
             Vertice iVertice = gnd.obtenerVertice(g, u);
@@ -216,10 +241,9 @@ public class GrafoNoDirigido implements Grafo {
             gnd.sideIDs.add(tipo);
 
             for (ALNode alNode : gnd.graph) {
-                if (alNode.obtenerNombre() == u){
+                if (alNode.obtenerNombre() == u) {
                     alNode.agregarVertice(fVertice);
-                }
-                else if (alNode.obtenerNombre() == v){
+                } else if (alNode.obtenerNombre() == v) {
                     alNode.agregarVertice(iVertice);
                 }
             }
@@ -334,15 +358,19 @@ public class GrafoNoDirigido implements Grafo {
         String aux = "Nodos del grafo: \n";
         GrafoNoDirigido gnd = (GrafoNoDirigido) g;
         for (ALNode alNode : gnd.graph) {
-            aux += Vertice.toString(alNode.obtenerVertice());
-            aux += "\n";
+            aux += Vertice.toString(alNode.obtenerVertice()) + "\n";
         }
         aux += "--------------------------------------------------------------\n";
         for (Lado lado : gnd.gLados) {
-            aux += ((Arista) lado).toString(lado);
-            aux += "\n";
+            aux += ((Arista) lado).toString(lado) + "\n\n";
         }
-        aux += "--------------------------------------------------------------";
+        aux += "--------------------------------------------------------------\n";
+        aux += "IDS de nodos en el grafo: \n";
+        aux += gnd.nodeIDs.toString() + "\n";
+        aux += "Nombres de nodos en el grafo: \n";
+        aux += gnd.nodeNames.toString()+ "\n";
+        aux += "IDS de aristas en el grafo: \n";
+        aux += gnd.sideIDs.toString() + "\n";
         return aux;
     }
 
@@ -358,12 +386,81 @@ public class GrafoNoDirigido implements Grafo {
 
     public static void main(String[] args) {
         GrafoNoDirigido g = new GrafoNoDirigido();
-        g.agregarVertice(g, 0, "mano", 0, 0, 10);
-        g.agregarVertice(g, 1, "que", 0, 0, 10);
-        g.agregarVertice(g, 2, "chorizos", 0, 0, 10);
-        g.agregarArista(g, "que", "chorizos", 1, 10);
-        g.agregarArista(g, "que", "chorizos", 1, 10);
-        g.agregarArista(g, "que", "chorizos", 2, 10);
+
+        g.agregarVertice(g, 3, "hola", 0, 0, 10);
+        g.agregarVertice(g, 4, "senorita", 0, 0, 10);
+
+        Vertice vi = new Vertice(3, "hola", 0, 0, 10);
+        Vertice vf = new Vertice(4, "senorita", 0, 0, 10);
+        Arista xd = new Arista(0, vi, vf, 10);
+
+        g.agregarArista(g, xd);
+        g.eliminarVertice(g, 4);
+
+        vi = new Vertice(4, "fernando", 0, 0, 5);
+        vf = new Vertice(5, "feo", 0, 0, 10);
+        g.agregarVertice(g, vi);
+        g.agregarVertice(g, vf);
+
+        g.agregarArista(g, "fernando", "feo", 1, 0);
+        g.agregarArista(g, "hola", "feo", 2, 4);
+        g.agregarArista(g, "hola", "hola", 9, 0);
+        g.eliminarVertice(g, 5);
+        g.eliminarVertice(g, 3);
+        g.eliminarVertice(g, 4);
+        
+        g.agregarVertice(g, 0, "batman", 0, 0, 10);
+        g.agregarVertice(g, 1, "vs", 0, 0, 10);
+        g.agregarVertice(g, 2, "superman", 0, 0, 10);
+
+        g.agregarArista(g, "batman", "vs", 0, 0);
+        g.agregarArista(g, "batman", "vs", 1, 0);
+
+        g.agregarArista(g, "superman", "vs", 0, 0);
+        g.agregarArista(g, "superman", "vs", 1, 0);
+
+        g.agregarArista(g, "superman", "vs", 2, 0);
+        g.agregarArista(g, "superman", "vs", 3, 0);
+
+        g.agregarArista(g, "batman", "superman", 4, 0);
+        g.agregarArista(g, "batman", "superman", 5, 0);
+
+        g.agregarArista(g, "batman", "batman", 6, 0);
+        g.agregarArista(g, "batman", "batman", 7, 0);
+        g.agregarArista(g, "batman", "batman", 8, 0);
+
         System.out.println(g.toString(g));
+        for (ALNode node : g.graph) {
+            String wooo = "Ady nodo " + node.obtenerID() + "\n";
+            for (Vertice v : node.obtenerAdyacencias()) {
+                wooo += Vertice.obtenerID(v) + ", ";
+            }
+            wooo += "\n";
+            System.out.println(wooo);
+        }
+
+        Vertice batman = g.obtenerVertice(g, "batman");
+        System.out.println(Vertice.toString(batman));
+
+        g.eliminarVertice(g, 0);
+        System.out.println(g.toString(g));
+        for (ALNode node : g.graph) {
+            String wooo = "Ady nodo " + node.obtenerID() + "\n";
+            for (Vertice v : node.obtenerAdyacencias()) {
+                wooo += Vertice.obtenerID(v) + ", ";
+            }
+            wooo += "\n";
+            System.out.println(wooo);
+        }
+        g.eliminarVertice(g, 2);
+        System.out.println(g.toString(g));
+        for (ALNode node : g.graph) {
+            String wooo = "Ady nodo " + node.obtenerID() + "\n";
+            for (Vertice v : node.obtenerAdyacencias()) {
+                wooo += Vertice.obtenerID(v) + ", ";
+            }
+            wooo += "\n";
+            System.out.println(wooo);
+        }
     }
 }
