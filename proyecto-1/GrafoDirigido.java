@@ -180,11 +180,11 @@ public class GrafoDirigido implements Grafo {
 
     @Override
     public LinkedList<Vertice> vertices(Grafo g) {
-        LinkedList<Vertice> verts = new LinkedList<Vertice>();
+        LinkedList<Vertice> vertices = new LinkedList<Vertice>();
         for (ALNode alNode : ((GrafoDirigido) g).graph) {
-            verts.add(alNode.obtenerVertice());
+            vertices.add(alNode.obtenerVertice());
         }
-        return verts;
+        return vertices;
     }
 
     public boolean agregarArco(Grafo g, Arco a) {
@@ -198,10 +198,10 @@ public class GrafoDirigido implements Grafo {
             gd.sideIDs.add(Lado.obtenerID(a));
             gd.gLados.add(a);
             for (ALNode alnode : gd.graph){
-                if (alnode.obtenerID()== Vertice.obtenerID(vi)) {
-                    alnode.agregarPredecesor(vf);
-                }else if (alnode.obtenerID()== Vertice.obtenerID(vf)){
-                    alnode.agregarVertice(vi);
+                if (alnode.obtenerID()== Vertice.obtenerID(vf) && !alnode.obtenerPredecesores().contains(vf)) {
+                    alnode.agregarPredecesor(vi);
+                }else if (alnode.obtenerID()== Vertice.obtenerID(vi) && !alnode.obtenerAdyacencias().contains(vf)){
+                    alnode.agregarVertice(vf);
                 }
             }
         }
@@ -209,42 +209,50 @@ public class GrafoDirigido implements Grafo {
     }
 
     public boolean agregarArco(Grafo g, String u, String v, int tipo, double p) {
-        GrafoDirigido gd = new GrafoDirigido();
+        GrafoDirigido gd = (GrafoDirigido) g;
         if (estaArco(g, u, v, tipo)) {
             return false;
         }
         if (!gd.estaVertice(g, u) || !gd.estaVertice(g, v)) {
             return false;
         } else {
-            Vertice iVertice = gd.obtenerVertice(g, u);
-            Vertice fVertice = gd.obtenerVertice(g, v);
-            Arco toAdd = new Arco(tipo, iVertice, fVertice, p);
+            Vertice vi = gd.obtenerVertice(g, u);
+            Vertice vf = gd.obtenerVertice(g, v);
+            Arco toAdd = new Arco(tipo, vi, vf, p);
             gd.gLados.add(toAdd);
             gd.sideIDs.add(tipo);
 
             for (ALNode alNode : gd.graph) {
                 if (alNode.obtenerNombre() == u){
-                    alNode.agregarVertice(fVertice);
+                    alNode.agregarVertice(vf);
                 }
                 else if (alNode.obtenerNombre() == v){
-                    alNode.agregarPredecesor(iVertice);
+                    alNode.agregarPredecesor(vi);
                 }
             }
+
+        return true;
         }
-        return false;
     }
 
     public boolean estaArco(Grafo g, String u, String v, int tipo) {
-        GrafoDirigido gd = new GrafoDirigido();
+        GrafoDirigido gd = (GrafoDirigido) g;
         if (!gd.estaVertice(g, u) || !gd.estaVertice(g, v) || !gd.estaArco(g, tipo)) {
             return false;
         } else {
             for (ALNode alNode : gd.graph) {
                 Vertice ver = alNode.obtenerVertice();
-                if (Vertice.obtenerNombre(ver) == u) {
-                    LinkedList<Vertice> adjacents = alNode.obtenerAdyacencias();
-                    for (Vertice adj : adjacents) {
-                        if (Vertice.obtenerNombre(adj) == v) {
+                if (Vertice.obtenerNombre(ver).equals(u)) {
+                    LinkedList<Vertice> sucesors = alNode.obtenerAdyacencias();
+                    for (Vertice suce : sucesors) {
+                        if (Vertice.obtenerNombre(suce).equals(v)) {
+                            return true;
+                        }
+                    }
+                } else if (Vertice.obtenerNombre(ver).equals(v)) {
+                    LinkedList<Vertice> predecesors = alNode.obtenerPredecesores();
+                    for (Vertice pred : predecesors) {
+                        if (Vertice.obtenerNombre(pred).equals(v)) {
                             return true;
                         }
                     }
@@ -254,8 +262,52 @@ public class GrafoDirigido implements Grafo {
         return false;
     }
 
-    public boolean estaArco(Grafo g, int id) {
-        return ((GrafoDirigido) g).sideIDs.contains(id);
+    public boolean eliminarArco(Grafo g, String u, String v, int tipo){
+        GrafoDirigido gd = (GrafoDirigido) g;
+        if (!gd.estaArco(g, u, v, tipo)) {
+            return false;
+        } else {
+            for (ALNode alNode : gd.graph) {
+                g.obtenerArco();
+                Vertice ver = alNode.obtenerVertice();
+                if (Vertice.obtenerNombre(ver).equals(u)) {
+                    LinkedList<Vertice> sucesors = alNode.obtenerAdyacencias();
+                    for (Vertice suce : sucesors) {
+                        if (Vertice.obtenerNombre(suce).equals(v)) {
+                            sucesors.remove(suce);
+                            return true;
+                        }
+                    }
+                } else if (Vertice.obtenerNombre(ver).equals(v)) {
+                    LinkedList<Vertice> predecesors = alNode.obtenerPredecesores();
+                    for (Vertice pred : predecesors) {
+                        if (Vertice.obtenerNombre(pred).equals(v)) {
+                            predecesors.remove(pred);
+                            return true;
+                        }
+                    }
+                }
+            }
+        }
+    }
+
+    public Arco obtenerArco(Grafo g , int tipo){
+        if (!((GrafoDirigido) g).estaArco(g, tipo)) {
+            throw new NoSuchElementException();
+        } else {
+            ArrayList<Lado> glados = ((GrafoDirigido) g).gLados;
+            for (Lado lado : glados) {
+                if (lado.obtenerID() == id) {
+                    return alNode.obtenerVertice();
+                }
+            }
+        }
+        return null;
+    }
+    
+
+    public boolean estaArco(Grafo g, int tipo) {
+        return ((GrafoDirigido) g).sideIDs.contains(tipo);
     }
 
     @Override
@@ -431,11 +483,14 @@ public class GrafoDirigido implements Grafo {
         g.agregarVertice(g, 0, "mano", 0, 0, 10);
         g.agregarVertice(g, 1, "que", 0, 0, 10);
         g.agregarVertice(g, 2, "chorizos", 0, 0, 10);
-        g.agregarArco(g, "que", "chorizos", 1, 10);
+        g.agregarArco(g, "mano", "chorizos", 0, 10);
         g.agregarArco(g, "que", "chorizos", 1, 10);
         g.agregarArco(g, "que", "chorizos", 2, 10);
-        System.out.println(g.toString(g));
-        g.eliminarVertice(g, 2);
-        System.out.println(g.toString(g));
+
+        System.out.println(g.estaArco(g, "mano", "chorizos", 0));
+
+        g.eliminarArco(g, "mano", "chorizos", 0);
+
+
     }
 }
