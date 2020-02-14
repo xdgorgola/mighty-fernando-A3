@@ -5,24 +5,42 @@ public class BFS {
 
     private Grafo graph;
 
+    /**
+     * Does the activity with BFS
+     * 
+     * @param origin If the origins of the nodes are calculated
+     * @param trunc  How deep is the algorithm going to explore
+     * @param arb    If the algorithm route is showed up
+     * @param ord    If the appearance order of the nodes are calculated
+     * @param pred   If the predecessors of the nodes are calculated
+     */
     public void DoNodeBFS(int origin, int trunc, boolean arb, boolean ord, boolean pred) {
-        int appo = 0;
+        // Tracks how many paths have been created
+        int count = 0;
+
+        // No truncating
         if (trunc == 0) {
             trunc -= 1;
         }
+
         LinkedList<NodePath> open = new LinkedList<NodePath>();
         LinkedList<NodePath> closed = new LinkedList<NodePath>();
-        LLNode initial = graph.GetNode(origin);
-        initial.SetImmediatePred(origin);
-        initial.SetOrd(0);
-        open.addLast(new NodePath(origin));
 
+        LLNode initial = graph.GetNode(origin);
+        open.addLast(new NodePath(origin));
         initial.SetColor(1);
 
-        System.out.println(initial.GetID() + "-" + initial.GetID());
+        if (pred) {
+            initial.SetImmediatePred(origin);
+        }
+        if (ord) {
+            initial.SetOrd(0);
+        }
+        if (arb) {
+            System.out.println(initial.GetID() + "-" + initial.GetID() + " (Raiz)");
+        }
 
         while (open.size() > 0 && (open.peekFirst().GetPath().size() - 1) != trunc) {
-            System.out.println("Path size: " + open.peekFirst().GetPath().size());
 
             NodePath actPath = open.peekFirst();
             LLNode act = graph.GetNode(actPath.GetLast());
@@ -30,7 +48,9 @@ public class BFS {
             // We get the path last node adjacents
             LinkedList<Integer> adjAct = act.GetSucesors();
             for (Integer id : adjAct) {
-                appo += 1;
+                if (ord) {
+                    count += 1;
+                }
                 LLNode expNode = graph.GetNode(id);
                 if (pred) {
                     expNode = graph.GetNode(id);
@@ -40,10 +60,11 @@ public class BFS {
                 }
                 if (ord) {
                     if (expNode.GetOrd() == -1) {
-                        expNode.SetOrd(appo);
+                        expNode.SetOrd(count);
                     }
                 }
                 LLNode adj = graph.GetNode(id);
+                // We mark the adj as visited node
                 adj.SetColor(1);
 
                 // We create the new path
@@ -59,10 +80,49 @@ public class BFS {
             open.removeFirst();
             closed.addLast(actPath);
         }
-
+        if (pred) {
+            System.out.println("Pred:");
+            for (LLNode v : graph.GetGraph()) {
+                System.out.println(v.GetID() + ": " + v.GetImmediatePred());
+            }
+        }
+        if (ord) {
+            System.out.println("Ord:");
+            for (LLNode v : graph.GetGraph()) {
+                System.out.println(v.GetID() + ": " + v.GetOrd());
+            }
+        }
+        LinkedList<Integer> unreacheable = new LinkedList<Integer>();
+        for (LLNode v : graph.GetGraph()) {
+            if (v.GetColor() == 0) {
+                unreacheable.add(v.GetID());
+            }
+        }
+        if (unreacheable.isEmpty()) {
+            System.out.println("All the nodes are reachable!");
+        } else {
+            System.out.println("Unreacheable nodes");
+            for (Integer unr : unreacheable) {
+                if (unr != unreacheable.getLast()) {
+                    System.out.print(unr + ", ");
+                } else {
+                    System.out.print(unr + "\n");
+                }
+            }
+        }
     }
 
-    public boolean RemovePath(NodePath path, LinkedList<NodePath> open, LinkedList<NodePath> closed, boolean arb) {
+    /**
+     * Checks if a path should be removed/ignored in the BFS path and process the node type.
+     * 
+     * @param path Path to examine
+     * @param open Open paths
+     * @param closed Closed paths
+     * @param arb If the algorithm route must be showed
+     * @return true if the path is removed/else false
+     */
+    public boolean RemovePath(NodePath path, LinkedList<NodePath> open, LinkedList<NodePath> closed, 
+                              boolean arb) {
         for (NodePath openPath : open) {
             if (openPath.GetLast() == path.GetLast()) {
                 if (arb) {
@@ -82,11 +142,17 @@ public class BFS {
         if (arb) {
             int depth = path.GetPath().size();
             String tabuleo = new String(new char[depth]).replace("\0", " ");
-            System.out.println(tabuleo + path.GetPrevLast() + "-" + path.GetLast() + "  (Es caminito lindo)");
+            System.out.println(tabuleo + path.GetPrevLast() + "-" + path.GetLast() + "  (Arco de camino)");
         }
         return false;
     }
 
+    /**
+     * Checks if a path is a return path.
+     * 
+     * @param path Path to check
+     * @return If the path is a return path or not
+     */
     public boolean IsGoingUp(NodePath path) {
         LinkedList<Integer> intPath = path.GetPath();
         ListIterator<Integer> iterator = intPath.listIterator();
@@ -102,6 +168,14 @@ public class BFS {
         return false;
     }
 
+    /**
+     * Checks if a path is a crossed path.
+     * 
+     * @param path Path to check
+     * @param open Open paths
+     * @param closed Closed paths
+     * @return If the path is crossed or not
+     */
     public boolean IsOtherCrossed(NodePath path, LinkedList<NodePath> open, LinkedList<NodePath> closed) {
         for (NodePath closedPath : closed) {
             if (closedPath.GetLast() == path.GetLast() && closedPath != path) {
@@ -116,52 +190,20 @@ public class BFS {
         return false;
     }
 
+    /**
+     * Checks the type of a path to remove in BFS and prints its type accordingly.
+     * 
+     * @param path Path to process
+     * @param open Open paths
+     * @param closed Closed paths
+     */
     public void ProcessSpecialArc(NodePath path, LinkedList<NodePath> open, LinkedList<NodePath> closed) {
         int depth = path.GetPath().size();
         String tabuleo = new String(new char[depth]).replace("\0", " ");
         if (IsGoingUp(path)) {
-            System.out.println(tabuleo + path.GetPrevLast() + "-" + path.GetLast() + "  (Este va parriba)");
+            System.out.println(tabuleo + path.GetPrevLast() + "-" + path.GetLast() + "  (Arco de subida)");
         } else if (IsOtherCrossed(path, open, closed)) {
-            System.out.println(tabuleo + path.GetPrevLast() + "-" + path.GetLast() + "  (Un ligaito ahi)");
-        }
-    }
-
-    public static void main(String[] args) {
-        Grafo g = new Grafo();
-
-        for (int i = 0; i < 8; i++) {
-            g.InsertNode(i);
-        }
-
-        g.AddEdge(0, 2);
-        g.AddEdge(0, 5);
-        g.AddEdge(0, 7);
-        g.AddEdge(2, 6);
-        g.AddEdge(3, 4);
-        g.AddEdge(4, 5);
-        g.AddEdge(4, 7);
-        g.AddEdge(5, 3);
-        g.AddEdge(6, 4);
-        g.AddEdge(6, 2);
-        g.AddEdge(7, 1);
-
-        BFS bfs = new BFS();
-        bfs.graph = g;
-        bfs.DoNodeBFS(0, 2, true, true, true);
-
-        System.out.println("Nodos no alcanzables uwu");
-        for (LLNode v : g.GetGraph()) {
-            if (v.GetColor() == 0) {
-                System.out.println(v.GetID());
-            }
-        }
-        System.out.println("Orden de ap y pred nodos");
-        for (LLNode v : g.GetGraph()) {
-            System.out.println("Aparicion de de " + v.GetID());
-            System.out.println(v.GetOrd());
-            System.out.println("Predecesor de " + v.GetID());
-            System.out.println(v.GetImmediatePred());
-            System.out.println();
+            System.out.println(tabuleo + path.GetPrevLast() + "-" + path.GetLast() + "  (Arco cruzado)");
         }
     }
 }
