@@ -1,5 +1,39 @@
 public class Cliente {
+    static void loadEdge(String line, Grafo grafo) throws IllegalArgumentException {
+		String[] vertices = line.split(" ");
+		if (vertices.length > 1) {
+			for (int i = 1; i < vertices.length; i++) {
+				grafo.AddEdge(Integer.parseInt(vertices[0]), Integer.parseInt(vertices[i]));
+			}
+		}
+    }
+    
+    static Grafo loadGraph(String fileName) throws IOException {
+		Grafo salida = new Grafo();
+		int vertices;
 
+		BufferedReader Lector = new BufferedReader(new FileReader(fileName));
+
+		String linea = Lector.readLine();
+		vertices = Integer.parseInt(linea);
+
+		for (int i = 0; i < vertices; i++) {
+			salida.InsertNode(i);
+		}
+
+		linea = Lector.readLine();
+
+		linea = Lector.readLine();
+		do {
+			loadEdge(linea, salida);
+			linea = Lector.readLine();
+		} while (linea != null);
+
+		Lector.close();
+
+		return salida;
+    }
+    
     public static void main(String[] args) {
         System.out.println(args.length);
         if (args.length < 3 || args.length > 8) {
@@ -93,12 +127,12 @@ public class Cliente {
         System.out.println("pre: " + pre);
         System.out.println("dfs: " + dfs);
 
-        Grafo g = new Grafo();
+        Grafo g = loadGraph(args[0]);
         // Se carga el grafo
         // Has un metodo para que el DFS/BFS reciban el grafo y luego lo llamas, el mio necesita que le pases los parametros.
         // SI NO HAY TRUN, EL MIO RECIBE COMO PARAMETRO TRUN -1
         if (dfs){
-            // Pon tu dfs
+            DFS doer = new DFS(g);
         }
         else{
             BFS doer = new BFS();
