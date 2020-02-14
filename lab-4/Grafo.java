@@ -21,6 +21,10 @@ public class Grafo {
         return nodes;
     }
 
+    public LinkedList<LLNode> GetGraph(){
+        return graph;
+    }
+
     /**
      * Gets a node object from the <code>graph<\code> that is associated to an
      * integer id. Returns nulls if the node isn't in the graph.
@@ -107,14 +111,14 @@ public class Grafo {
     public static void main(String[] args) {
         Grafo g = new Grafo();
 
-        for (int i = 0; i<8; i++){
+        for (int i = 0; i < 8; i++) {
             g.InsertNode(i);
         }
 
         g.AddEdge(0, 1);
-        g.AddEdge(0,2);
-        
-        g.AddEdge(1,2);
+        g.AddEdge(0, 2);
+
+        g.AddEdge(1, 2);
 
         g.AddEdge(2, 3);
 
@@ -133,6 +137,7 @@ class LLNode {
     private int id;
     private int color;
     private int immID;
+    private int ord;
     private LinkedList<Integer> suceNodes;
     private LinkedList<Integer> predNodes;
 
@@ -140,6 +145,7 @@ class LLNode {
         this.id = id;
         color = 0;
         immID = -1;
+        ord = -1;
         suceNodes = new LinkedList<Integer>();
         predNodes = new LinkedList<Integer>();
 
@@ -149,6 +155,14 @@ class LLNode {
         return id;
     }
 
+    public int GetOrd(){
+        return ord;
+    }
+
+    public void SetOrd(int i){
+        ord = i;
+    }
+    
     public void SetColor(int color) {
         this.color = color;
     }
@@ -169,7 +183,8 @@ class LLNode {
         predNodes.add(pred);
     }
 
-    //Este atributo es al momento de hacer DFS o BFS, el que se encuentra justo antes del nodo. No para agregar edge.
+    // Este atributo es al momento de hacer DFS o BFS, el que se encuentra justo
+    // antes del nodo. No para agregar edge.
     public int GetImmediatePred() {
         return immID;
     }
@@ -182,4 +197,46 @@ class LLNode {
         return predNodes;
     }
 
+    @Override
+    public String toString() {
+        String aux = "ID Nodo: " + id + "\nColor: " + color + "\n";
+        return aux;
+    }
+}
+
+class NodePath {
+    private LinkedList<Integer> path;
+
+    public void AddNext(int toAdd) {
+        path.add(toAdd);
+    }
+
+    public Integer GetLast() {
+        return path.peekLast();
+    }
+
+    public Integer GetPrevLast() {
+        ListIterator<Integer> iterator = path.listIterator(path.size());
+        iterator.previous();
+        return iterator.previous();
+    }
+
+    public LinkedList<Integer> GetPath() {
+        return path;
+    }
+
+    public NodePath Clone() {
+        NodePath clone = new NodePath();
+        clone.path = new LinkedList<Integer>(this.path);
+        return clone;
+    }
+
+    public NodePath() {
+        this.path = new LinkedList<Integer>();
+    }
+
+    public NodePath(int i) {
+        this.path = new LinkedList<Integer>();
+        this.path.add(i);
+    }
 }

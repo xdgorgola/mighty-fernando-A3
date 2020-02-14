@@ -452,5 +452,15 @@ public class GrafoNoDirigido implements Grafo {
             wooo += "\n";
             System.out.println(wooo);
         }
+        g.eliminarVertice(g, 2);
+        System.out.println(g.toString(g));
+        for (ALNode node : g.graph) {
+            String wooo = "Ady nodo " + node.obtenerID() + "\n";
+            for (Vertice v : node.obtenerAdyacencias()) {
+                wooo += Vertice.obtenerID(v) + ", ";
+            }
+            wooo += "\n";
+            System.out.println(wooo);
+        }
     }
 }
