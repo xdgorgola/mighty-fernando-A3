@@ -21,6 +21,11 @@ public class Grafo {
         return nodes;
     }
 
+    /**
+     * Gets the graph representation as a Linked List.
+     * 
+     * @return Graph as a Linked List
+     */
     public LinkedList<LLNode> GetGraph(){
         return graph;
     }
@@ -94,6 +99,12 @@ public class Grafo {
         }
     }
 
+    /**
+     * Gets the predecessor nodes of a node in the graph.
+     * 
+     * @param nodeID NodeID of the node to look for it predecessor nodes
+     * @return Predecessors nodes of the node
+     */
     public LinkedList<Integer> PredecesorNodes(int nodeID) {
         if (!nodes.contains(nodeID)) {
             return null;
@@ -133,12 +144,42 @@ public class Grafo {
     }
 }
 
+/**
+ * Node of the linked list used to represent the graph. It contains all the info of
+ * a vertice of the graph. That info is:
+ * <lu>
+ * <li>ID<\li>
+ * <li>Color<\li>
+ * <li>Inmediate predecessor ID<\li>
+ * <li>Appearance order in BFS/DFS algorithm<\li>
+ * <li>Sucessor nodes<\li>
+ * <li>Predecessor nodes<\li>
+ * <\lu>
+ */
 class LLNode {
+    /** 
+     * Node ID 
+     */
     private int id;
+    /** 
+     * Node color 
+     */
     private int color;
+    /** 
+     * Node predecessor inmediate ID 
+     */
     private int immID;
+    /** 
+     * Node appearance order in BFS/DFS algorithm 
+     */
     private int ord;
+    /** 
+     * Sucessor nodes of the node 
+     */
     private LinkedList<Integer> suceNodes;
+    /** 
+     * Predecessor nodes of the node 
+     */
     private LinkedList<Integer> predNodes;
 
     public LLNode(int id) {
@@ -151,10 +192,19 @@ class LLNode {
 
     }
 
+    /**
+     * Gets the node ID.
+     * 
+     * @return The node ID
+     */
     public int GetID() {
         return id;
     }
 
+    /**
+     * Gets the node appearance order in BFS/DFS algorithm.
+     * @return Appearance order in BFS/DFS algorithm
+     */
     public int GetOrd(){
         return ord;
     }
@@ -162,37 +212,75 @@ class LLNode {
     public void SetOrd(int i){
         ord = i;
     }
-    
+
+    /**
+     * Sets the color of the node.
+     * 
+     * @param color Color to set the node.
+     */
     public void SetColor(int color) {
         this.color = color;
     }
 
+    /**
+     * Gets the color of the node.
+     * 
+     * @return The node color
+     */
     public int GetColor() {
         return color;
     }
 
+    /**
+     * Sets the inmediate predecessor node ID of the node.
+     * 
+     * @param immID The inmediate predecessor node ID of the node
+     */
     public void SetImmediatePred(int immID) {
         this.immID = immID;
     }
 
+    /**
+     * Adds a sucessor to the sucessor nodes.
+     * 
+     * @param suce Sucessor node ID to add
+     */
     public void SetSucesor(int suce) {
         suceNodes.add(suce);
     }
 
+    /**
+     * Adds a predecessor to the predecessor nodes.
+     * 
+     * @param pred Predecessor node ID to add
+     */
     public void SetPredecesor(int pred) {
         predNodes.add(pred);
     }
 
-    // Este atributo es al momento de hacer DFS o BFS, el que se encuentra justo
-    // antes del nodo. No para agregar edge.
+    /**
+     * Gets the inmediate predecessor node ID.
+     * 
+     * @return Inmediate predecessor node ID of the node
+     */
     public int GetImmediatePred() {
         return immID;
     }
 
+    /**
+     * Gets the sucessors of the node.
+     * 
+     * @return Sucessors of the node
+     */
     public LinkedList<Integer> GetSucesors() {
         return suceNodes;
     }
 
+    /**
+     * Gets the predecessors of the node.
+     * 
+     * @return Predecessors of the node
+     */
     public LinkedList<Integer> GetPredecesors() {
         return predNodes;
     }
@@ -204,27 +292,58 @@ class LLNode {
     }
 }
 
+/**
+ * A Linked List that represents a path in a graph.
+ * It contains the path nodes IDs ordered by appearance order of the nodes in the path.
+ */
 class NodePath {
+    /**
+     * Path
+     */
     private LinkedList<Integer> path;
 
+    /**
+     * Expands the path with a node.
+     * 
+     * @param toAdd ID of the node to expand the path with
+     */
     public void AddNext(int toAdd) {
         path.add(toAdd);
     }
 
+    /**
+     * Gets the last node of the path.
+     * 
+     * @return ID of the last node of the path
+     */
     public Integer GetLast() {
         return path.peekLast();
     }
 
+    /**
+     * Gets the node previous to the last node of the path.
+     * @return THe node previous to the last node of the path
+     */
     public Integer GetPrevLast() {
         ListIterator<Integer> iterator = path.listIterator(path.size());
         iterator.previous();
         return iterator.previous();
     }
 
+    /**
+     * Gets the path.
+     * 
+     * @return Linked List used to represent the path
+     */
     public LinkedList<Integer> GetPath() {
         return path;
     }
 
+    /**
+     * Clones the path.
+     * 
+     * @return Cloned node path (deepcopy)
+     */
     public NodePath Clone() {
         NodePath clone = new NodePath();
         clone.path = new LinkedList<Integer>(this.path);
