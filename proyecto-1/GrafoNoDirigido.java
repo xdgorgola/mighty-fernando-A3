@@ -326,8 +326,8 @@ public class GrafoNoDirigido implements Grafo {
                     alNode.agregarVertice(iVertice);
                 }
             }
+            return true;
         }
-        return false;
     }
 
     /**

@@ -28,12 +28,6 @@ public class Cliente {
     ////////////// PARA QUE NO MUERAS XD
     ////////////////
 
-    ////////////// PEDRO
-    /////////// PON 
-    ////////////// LOS
-    /////////////// SWITCH
-    ////////////// POR
-    /////////// FAVOR
     ////////////////////// HAS UN FACTORY PEDRO
     /////////// SE OYE INTERESANTE Y UTIL
 
@@ -46,6 +40,7 @@ public class Cliente {
      * siguientes opciones:
      * <ul>
      * <li><b>Cargar grafo desde archivo: Carga un grafo desde un archivo</b></li>
+     * <li><b>Crear nuevo grafo: Crea un nuevo grafo</b></li>
      * <li><b>Ver grafos guardados: Menu de visualizacion de grafos
      * cargados.</b></li>
      * <li><b>Salir del programa</b></li>
@@ -55,9 +50,11 @@ public class Cliente {
         int opcion = 0;
         while (opcion != -1) {
             System.out.println("1) Cargar grafo desde archivo.");
-            System.out.println("2) Ver grafos guardados.");
+
+            System.out.println("2) Crear nuevo grafo");
+            System.out.println("3) Ver grafos guardados.");
             System.out.println("-1) Salir del programa.");
-            opcion = Integer.parseInt(scan.nextLine());
+            opcion = Integer.parseInt(scan.nextLine().trim());
 
             switch (opcion) {
                 case -1:
@@ -66,6 +63,9 @@ public class Cliente {
                     intentarCargarGrafo();
                     break;
                 case 2:
+                    creacionDeGrafo();
+                    break;
+                case 3:
                     viendoGrafos();
                     break;
                 default:
@@ -82,9 +82,9 @@ public class Cliente {
         Scanner fileReader = null;
         try {
             System.out.println("Introduzca path al archivo que contiene el grafo: ");
-            fileReader = new Scanner(new File(scan.nextLine()));
+            fileReader = new Scanner(new File(scan.nextLine().trim()));
             GrafoNoDirigido g = new GrafoNoDirigido();
-            g.cargarGrafo(g, scan.nextLine());
+            g.cargarGrafo(g, scan.nextLine().trim());
             grafosND.add(g);
             fileReader.close();
         } catch (FileNotFoundException e) {
@@ -93,6 +93,34 @@ public class Cliente {
         }
     }
 
+    /**
+     * Ciclo de creacion de un nuevo grafo. Permite crear un grafo dirigido o no e ir directamente a
+     * su menu de edicion.
+     */
+    public void creacionDeGrafo(){
+        try {
+            System.out.println("Introduzca ND para un grafo no dirigido y D para uno dirigido: ");
+            String op = scan.nextLine().trim().trim();
+            switch (op) {
+                case "ND":
+                    GrafoNoDirigido nd = new GrafoNoDirigido();
+                    grafosND.add(nd);
+                    editandoGrafoND(grafosND.size() - 1);
+                    return;
+                case "D":
+                    GrafoDirigido d = new GrafoDirigido();
+                    grafosD.add(d);
+                    editandoGrafoD(grafosD.size() - 1);
+                    return;
+                default:
+                    creacionDeGrafo();
+                    return;
+            }
+        } catch (Exception e) {
+            System.out.println("ERROR MAGICO! (NO SE COMO LO CAUSASTE)");
+            return;
+        }
+    }
     /**
      * Ciclo del menu donde se visualizan los distintos grafos cargados en el
      * programa y se ofrecen las siguientes opciones:
@@ -123,7 +151,7 @@ public class Cliente {
                 System.out.println("3) Clonar un grafo.");
                 System.out.println("-1) Regresar al menu principal.");
                 System.out.println("Elige una opcion: ");
-                opcion = Integer.parseInt(scan.nextLine());
+                opcion = Integer.parseInt(scan.nextLine().trim());
 
                 switch (opcion) {
                     case -1:
@@ -147,10 +175,13 @@ public class Cliente {
         }
     }
 
+    /**
+     * Ciclo de seleccion de un grafo a editar.
+     */
     public void selGrafoEditar() {
         try {
             System.out.println("Introduzca un numero de la lista de grafos: ");
-            Integer selInt = Integer.parseInt(scan.nextLine());
+            Integer selInt = Integer.parseInt(scan.nextLine().trim());
             if (selInt < 0 || (grafosND.size() + grafosD.size()) <= selInt) {
                 System.out.println("Grafo no en la lista! Regresando a lista de grafos.");
                 return;
@@ -202,7 +233,7 @@ public class Cliente {
                 System.out.println("6) Eliminar arista.");
                 System.out.println("-1) Regresar a visualizacion de grafos.");
                 System.out.println("Elige una opcion: ");
-                opcion = Integer.parseInt(scan.nextLine());
+                opcion = Integer.parseInt(scan.nextLine().trim());
 
                 switch (opcion) {
                     case -1:
@@ -269,36 +300,45 @@ public class Cliente {
                 System.out.println("6) Eliminar arco.");
                 System.out.println("-1) Regresar a visualizacion de grafos.");
                 System.out.println("Elige una opcion: ");
-                opcion = Integer.parseInt(scan.nextLine());
+                opcion = Integer.parseInt(scan.nextLine().trim());
 
-                if (opcion == 1) {
-                    visualizarNodos(g);
-                } else if (opcion == 2) {
-                    visualizarLados(g);
-                } else if (opcion == 3) {
-                    agregarVertice(g);
-                } else if (opcion == 4) {
-                    // agregarArista(g);
-                } else if (opcion == 5) {
-
-                } else if (opcion == 6) {
-
-                } else if (opcion == -1) {
-                    return;
+                switch (opcion) {
+                    case -1:
+                        return;
+                    case 1:
+                        visualizarNodos(g);
+                        break;
+                    case 2:
+                        visualizarLados(g);
+                        break;
+                    case 3:
+                        agregarVertice(g);
+                        break;
+                    case 4:
+                        break;
+                    case 5:
+                        eliminarVertice(g);
+                        break;
+                    case 6:
+                        break;
+                    default:
+                        break;
                 }
-                // scan.close();
             }
         } catch (NumberFormatException e) {
-            // scan.close();
-            //viendoGrafos();
+            System.out.println("Introduce un numero por favor!");
+            editandoGrafoD(aEditar);
             return;
         }
     }
 
+    /**
+     * Ciclo de seleccion de grafo a visualizar sus atributos/propiedades.
+     */
     public void selGrafoVer() {
         try {
             System.out.println("Introduzca un numero de la lista de grafos: ");
-            Integer selInt = Integer.parseInt(scan.nextLine());
+            Integer selInt = Integer.parseInt(scan.nextLine().trim());
             if (selInt < 0 || (grafosND.size() + grafosD.size()) <= selInt) {
                 System.out.println("Grafo no en la lista! Regresando a lista de grafos.");
                 return;
@@ -353,7 +393,9 @@ public class Cliente {
                 System.out.println("7) Ver info de una arista.");
                 System.out.println("-1) Regresar a visualizacion de grafos.");
                 System.out.println("Elige una opcion: ");
-                opcion = Integer.parseInt(scan.nextLine());
+
+                opcion = Integer.parseInt(scan.nextLine().trim());
+
                 switch (opcion) {
                     case -1:
                         return;
@@ -405,6 +447,8 @@ public class Cliente {
      * vertice.</li>
      * <li><b>Grado externo de un vertice:</b> Calcula el grado externo de un
      * vertice.</li>
+     * <li><b>Ver info de un vertice:</b> Muestra datos de un vertice.</li>
+     * <li><b>Ver info de un arco:</b> Muestra datos de un arco.</li>
      * <li><b>Regresar a visualizacion de grafos:</b> Regresa al menu de
      * visualizacion de grafos.</li>
      * </ul>
@@ -422,42 +466,67 @@ public class Cliente {
                 System.out.println("4) Predecesores de un vertice.");
                 System.out.println("5) Grado interno de un vertice.");
                 System.out.println("6) Grado externo de un vertice.");
+                System.out.println("7) Ver info de un vertice.");
+                System.out.println("8) Ver info de un arco.");
                 System.out.println("-1) Regresar a visualizacion de grafos.");
                 System.out.println("Elige una opcion: ");
-                opcion = Integer.parseInt(scan.nextLine());
+                opcion = Integer.parseInt(scan.nextLine().trim());
 
-                if (opcion == 1) {
-                    visualizarNodos(g);
-                } else if (opcion == 2) {
-                    visualizarLados(g);
-                } else if (opcion == 3) {
-                    agregarVertice(g);
-                } else if (opcion == 4) {
-                    agregarArista(g);
-                } else if (opcion == 5) {
-
-                } else if (opcion == 6) {
-
-                } else if (opcion == -1) {
-                    return;
+                switch (opcion) {
+                    case -1:
+                        return;
+                    case 1:
+                        visualizarNodos(g);
+                        break;
+                    case 2:
+                        visualizarLados(g);
+                        break;
+                    case 3:
+                        adyacenciasVertices(g);
+                        break;
+                    case 4:
+                        incidenciasVertices(g);
+                        break;
+                    case 5:
+                        break;
+                    case 6:
+                        break;
+                    case 7:
+                    verInfoVertice(g);
+                        break;
+                    case 8:
+                        break;
+                    default:
+                        break;
                 }
-                // scan.close();arista
             }
         } catch (NumberFormatException e) {
-            // scan.close();
             viendoGrafos();
             return;
         }
     }
 
+    /**
+     * Ciclo de seleccion para agregar un nuevo vertice a un grafo g.
+     * 
+     * @param g Grafo a agregar vertice
+     */
     public void agregarVertice(Grafo g) {
         try {
-            int id = Integer.parseInt(scan.nextLine());
-            String nombre = scan.nextLine();
-            double xCord = Double.parseDouble(scan.nextLine());
-            double yCord = Double.parseDouble(scan.nextLine());
-            double w = Double.parseDouble(scan.nextLine());
-            System.out.println(g == null);
+            System.out.println("Introduzca ID del vertice: ");
+            int id = Integer.parseInt(scan.nextLine().trim());
+            System.out.println("Introduzca NOMBRE del vertice: ");
+            String nombre = scan.nextLine().trim();
+            while (nombre.length() < 1){
+                System.out.println("Introduzca un NOMBRE mas largo: ");
+                nombre = scan.nextLine().trim();
+            }
+            System.out.println("Introduzca COORDENADA X del vertice (double permitido): ");
+            double xCord = Double.parseDouble(scan.nextLine().trim());
+            System.out.println("Introduzca COORDENADA Y del vertice (double permitido): ");
+            double yCord = Double.parseDouble(scan.nextLine().trim());
+            System.out.println("Introduzca PESO del vertice (double permitido): ");
+            double w = Double.parseDouble(scan.nextLine().trim());
             if (g.agregarVertice(g, id, nombre, xCord, yCord, w)) {
                 System.out.println("Vertice agregado exitosamente!");
             } else {
@@ -472,10 +541,15 @@ public class Cliente {
         }
     }
 
+    /**
+     * Ciclo de seleccion para eliminar un vertice de un grafo g.
+     * 
+     * @param g Grafo a eliminar vertice
+     */
     public void eliminarVertice(Grafo g){
         try {
             System.out.println("Introduzca ID de un vertice a eliminar: ");
-            int toRemove = Integer.parseInt(scan.nextLine());
+            int toRemove = Integer.parseInt(scan.nextLine().trim());
             g.eliminarVertice(g, toRemove);
             return;
         } catch (NumberFormatException | NoSuchElementException e) {
@@ -490,16 +564,25 @@ public class Cliente {
         }
     }
 
+    /**
+     * Ciclo de seleccion para agregar una arista a un grafo no dirigido g.
+     * 
+     * @param g
+     */
     public void agregarArista(Grafo g) {
         try {
-            int id = Integer.parseInt(scan.nextLine());
-            String idV1 = scan.nextLine();
-            String idV2 = scan.nextLine();
-            double w = Double.parseDouble(scan.nextLine());
+            System.out.println("Introduzca ID de la arista: ");
+            int id = Integer.parseInt(scan.nextLine().trim());
+            System.out.println("Introduce NOMBRE del vertice 1: ");
+            String idV1 = scan.nextLine().trim().trim();
+            System.out.println("Introduce NOMBRE del vertice 2: ");
+            String idV2 = scan.nextLine().trim().trim();
+            System.out.println("Introduce PESO de la arista (double permitido): ");
+            double w = Double.parseDouble(scan.nextLine().trim());
             if (((GrafoNoDirigido) g).agregarArista(g, idV1, idV2, id, w)) {
                 System.out.println("Arista agregada exitosamente!");
             } else {
-                System.out.println("Una arista entre los dos vertices ya existe :(");
+                System.out.println("Una arista entre los dos vertices ya existe :( o no existen los vertices");
                 return;
             }
         } catch (NumberFormatException e) {
@@ -509,10 +592,15 @@ public class Cliente {
         }
     }
 
+    /**
+     * Ciclo de seleccion para eliminar una arista de un grafo no dirigido g.
+     * 
+     * @param g Grafo no dirigido a eliminar arista
+     */
     public void eliminarArista(Grafo g){
         try {
             System.out.println("Introduzca ID de una arista a eliminar: ");
-            int toRemove = Integer.parseInt(scan.nextLine());
+            int toRemove = Integer.parseInt(scan.nextLine().trim());
             ((GrafoNoDirigido)g).eliminarArista(g, toRemove);
             return;
         } catch (NumberFormatException | NoSuchElementException e) {
@@ -528,26 +616,49 @@ public class Cliente {
         } 
     }
 
+    /**
+     * Visualiza la informacion de todos los nodos de un grafo g.
+     * 
+     * @param g Grafo a visualizar nodos
+     */
     public void visualizarNodos(Grafo g) {
         LinkedList<Vertice> nodos = g.vertices(g);
-        for (Vertice vertice : nodos) {
-            System.out.println(Vertice.toString(vertice));
+        if (nodos.size() <= 0){
+            System.out.println("No hay nodos!");
+        }
+        else{
+            for (Vertice vertice : nodos) {
+                System.out.println(Vertice.toString(vertice));
+            }
         }
         return;
     }
 
+    /**
+     * Visualiza la informacion de todos los lados de un grafo g.
+     * 
+     * @param g Grafo a visualizar lados
+     */
     public void visualizarLados(Grafo g) {
         ArrayList<Lado> lados = g.lados(g);
+        if (lados.size() <= 0){
+            System.out.println("No hay lados!");
+        }
         for (Lado lado : lados) {
             System.out.println(lado.toString(lado));
         }
         return;
     }
 
+    /**
+     * Muestra los ID de los vertices adyacentes a un vertice de un grafo g.
+     * 
+     * @param g Grafo a buscar adyacencias de un vertice
+     */
     public void adyacenciasVertices(Grafo g){
         try {
             System.out.println("Introduzca ID de una vertice: ");
-            int id = Integer.parseInt(scan.nextLine());
+            int id = Integer.parseInt(scan.nextLine().trim());
             String aux = "";
             ListIterator<Vertice> adyIterator = g.adyacentes(g, id).listIterator();
             System.out.println("Adyacencias del vertice " + id + ":\n");
@@ -576,10 +687,15 @@ public class Cliente {
         }        
     }
 
+    /**
+     * Muestra los ID de los lados que inciden en un vertice de un grafo g.
+     * 
+     * @param g Grafo a buscar incidencias
+     */
     public void incidenciasVertices(Grafo g){
         try {
             System.out.println("Introduzca ID de una vertice: ");
-            int id = Integer.parseInt(scan.nextLine());
+            int id = Integer.parseInt(scan.nextLine().trim());
             String aux = "";
             ListIterator<Lado> lIterator = g.incidentes(g, id).listIterator();
             System.out.println("Incidentes del vertice " + id + ":\n");
@@ -608,10 +724,15 @@ public class Cliente {
         }        
     }
 
+    /**
+     * Ciclo de seleccion para ver el grado de un vertice en un grafo g.
+     * 
+     * @param g Grafo a ver grado del vertice
+     */
     public void gradoVertice(Grafo g){
         try {
             System.out.println("Introduzca ID de una vertice: ");
-            int id = Integer.parseInt(scan.nextLine());
+            int id = Integer.parseInt(scan.nextLine().trim());
             int grad = g.grado(g, id);
             System.out.println("Grado nodo " + id + ": " + grad);
             return;
@@ -628,10 +749,15 @@ public class Cliente {
         }      
     }
 
+    /**
+     * Ciclo de seleccion para visualizar la informacion de un vertice en un grafo g.
+     * 
+     * @param g Grafo a visualizar informacion de un vertice
+     */
     public void verInfoVertice(Grafo g){
         try {
             System.out.println("Introduzca ID de una vertice: ");
-            int id = Integer.parseInt(scan.nextLine());
+            int id = Integer.parseInt(scan.nextLine().trim());
             System.out.println(Vertice.toString(g.obtenerVertice(g, id)));
             return;
         } catch (NumberFormatException | NoSuchElementException e) {
@@ -647,10 +773,15 @@ public class Cliente {
         }      
     }
 
+    /**
+     * Ciclo de seleccion para visualizar la informacion de una arista en un grafo no dirigido g.
+     * 
+     * @param g Grafo a visualizar informacion de arista
+     */
     public void verInfoArista(Grafo g){
         try {
             System.out.println("Introduzca ID de una vertice: ");
-            int id = Integer.parseInt(scan.nextLine());
+            int id = Integer.parseInt(scan.nextLine().trim());
             Arista a = ((GrafoNoDirigido)g).obtenerArista(g, id);
             System.out.println(a.toString(a));
             return;
