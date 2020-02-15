@@ -76,10 +76,10 @@ public class Cliente {
      * Ciclo del menu donde se visualizan los distintos grafos cargados en el
      * programa y se ofrecen las siguientes opciones:
      * <ul>
-     * <li><b>Editar un grafo: Menu de edicion de un grafo.</b></li>
-     * <li><b>Ver propiedades/atributos del grafo: Menu de propiedades de un
-     * grafo.</b></li>
-     * <li><b>Clonar un grafo: Menu de clonacion de un grafo.</b></li>
+     * <li><b>Editar un grafo:</b> Menu de edicion de un grafo.</li>
+     * <li><b>Ver propiedades/atributos del grafo:</b> Menu de propiedades de un
+     * grafo.</li>
+     * <li><b>Clonar un grafo:</b> Menu de clonacion de un grafo.</li>
      * <li><b>Regresar al menu principal</b></li>
      * </ul>
      */
@@ -144,15 +144,15 @@ public class Cliente {
      * Ciclo del menu donde se visualizan las distintas opciones para editar un
      * grafo no dirigido. Estas son:
      * <ul>
-     * <li><b><b>Visualizar nodos grafo:</b> Visualiza los nodos del grafo a
+     * <li><b>Visualizar nodos grafo:</b> Visualiza los nodos del grafo a
      * editar.</li>
-     * <li><b><b>Visualizar lados grafo:</b> Visualiza los lados del grafo a
+     * <li><b>Visualizar lados grafo:</b> Visualiza los lados del grafo a
      * editar.</li>
-     * <li><b><b>Agregar vertice:</b> Agrega un vertice al grafo a editar.</li>
-     * <li><b><b>Agregar arista:</b> Agrega una arista al grafo a editar.</li>
-     * <li><b><b>Eliminar vertice:</b> Elimina un vertice al grafo a editar.</li>
-     * <li><b><b>Eliminar arista:</b> Elimina una arista al grafo a editar.</li>
-     * <li><b><b>Regresar a visualizacion de grafos:</b> Regresa al menu de
+     * <li><b>Agregar vertice:</b> Agrega un vertice al grafo a editar.</li>
+     * <li><b>Agregar arista:</b> Agrega una arista al grafo a editar.</li>
+     * <li><b>Eliminar vertice:</b> Elimina un vertice al grafo a editar.</li>
+     * <li><b>Eliminar arista:</b> Elimina una arista al grafo a editar.</li>
+     * <li><b>Regresar a visualizacion de grafos:</b> Regresa al menu de
      * visualizacion de grafos.</li>
      * </ul>
      * 
@@ -201,15 +201,15 @@ public class Cliente {
      * Ciclo del menu donde se visualizan las distintas opciones para editar un
      * grafo dirigido. Estas son:
      * <ul>
-     * <li><b><b>Visualizar nodos grafo:</b> Visualiza los nodos del grafo a
+     * <li><b>Visualizar nodos grafo:</b> Visualiza los nodos del grafo a
      * editar.</li>
-     * <li><b><b>Visualizar lados grafo:</b> Visualiza los lados del grafo a
+     * <li><b>Visualizar lados grafo:</b> Visualiza los lados del grafo a
      * editar.</li>
-     * <li><b><b>Agregar vertice:</b> Agrega un vertice al grafo a editar.</li>
-     * <li><b><b>Agregar arco:</b> Agrega una arco al grafo a editar.</li>
-     * <li><b><b>Eliminar vertice:</b> Elimina un vertice al grafo a editar.</li>
-     * <li><b><b>Eliminar arco:</b> Elimina una arista al grafo a editar.</li>
-     * <li><b><b>Regresar a visualizacion de grafos:</b> Regresa al menu de
+     * <li><b>Agregar vertice:</b> Agrega un vertice al grafo a editar.</li>
+     * <li><b>Agregar arco:</b> Agrega una arco al grafo a editar.</li>
+     * <li><b>Eliminar vertice:</b> Elimina un vertice al grafo a editar.</li>
+     * <li><b>Eliminar arco:</b> Elimina una arista al grafo a editar.</li>
+     * <li><b>Regresar a visualizacion de grafos:</b> Regresa al menu de
      * visualizacion de grafos.</li>
      * </ul>
      * 
@@ -283,16 +283,16 @@ public class Cliente {
      * Ciclo del menu donde se visualizan los distintos atributos/propiedades de un
      * grafo no dirigido. Estos son:
      * <ul>
-     * <li><b><b>Visualizar nodos grafo:</b> Visualiza los nodos del grafo a
+     * <li><b>Visualizar nodos grafo:</b> Visualiza los nodos del grafo a
      * editar.</li>
-     * <li><b><b>Visualizar lados grafo:</b> Visualiza los lados del grafo a
+     * <li><b>Visualizar lados grafo:</b> Visualiza los lados del grafo a
      * editar.</li>
-     * <li><b><b>Adyacencias de un vertice:</b> Muestra los vertices adyacentes a un
+     * <li><b>Adyacencias de un vertice:</b> Muestra los vertices adyacentes a un
      * vertice.</li>
-     * <li><b><b>Incidencias de un vertice:</b> Muestra los lados que inciden en un
+     * <li><b>Incidencias de un vertice:</b> Muestra los lados que inciden en un
      * vertice.</li>
-     * <li><b><b>Grado de un vertice:</b> Calcula el grado de un vertice.</li>
-     * <li><b><b>Regresar a visualizacion de grafos:</b> Regresa al menu de
+     * <li><b>Grado de un vertice:</b> Calcula el grado de un vertice.</li>
+     * <li><b>Regresar a visualizacion de grafos:</b> Regresa al menu de
      * visualizacion de grafos.</li>
      * </ul>
      * 
@@ -338,19 +338,19 @@ public class Cliente {
      * Ciclo del menu donde se visualizan los distintos atributos/propiedades de un
      * grafo dirigido Estos son:
      * <ul>
-     * <li><b><b>Visualizar nodos grafo:</b> Visualiza los nodos del grafo a
+     * <li><b>Visualizar nodos grafo:</b> Visualiza los nodos del grafo a
      * editar.</li>
-     * <li><b><b>Visualizar lados grafo:</b> Visualiza los lados del grafo a
+     * <li><b>Visualizar lados grafo:</b> Visualiza los lados del grafo a
      * editar.</li>
-     * <li><b><b>Sucesores de un vertice:</b> Muestra los vertices sucesores a un
+     * <li><b>Sucesores de un vertice:</b> Muestra los vertices sucesores a un
      * vertice.</li>
-     * <li><b><b>Predecesores de un vertice:</b> Muestra los vertices predecesores a
+     * <li><b>Predecesores de un vertice:</b> Muestra los vertices predecesores a
      * un vertice.</li>
-     * <li><b><b>Grado interno de un vertice:</b> Calcula el grado interno de un
+     * <li><b>Grado interno de un vertice:</b> Calcula el grado interno de un
      * vertice.</li>
-     * <li><b><b>Grado externo de un vertice:</b> Calcula el grado externo de un
+     * <li><b>Grado externo de un vertice:</b> Calcula el grado externo de un
      * vertice.</li>
-     * <li><b><b>Regresar a visualizacion de grafos:</b> Regresa al menu de
+     * <li><b>Regresar a visualizacion de grafos:</b> Regresa al menu de
      * visualizacion de grafos.</li>
      * </ul>
      * 
