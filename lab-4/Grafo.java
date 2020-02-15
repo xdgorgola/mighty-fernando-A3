@@ -2,6 +2,9 @@ import java.util.HashSet;
 import java.util.LinkedList;
 import java.util.ListIterator;
 
+// AUTORES Mariangela Rizzo 17-10538
+//         Pedro Rodriguez  15-11264
+
 public class Grafo {
     /**
      * Graph representation as Adjacencies Linked List

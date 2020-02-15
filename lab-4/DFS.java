@@ -1,5 +1,7 @@
 import java.util.LinkedList;
 
+// AUTORES Mariangela Rizzo 17-10538
+//         Pedro Rodriguez  15-11264
 /**
  * Class that applies DFS with keeping predecesors, ordinals, and trees.
  */

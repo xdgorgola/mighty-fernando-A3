@@ -2,6 +2,9 @@ import java.io.BufferedReader;
 import java.io.FileReader;
 import java.io.IOException;
 
+// AUTORES Mariangela Rizzo 17-10538
+//         Pedro Rodriguez  15-11264
+
 public class Cliente {
 
     static void loadEdge(String line, Grafo grafo) throws IllegalArgumentException {
@@ -145,7 +148,7 @@ public class Cliente {
             doer.DFSConnected(arb, ord, pre);
         }
         else{
-            BFS doer = new BFS();
+            BFS doer = new BFS(g);
             doer.DoNodeBFS(origen, len, arb, ord, pre);
         }
     }

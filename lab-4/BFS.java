@@ -1,6 +1,9 @@
 import java.util.LinkedList;
 import java.util.ListIterator;
 
+// AUTORES Mariangela Rizzo 17-10538
+//         Pedro Rodriguez  15-11264
+
 public class BFS {
 
     private Grafo graph;
@@ -205,5 +208,9 @@ public class BFS {
         } else if (IsOtherCrossed(path, open, closed)) {
             System.out.println(tabuleo + path.GetPrevLast() + "-" + path.GetLast() + "  (Arco cruzado)");
         }
+    }
+
+    public BFS(Grafo g){
+        this.graph = g;
     }
 }
