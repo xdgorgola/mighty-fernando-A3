@@ -1,4 +1,9 @@
+import java.io.BufferedReader;
+import java.io.FileReader;
+import java.io.IOException;
+
 public class Cliente {
+
     static void loadEdge(String line, Grafo grafo) throws IllegalArgumentException {
 		String[] vertices = line.split(" ");
 		if (vertices.length > 1) {
@@ -34,7 +39,7 @@ public class Cliente {
 		return salida;
     }
     
-    public static void main(String[] args) {
+    public static void main(String[] args) throws IOException {
         System.out.println(args.length);
         if (args.length < 3 || args.length > 8) {
             System.out.println("Introduzca al menos un comando o menos de 6.");
@@ -48,7 +53,7 @@ public class Cliente {
         try {
             origen = Integer.parseInt(args[1]);
         } catch (NumberFormatException e) {
-            System.out.println("Mete un numero pana");
+            System.out.println("Introduzca un numero");
             return;
         }
 
@@ -59,7 +64,7 @@ public class Cliente {
             bfs = true;
         }
         else{
-            System.out.println("Elige un modo pana");
+            System.out.println("Elige un modo valido");
             return;
         }
 
@@ -133,9 +138,15 @@ public class Cliente {
         // SI NO HAY TRUN, EL MIO RECIBE COMO PARAMETRO TRUN -1
         if (dfs){
             DFS doer = new DFS(g);
+            if (tru){
+                doer.SetTrunc(len);
+            }
+            doer.DFSForest(origen);
+            doer.DFSConnected(arb, ord, pre);
         }
         else{
             BFS doer = new BFS();
+            doer.DoNodeBFS(origen, len, arb, ord, pre);
         }
     }
 }
