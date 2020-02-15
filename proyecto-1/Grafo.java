@@ -48,8 +48,8 @@ public interface Grafo {
      * vertice con ese identiicador en el grafo g, no hace nada.
      * 
      * @param g  Grafo a eliminar vertice.
-     * @param id
-     * @return
+     * @param id ID del vertice a eliminar
+     * @return Si se logro eliminar el vertice o no
      */
     public boolean eliminarVertice(Grafo g, int id);
 
@@ -76,7 +76,7 @@ public interface Grafo {
 
     /**
      * Retorna los vertices de un grafo g como una lista enlazada que contiende
-     * objetos de la clase <code>Vertice</vertice> que representan los vertices del
+     * objetos de la clase <code>Vertice</code> que representan los vertices del
      * grafo g
      * 
      * @param g Grafo a retornar sus vertices
@@ -139,26 +139,56 @@ public interface Grafo {
 }
 
 /**
- * AllNode
+ * Nodo usado en la representacion de lista de adyacencia del grafo. Contiene toda la informacion de un
+ * vertice en el grafo.
  */
 class ALNode {
 
+    /**
+     * Vertice valor del vertice.
+     */
     private Vertice vertex;
+    /**
+     * Adyancencias del vertice.
+     */
     private LinkedList<Vertice> adyacencias;
+    /**
+     * Predecesores del vertice.
+     */
     private LinkedList<Vertice> predecesores;
 
+    /**
+     * Obtiene el vertice del nodo.
+     * 
+     * @return Vertice asociado al nodo
+     */
     public Vertice obtenerVertice() {
         return vertex;
     }
 
+    /**
+     * Obtiene la ID del vertice del nodo.
+     * 
+     * @return ID del vertice del nodo
+     */
     public int obtenerID() {
         return Vertice.obtenerID(vertex);
     }
 
+    /**
+     * Obtiene el nombre del vertice del nodo.
+     * 
+     * @return Nombre del vertice del nodo
+     */
     public String obtenerNombre() {
         return Vertice.obtenerNombre(vertex);
     }
 
+    /**
+     * Agrega un vertice a las adyacencias del vertice del nodo.
+     * 
+     * @param v Vertice a agregar
+     */
     public void agregarVertice(Vertice v) {
         for (Vertice vertice : adyacencias) {
             if (Vertice.obtenerID(vertice) == Vertice.obtenerID(v)){
@@ -168,14 +198,29 @@ class ALNode {
         adyacencias.add(v);
     }
 
+    /**
+     * Agrega un predecesor al vertice del nodo.
+     * 
+     * @param v Vertice a agregar
+     */
     public void agregarPredecesor(Vertice v) {
         predecesores.add(v);
     }
 
+    /**
+     * Obtiene las adyacencias del vertice en el nodo.
+     * 
+     * @return Adyacencias del vertice en el nodo
+     */
     public LinkedList<Vertice> obtenerAdyacencias() {
         return adyacencias;
     }
 
+    /**
+     * Obtiene los predecesores del vertice en el nodo.
+     * 
+     * @return Predecesores del vertice en el nodo
+     */
     public LinkedList<Vertice> obtenerPredecesores() {
         return predecesores;
     }
