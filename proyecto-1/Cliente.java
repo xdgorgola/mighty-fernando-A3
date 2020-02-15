@@ -1,9 +1,14 @@
 import java.io.File;
 import java.io.FileNotFoundException;
+import java.io.IOError;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.LinkedList;
+import java.util.ListIterator;
+import java.util.NoSuchElementException;
 import java.util.Scanner;
 
+import Lados.Arista;
 import Lados.Lado;
 import Vertice.Vertice;
 
@@ -47,11 +52,25 @@ public class Cliente {
      * </ul>
      */
     public void menuPrincipal() {
-        String opcion = "0";
-        while (opcion != "-1") {
+        int opcion = 0;
+        while (opcion != -1) {
             System.out.println("1) Cargar grafo desde archivo.");
             System.out.println("2) Ver grafos guardados.");
             System.out.println("-1) Salir del programa.");
+            opcion = Integer.parseInt(scan.nextLine());
+
+            switch (opcion) {
+                case -1:
+                    return;
+                case 1:
+                    intentarCargarGrafo();
+                    break;
+                case 2:
+                    viendoGrafos();
+                    break;
+                default:
+                    break;
+            }
         }
     }
 
@@ -62,12 +81,11 @@ public class Cliente {
     public void intentarCargarGrafo() {
         Scanner fileReader = null;
         try {
-            System.out.println("Introduzca path al archivo que contenedor del grafo: ");
+            System.out.println("Introduzca path al archivo que contiene el grafo: ");
             fileReader = new Scanner(new File(scan.nextLine()));
             fileReader.close();
         } catch (FileNotFoundException e) {
             System.out.println("Archivo no encontrado! Devolviendo al menu.");
-            fileReader.close();
             return;
         }
     }
@@ -104,16 +122,20 @@ public class Cliente {
                 System.out.println("Elige una opcion: ");
                 opcion = Integer.parseInt(scan.nextLine());
 
-                if (opcion == 1) {
-                    selGrafoEditar();
-                } else if (opcion == 2) {
-                    selGrafoVer();
-                } else if (opcion == 3) {
-
-                } else if (opcion == -1) {
-                    return;
+                switch (opcion) {
+                    case -1:
+                        return;
+                    case 1:
+                        selGrafoEditar();
+                        break;
+                    case 2:
+                        selGrafoVer();
+                        break;
+                    case 3:
+                        break;
+                    default:
+                        break;
                 }
-                // scan.close();
             }
         } catch (NumberFormatException e) {
             // scan.close();
@@ -130,7 +152,12 @@ public class Cliente {
                 System.out.println("Grafo no en la lista! Regresando a lista de grafos.");
                 return;
             } else {
-
+                if (selInt < grafosND.size()){
+                    editandoGrafoD(selInt);
+                }
+                else if (selInt >= grafosND.size()){
+                    editandoGrafoD(selInt);
+                }
             }
             return;
         } catch (NumberFormatException e) {
@@ -173,25 +200,33 @@ public class Cliente {
                 System.out.println("Elige una opcion: ");
                 opcion = Integer.parseInt(scan.nextLine());
 
-                if (opcion == 1) {
-                    visualizarNodos(g);
-                } else if (opcion == 2) {
-                    visualizarLados(g);
-                } else if (opcion == 3) {
-                    agregarVertice(g);
-                } else if (opcion == 4) {
-                    agregarArista(g);
-                } else if (opcion == 5) {
-
-                } else if (opcion == 6) {
-
-                } else if (opcion == -1) {
-                    return;
+                switch (opcion) {
+                    case -1:
+                        return;
+                    case 1:
+                        visualizarNodos(g);
+                        break;
+                    case 2:
+                        visualizarLados(g);
+                        break;
+                    case 3:
+                        agregarVertice(g);
+                        break;
+                    case 4:
+                        agregarArista(g);
+                        break;
+                    case 5:
+                        eliminarVertice(g);
+                        break;
+                    case 6:
+                        eliminarArista(g);
+                        break;
+                    default:
+                        break;
                 }
-                // scan.close();arista
             }
         } catch (NumberFormatException e) {
-            // scan.close();
+            System.out.println("Introduce un numero por favor!");
             viendoGrafos();
             return;
         }
@@ -251,7 +286,7 @@ public class Cliente {
             }
         } catch (NumberFormatException e) {
             // scan.close();
-            viendoGrafos();
+            //viendoGrafos();
             return;
         }
     }
@@ -292,6 +327,8 @@ public class Cliente {
      * <li><b>Incidencias de un vertice:</b> Muestra los lados que inciden en un
      * vertice.</li>
      * <li><b>Grado de un vertice:</b> Calcula el grado de un vertice.</li>
+     * <li><b>Ver info de un vertice:</b> Muestra datos de un vertice.</li>
+     * <li><b>Ver info de una arista:</b> Muestra datos de una arista.</li>
      * <li><b>Regresar a visualizacion de grafos:</b> Regresa al menu de
      * visualizacion de grafos.</li>
      * </ul>
@@ -308,24 +345,38 @@ public class Cliente {
                 System.out.println("3) Adyacencias de un vertice.");
                 System.out.println("4) Incidencias de un vertice.");
                 System.out.println("5) Grado de un vertice.");
+                System.out.println("6) Ver info de un vertice.");
+                System.out.println("7) Ver info de una arista.");
                 System.out.println("-1) Regresar a visualizacion de grafos.");
                 System.out.println("Elige una opcion: ");
                 opcion = Integer.parseInt(scan.nextLine());
-
-                if (opcion == 1) {
-                    visualizarNodos(g);
-                } else if (opcion == 2) {
-                    visualizarLados(g);
-                } else if (opcion == 3) {
-                    agregarVertice(g);
-                } else if (opcion == 4) {
-                    agregarArista(g);
-                } else if (opcion == 5) {
-
-                } else if (opcion == -1) {
-                    return;
+                switch (opcion) {
+                    case -1:
+                        return;
+                    case 1:
+                        visualizarNodos(g);
+                        break;
+                    case 2:
+                        visualizarLados(g);
+                        break;
+                    case 3:
+                        adyacenciasVertices(g);
+                        break;
+                    case 4:
+                        incidenciasVertices(g);
+                        break;
+                    case 5:
+                        gradoVertice(g);
+                        break;
+                    case 6:
+                        verInfoVertice(g);
+                        break;
+                    case 7:
+                        verInfoArista(g);
+                        break;
+                    default:
+                        break;
                 }
-                // scan.close();arista
             }
         } catch (NumberFormatException e) {
             // scan.close();
@@ -416,6 +467,24 @@ public class Cliente {
         }
     }
 
+    public void eliminarVertice(Grafo g){
+        try {
+            System.out.println("Introduzca ID de un vertice a eliminar: ");
+            int toRemove = Integer.parseInt(scan.nextLine());
+            g.eliminarVertice(g, toRemove);
+            return;
+        } catch (NumberFormatException | NoSuchElementException e) {
+            if (e instanceof NumberFormatException){
+                System.out.println("Por favor introduzca un numero!");
+                eliminarVertice(g);
+            }
+            else{
+                System.out.println("El vertice no se encuentra en el grafo!");
+                return;
+            }
+        }
+    }
+
     public void agregarArista(Grafo g) {
         try {
             int id = Integer.parseInt(scan.nextLine());
@@ -435,6 +504,25 @@ public class Cliente {
         }
     }
 
+    public void eliminarArista(Grafo g){
+        try {
+            System.out.println("Introduzca ID de una arista a eliminar: ");
+            int toRemove = Integer.parseInt(scan.nextLine());
+            ((GrafoNoDirigido)g).eliminarArista(g, toRemove);
+            return;
+        } catch (NumberFormatException | NoSuchElementException e) {
+            if (e instanceof NumberFormatException){
+                System.out.println("Por favor introduzca un numero!");
+                eliminarArista(g);
+                return;
+            }
+            else if (e instanceof NoSuchElementException){
+                System.out.println("La arista no se encuentra en el grafo!");
+                return;
+            }
+        } 
+    }
+
     public void visualizarNodos(Grafo g) {
         LinkedList<Vertice> nodos = g.vertices(g);
         for (Vertice vertice : nodos) {
@@ -451,9 +539,131 @@ public class Cliente {
         return;
     }
 
+    public void adyacenciasVertices(Grafo g){
+        try {
+            System.out.println("Introduzca ID de una vertice: ");
+            int id = Integer.parseInt(scan.nextLine());
+            String aux = "";
+            ListIterator<Vertice> adyIterator = g.adyacentes(g, id).listIterator();
+            System.out.println("Adyacencias del vertice " + id + ":\n");
+            while (adyIterator.hasNext()){
+                Vertice act = adyIterator.next();
+                if (!adyIterator.hasNext()){
+                    aux += Vertice.obtenerID(act);
+                }
+                else{
+                    aux += Vertice.obtenerID(act) + ", ";
+                }
+            }
+            aux += "\n";
+            System.out.println(aux);
+            return;
+        } catch (NumberFormatException | NoSuchElementException e) {
+            if (e instanceof NumberFormatException){
+                System.out.println("Por favor introduzca un numero!");
+                adyacenciasVertices(g);
+                return;
+            }
+            else if (e instanceof NoSuchElementException){
+                System.out.println("El vertice no se encuentra en el grafo!");
+                return;
+            }
+        }        
+    }
+
+    public void incidenciasVertices(Grafo g){
+        try {
+            System.out.println("Introduzca ID de una vertice: ");
+            int id = Integer.parseInt(scan.nextLine());
+            String aux = "";
+            ListIterator<Lado> lIterator = g.incidentes(g, id).listIterator();
+            System.out.println("Incidentes del vertice " + id + ":\n");
+            while (lIterator.hasNext()){
+                Lado act = lIterator.next();
+                if (!lIterator.hasNext()){
+                    aux += Lado.obtenerTipo(act);
+                }
+                else{
+                    aux += Lado.obtenerTipo(act) + ", ";
+                }
+            }
+            aux += "\n";
+            System.out.println(aux);
+            return;
+        } catch (NumberFormatException | NoSuchElementException e) {
+            if (e instanceof NumberFormatException){
+                System.out.println("Por favor introduzca un numero!");
+                incidenciasVertices(g);
+                return;
+            }
+            else if (e instanceof NoSuchElementException){
+                System.out.println("El vertice no se encuentra en el grafo!");
+                return;
+            }
+        }        
+    }
+
+    public void gradoVertice(Grafo g){
+        try {
+            System.out.println("Introduzca ID de una vertice: ");
+            int id = Integer.parseInt(scan.nextLine());
+            int grad = g.grado(g, id);
+            System.out.println("Grado nodo " + id + ": " + grad);
+            return;
+        } catch (NumberFormatException | NoSuchElementException e) {
+            if (e instanceof NumberFormatException){
+                System.out.println("Por favor introduzca un numero!");
+                gradoVertice(g);
+                return;
+            }
+            else if (e instanceof NoSuchElementException){
+                System.out.println("El vertice no se encuentra en el grafo!");
+                return;
+            }
+        }      
+    }
+
+    public void verInfoVertice(Grafo g){
+        try {
+            System.out.println("Introduzca ID de una vertice: ");
+            int id = Integer.parseInt(scan.nextLine());
+            System.out.println(Vertice.toString(g.obtenerVertice(g, id)));
+            return;
+        } catch (NumberFormatException | NoSuchElementException e) {
+            if (e instanceof NumberFormatException){
+                System.out.println("Por favor introduzca un numero!");
+                verInfoVertice(g);
+                return;
+            }
+            else if (e instanceof NoSuchElementException){
+                System.out.println("El vertice no se encuentra en el grafo!");
+                return;
+            }
+        }      
+    }
+
+    public void verInfoArista(Grafo g){
+        try {
+            System.out.println("Introduzca ID de una vertice: ");
+            int id = Integer.parseInt(scan.nextLine());
+            Arista a = ((GrafoNoDirigido)g).obtenerArista(g, id);
+            System.out.println(a.toString(a));
+            return;
+        } catch (NumberFormatException | NoSuchElementException e) {
+            if (e instanceof NumberFormatException){
+                System.out.println("Por favor introduzca un numero!");
+                verInfoVertice(g);
+                return;
+            }
+            else if (e instanceof NoSuchElementException){
+                System.out.println("El vertice no se encuentra en el grafo!");
+                return;
+            }
+        }      
+    }
     public static void main(String[] args) {
         Cliente test = new Cliente();
-        test.viendoGrafos();
+        test.menuPrincipal();
         test.scan.close();
     }
 }
