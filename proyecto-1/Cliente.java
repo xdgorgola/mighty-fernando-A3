@@ -83,6 +83,9 @@ public class Cliente {
         try {
             System.out.println("Introduzca path al archivo que contiene el grafo: ");
             fileReader = new Scanner(new File(scan.nextLine()));
+            GrafoNoDirigido g = new GrafoNoDirigido();
+            g.cargarGrafo(g, scan.nextLine());
+            grafosND.add(g);
             fileReader.close();
         } catch (FileNotFoundException e) {
             System.out.println("Archivo no encontrado! Devolviendo al menu.");
@@ -153,7 +156,7 @@ public class Cliente {
                 return;
             } else {
                 if (selInt < grafosND.size()){
-                    editandoGrafoD(selInt);
+                    editandoGrafoND(selInt);
                 }
                 else if (selInt >= grafosND.size()){
                     editandoGrafoD(selInt);
@@ -188,6 +191,7 @@ public class Cliente {
     public void editandoGrafoND(int aEditar) {
         try {
             GrafoNoDirigido g = (GrafoNoDirigido) grafosND.get(aEditar);
+            System.out.println(g == null);
             Integer opcion = 0;
             while (opcion != -1) {
                 System.out.println("1) Visualizar nodos grafo.");
@@ -453,6 +457,7 @@ public class Cliente {
             double xCord = Double.parseDouble(scan.nextLine());
             double yCord = Double.parseDouble(scan.nextLine());
             double w = Double.parseDouble(scan.nextLine());
+            System.out.println(g == null);
             if (g.agregarVertice(g, id, nombre, xCord, yCord, w)) {
                 System.out.println("Vertice agregado exitosamente!");
             } else {
