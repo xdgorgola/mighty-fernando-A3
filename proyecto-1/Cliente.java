@@ -654,7 +654,7 @@ public class Cliente {
     /**
      * Ciclo de seleccion para agregar una arista a un grafo no dirigido g.
      * 
-     * @param g
+     * @param g Grafo a agregar arista
      */
     public void agregarArista(Grafo g) {
         try {

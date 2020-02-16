@@ -120,6 +120,15 @@ public interface Grafo {
      */
     public int grado(Grafo g, int id) throws NoSuchElementException;
 
+    /**
+     * Busca los vertices adyacentes de un vertice con cierto identificador en un grafo
+     * y los devuelve.
+     * 
+     * @param g Grafo a buscar adyacentes
+     * @param id Identificador del vertice a calcular adyacencias
+     * @return Lista enlazada con los vertices adyacentes del vertice
+     * @throws NoSuchElementException Si el vertice no se encuentra en el grafo
+     */
     public LinkedList<Vertice> adyacentes(Grafo g, int id) throws NoSuchElementException;
 
     /**
@@ -133,6 +142,12 @@ public interface Grafo {
      */
     public LinkedList<Lado> incidentes(Grafo g, int id) throws NoSuchElementException;
 
+    /**
+     * Clona el grafo.
+     * 
+     * @param g Grafo a clonar
+     * @return deepcopy del grafo g
+     */
     public Grafo clone(Grafo g);
 
     public String toString(Grafo g);
