@@ -42,4 +42,12 @@ public class Vertice {
         this.yCord = yCord;
         this.peso = peso;
     }
+
+    public Vertice(Vertice v){
+        this.id = Vertice.obtenerID(v);
+        this.peso = Vertice.obtenerPeso(v);
+        this.nombre = Vertice.obtenerNombre(v);
+        this.xCord = Vertice.obtenerX(v);
+        this.yCord = Vertice.obtenerY(v);
+    }
 }

@@ -226,8 +226,20 @@ class ALNode {
     }
 
     public ALNode(Vertice v) {
-        adyacencias = new LinkedList<Vertice>();
-        predecesores = new LinkedList<Vertice>();
+        this.adyacencias = new LinkedList<Vertice>();
+        this.predecesores = new LinkedList<Vertice>();
         this.vertex = v;
+    }
+
+    public ALNode(ALNode alNode){
+        this.vertex = new Vertice(alNode.obtenerVertice());
+        this.adyacencias = new LinkedList<Vertice>();
+        for (Vertice ady : alNode.adyacencias) {
+            this.adyacencias.add(new Vertice(ady));
+        }
+        this.predecesores = new LinkedList<Vertice>();
+        for (Vertice pred : alNode.predecesores) {
+            this.predecesores.add(new Vertice(pred));
+        }
     }
 }

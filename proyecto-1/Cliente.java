@@ -35,9 +35,12 @@ public class Cliente {
      */
     private ArrayList<Grafo> grafosND = new ArrayList<Grafo>();
     /**
-     * Lista de grafos dirigidos
+     * Lista de grafos dirigidos.
      */
     private ArrayList<Grafo> grafosD = new ArrayList<Grafo>();
+    /**
+     * Scanner especifico para recibir input.
+     */
     private Scanner scan = new Scanner(System.in);
 
     /**
@@ -56,7 +59,6 @@ public class Cliente {
             int opcion = 0;
             while (opcion != -1) {
                 System.out.println("1) Cargar grafo desde archivo.");
-
                 System.out.println("2) Crear nuevo grafo");
                 System.out.println("3) Ver grafos guardados.");
                 System.out.println("-1) Salir del programa.");
@@ -196,6 +198,7 @@ public class Cliente {
                         selGrafoVer();
                         break;
                     case 3:
+                        clonarGrafo();
                         break;
                     default:
                         break;
@@ -211,6 +214,10 @@ public class Cliente {
      * Ciclo de seleccion de un grafo a editar.
      */
     public void selGrafoEditar() {
+        if (grafosND.size() + grafosD.size() == 0 ){
+            System.out.println("No hay grafos!");
+            return;
+        }
         try {
             System.out.println("Introduzca un numero de la lista de grafos: ");
             Integer selInt = Integer.parseInt(scan.nextLine().trim());
@@ -370,6 +377,10 @@ public class Cliente {
      * Ciclo de seleccion de grafo a visualizar sus atributos/propiedades.
      */
     public void selGrafoVer() {
+        if (grafosND.size() + grafosD.size() == 0 ){
+            System.out.println("No hay grafos!");
+            return;
+        }
         try {
             System.out.println("Introduzca un numero de la lista de grafos: ");
             Integer selInt = Integer.parseInt(scan.nextLine().trim());
@@ -381,7 +392,7 @@ public class Cliente {
                     viendoGrafoND(selInt);
                 }
                 else if (selInt >= grafosND.size()){
-                    viendoGrafoD(selInt);
+                    viendoGrafoD(selInt - grafosND.size());
                 }
             }
             return;
@@ -542,6 +553,46 @@ public class Cliente {
         }
     }
 
+    /**
+     * Funcion para elegir clonar un grafo
+     */
+    public void clonarGrafo(){
+        if (grafosD.size() + grafosND.size() == 0){
+            System.out.println("No hay grafos!");
+            return;
+        }
+        try {
+            System.out.println("Grafos no dirigidos: " + grafosND.size());
+            for (int i = 0; i < grafosND.size(); i++) {
+                System.out.println(i + ")" + grafosND.get(i).toString());
+            }
+            System.out.println("--------------------------------------------------------------");
+            System.out.println("Grafos dirigidos: " + grafosD.size());
+            for (int i = 0; i < grafosD.size(); i++) {
+                System.out.println((i + grafosND.size()) + ")" + grafosD.get(i).toString());
+            }
+            System.out.println("Introduzca un numero de la lista de grafos: ");
+            Integer selInt = Integer.parseInt(scan.nextLine().trim());
+            if (selInt < 0 || (grafosND.size() + grafosD.size()) <= selInt) {
+                System.out.println("Grafo no en la lista! Regresando a lista de grafos.");
+                return;
+            } else {
+                if (selInt < grafosND.size()){
+                    GrafoNoDirigido aClonar = (GrafoNoDirigido)grafosND.get(selInt);
+                    grafosND.add(aClonar.clone(aClonar));
+                }
+                else if (selInt >= grafosND.size()){
+                    GrafoDirigido aClonar = (GrafoDirigido)grafosD.get(selInt - grafosND.size());
+                    grafosD.add(aClonar.clone(aClonar));
+                }
+                return;
+            }
+        } catch (NumberFormatException e) {
+            System.out.println("Por favor introduzca un numero!");
+            clonarGrafo();
+            return;
+        }
+    }
     /**
      * Ciclo de seleccion para agregar un nuevo vertice a un grafo g.
      * 

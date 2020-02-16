@@ -30,8 +30,15 @@ public abstract class Lado {
 
     public Lado(int id, Vertice iVertice, Vertice fVertice, double peso) {
         this.id = id;
-        this.iVertice = iVertice;
-        this.fVertice = fVertice;
+        this.iVertice = new Vertice(iVertice);
+        this.fVertice = new Vertice(fVertice);
         this.peso = peso;
+    }
+
+    public Lado(Lado l){
+        this.id = l.id;
+        this.iVertice = new Vertice(l.iVertice);
+        this.fVertice = new Vertice(l.fVertice);
+        this.peso = l.peso;
     }
 }

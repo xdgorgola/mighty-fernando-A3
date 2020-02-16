@@ -320,17 +320,10 @@ public class GrafoNoDirigido implements Grafo {
             gnd.sideIDs.add(tipo);
 
             for (ALNode alNode : gnd.graph) {
-                System.out.println("aaaaaaaaaaaaaaaaaaaa");
-                System.out.println(alNode.obtenerNombre());
-                System.out.println(u);
-                System.err.println(v);
-                System.out.println("yyyyyyyyyyyyyyyyyyyy");
                 if (alNode.obtenerNombre().equals(u)) {
                     alNode.agregarVertice(fVertice);
-                    System.out.println("wuuuuuuuuuuuu");;
                 } else if (alNode.obtenerNombre().equals(u)) {
                     alNode.agregarVertice(iVertice);
-                    System.out.println("woooooooo");
                 }
             }
             return true;
@@ -530,10 +523,18 @@ public class GrafoNoDirigido implements Grafo {
     public Grafo clone(Grafo g) {
         GrafoNoDirigido gnd = (GrafoNoDirigido) g;
         GrafoNoDirigido xd = new GrafoNoDirigido();
-        xd.graph = new LinkedList<ALNode>(gnd.graph);
-        xd.nodeIDs = new HashSet<Integer>(gnd.nodeIDs);
-        xd.sideIDs = new HashSet<Integer>(gnd.sideIDs);
-        xd.gLados = new ArrayList<Lado>(gnd.gLados);
+        xd.graph = new LinkedList<ALNode>();
+        for (ALNode node : gnd.graph) {
+            ALNode clon = new ALNode(node);
+            xd.graph.add(clon);
+        }
+        xd.nodeIDs = new HashSet<Integer>();
+        xd.sideIDs = new HashSet<Integer>();
+        xd.gLados = new ArrayList<Lado>();
+        for (Lado lado : gnd.gLados) {
+            Lado clon = new Arista((Arista)lado);
+            xd.gLados.add(clon);
+        }
         return xd;
     }
 
@@ -564,44 +565,5 @@ public class GrafoNoDirigido implements Grafo {
         sideIDs = new HashSet<Integer>();
         gLados = new ArrayList<Lado>();
         graph = new LinkedList<ALNode>();
-    }
-
-    public static void main(String[] args) {
-        GrafoNoDirigido g = new GrafoNoDirigido();
-
-        //// g.agregarVertice(g, 0, "batman", 0, 0, 10);
-        //// g.agregarVertice(g, 1, "vs", 0, 0, 10);
-        //// g.agregarVertice(g, 2, "superman", 0, 0, 10);
-        ////
-        //// g.agregarArista(g, "batman", "vs", 0, 0);
-        //// g.agregarArista(g, "batman", "vs", 1, 0);
-        ////
-        //// g.agregarArista(g, "superman", "vs", 0, 0);
-        //// g.agregarArista(g, "superman", "vs", 1, 0);
-        ////
-        //// g.agregarArista(g, "superman", "vs", 2, 0);
-        //// g.agregarArista(g, "superman", "vs", 3, 0);
-        ////
-        //// g.agregarArista(g, "batman", "superman", 4, 0);
-        //// g.agregarArista(g, "batman", "superman", 5, 0);
-        ////
-        //// g.agregarArista(g, "batman", "batman", 6, 0);
-        //// g.agregarArista(g, "batman", "batman", 7, 0);
-        //// g.agregarArista(g, "batman", "batman", 8, 0);
-        //// System.out.println(g.toString(g));
-        //// g.eliminarArista(g, 8);
-        //// g.eliminarArista(g, 7);
-        //// g.eliminarArista(g, 6);
-        //// g.eliminarArista(g, 5);
-        //// g.eliminarArista(g, 4);
-        //// g.eliminarArista(g, 4);
-        //// g.eliminarArista(g, 1);
-        //// System.out.println(g.toString(g));
-        try {
-            g.cargarGrafo(g, "/home/gorgola/Desktop/CI2693-Lab-Algos-III/mighty-fernando-A3/proyecto-1/testsuperman");
-            System.out.println(g.toString(g));
-        } catch (FileNotFoundException e) {
-            System.out.println("algo fallo");
-        }
     }
 }

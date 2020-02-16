@@ -21,4 +21,8 @@ public class Arista extends Lado{
     public Arista(int id, Vertice iVertice, Vertice fVertice, double weight) {
         super(id, iVertice, fVertice, weight);
     }
+
+    public Arista(Arista a){
+        super(a);
+    }
 }
