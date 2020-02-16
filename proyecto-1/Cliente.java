@@ -28,10 +28,15 @@ public class Cliente {
     ////////////// PARA QUE NO MUERAS XD
     ////////////////
 
-    ////////////////////// HAS UN FACTORY PEDRO
-    /////////// SE OYE INTERESANTE Y UTIL
+    //FALTA EL CLONAR QUE ME DA MUCHA LADILLA
 
+    /**
+     * Lista de grafos no dirigidos.
+     */
     private ArrayList<Grafo> grafosND = new ArrayList<Grafo>();
+    /**
+     * Lista de grafos dirigidos
+     */
     private ArrayList<Grafo> grafosD = new ArrayList<Grafo>();
     private Scanner scan = new Scanner(System.in);
 
@@ -47,30 +52,37 @@ public class Cliente {
      * </ul>
      */
     public void menuPrincipal() {
-        int opcion = 0;
-        while (opcion != -1) {
-            System.out.println("1) Cargar grafo desde archivo.");
+        try{
+            int opcion = 0;
+            while (opcion != -1) {
+                System.out.println("1) Cargar grafo desde archivo.");
 
-            System.out.println("2) Crear nuevo grafo");
-            System.out.println("3) Ver grafos guardados.");
-            System.out.println("-1) Salir del programa.");
-            opcion = Integer.parseInt(scan.nextLine().trim());
+                System.out.println("2) Crear nuevo grafo");
+                System.out.println("3) Ver grafos guardados.");
+                System.out.println("-1) Salir del programa.");
+                opcion = Integer.parseInt(scan.nextLine().trim());
 
-            switch (opcion) {
-                case -1:
-                    return;
-                case 1:
-                    intentarCargarGrafo();
-                    break;
-                case 2:
-                    creacionDeGrafo();
-                    break;
-                case 3:
-                    viendoGrafos();
-                    break;
-                default:
-                    break;
+                switch (opcion) {
+                    case -1:
+                        return;
+                    case 1:
+                        intentarCargarGrafo();
+                        break;
+                    case 2:
+                        creacionDeGrafo();
+                        break;
+                    case 3:
+                        viendoGrafos();
+                        break;
+                    default:
+                        break;
+                }
             }
+        }
+        catch (NumberFormatException e){
+            System.out.println("Por favor introduzca un numero!");
+            menuPrincipal();
+            return;
         }
     }
 
@@ -82,14 +94,35 @@ public class Cliente {
         Scanner fileReader = null;
         try {
             System.out.println("Introduzca path al archivo que contiene el grafo: ");
-            fileReader = new Scanner(new File(scan.nextLine().trim()));
-            GrafoNoDirigido g = new GrafoNoDirigido();
-            g.cargarGrafo(g, scan.nextLine().trim());
-            grafosND.add(g);
+            String path = scan.nextLine().trim();
+            fileReader = new Scanner(new File(path));
+            String tipo = fileReader.nextLine().trim();
+            Grafo g;
+            switch (tipo) {
+                case "ND":
+                    g = new GrafoNoDirigido();
+                    grafosND.add(g);
+                    break;
+                case "D":
+                    g = new GrafoDirigido();
+                    grafosD.add(g);
+                    break;
+                default:
+                    System.out.println("Archivo con mal formato de tipo :(");
+                    fileReader.close();
+                    return;
+            }
+            g.cargarGrafo(g, path);
             fileReader.close();
-        } catch (FileNotFoundException e) {
-            System.out.println("Archivo no encontrado! Devolviendo al menu.");
-            return;
+        } catch (FileNotFoundException | NoSuchElementException e) {
+            if (e instanceof FileNotFoundException){
+                System.out.println("Archivo no encontrado! Devolviendo al menu.");
+                return;
+            }
+            else if (e instanceof NoSuchElementException){
+                System.out.println("Archivo vacio mano");
+                return;
+            }
         }
     }
 
@@ -100,7 +133,7 @@ public class Cliente {
     public void creacionDeGrafo(){
         try {
             System.out.println("Introduzca ND para un grafo no dirigido y D para uno dirigido: ");
-            String op = scan.nextLine().trim().trim();
+            String op = scan.nextLine().trim();
             switch (op) {
                 case "ND":
                     GrafoNoDirigido nd = new GrafoNoDirigido();
@@ -169,7 +202,6 @@ public class Cliente {
                 }
             }
         } catch (NumberFormatException e) {
-            // scan.close();
             viendoGrafos();
             return;
         }
@@ -262,7 +294,7 @@ public class Cliente {
             }
         } catch (NumberFormatException e) {
             System.out.println("Introduce un numero por favor!");
-            viendoGrafos();
+            editandoGrafoND(aEditar);
             return;
         }
     }
@@ -315,11 +347,13 @@ public class Cliente {
                         agregarVertice(g);
                         break;
                     case 4:
+                        //agregarArco(g);
                         break;
                     case 5:
                         eliminarVertice(g);
                         break;
                     case 6:
+                        //eliminarArco(g);
                         break;
                     default:
                         break;
@@ -425,7 +459,6 @@ public class Cliente {
                 }
             }
         } catch (NumberFormatException e) {
-            // scan.close();
             viendoGrafos();
             return;
         }
@@ -457,7 +490,7 @@ public class Cliente {
      */
     public void viendoGrafoD(int aVer) {
         try {
-            GrafoNoDirigido g = (GrafoNoDirigido) grafosND.get(aVer);
+            GrafoDirigido g = (GrafoDirigido) grafosD.get(aVer);
             Integer opcion = 0;
             while (opcion != -1) {
                 System.out.println("1) Visualizar nodos grafo.");
@@ -488,13 +521,16 @@ public class Cliente {
                         incidenciasVertices(g);
                         break;
                     case 5:
+                        gradoInternoVertice(g);
                         break;
                     case 6:
+                        gradoExternoVertice(g);
                         break;
                     case 7:
-                    verInfoVertice(g);
+                        verInfoVertice(g);
                         break;
                     case 8:
+                        //verInfoArco(g); // Puedes copiar y pegar mi verInfoArista y modificarlo.
                         break;
                     default:
                         break;
@@ -582,7 +618,8 @@ public class Cliente {
             if (((GrafoNoDirigido) g).agregarArista(g, idV1, idV2, id, w)) {
                 System.out.println("Arista agregada exitosamente!");
             } else {
-                System.out.println("Una arista entre los dos vertices ya existe :( o no existen los vertices");
+                System.out.println("Una arista entre los dos vertices ya existe :(" + 
+                "o no existen los vertices");
                 return;
             }
         } catch (NumberFormatException e) {
@@ -731,7 +768,7 @@ public class Cliente {
      */
     public void gradoVertice(Grafo g){
         try {
-            System.out.println("Introduzca ID de una vertice: ");
+            System.out.println("Introduzca ID de un vertice: ");
             int id = Integer.parseInt(scan.nextLine().trim());
             int grad = g.grado(g, id);
             System.out.println("Grado nodo " + id + ": " + grad);
@@ -740,6 +777,56 @@ public class Cliente {
             if (e instanceof NumberFormatException){
                 System.out.println("Por favor introduzca un numero!");
                 gradoVertice(g);
+                return;
+            }
+            else if (e instanceof NoSuchElementException){
+                System.out.println("El vertice no se encuentra en el grafo!");
+                return;
+            }
+        }
+    }
+
+    /**
+     * Ciclo de seleccion para ver el grado interno de un vertice en un grafo g.
+     * 
+     * @param g Grafo a ver grado del vertice
+     */
+    public void gradoInternoVertice(Grafo g){
+        try {
+            System.out.println("Introduzca ID de un vertice: ");
+            int id = Integer.parseInt(scan.nextLine().trim());
+            int grad = ((GrafoDirigido)g).gradoInterno(g, id);
+            System.out.println("Grado interno nodo " + id + ": " + grad);
+            return;
+        } catch (NumberFormatException | NoSuchElementException e) {
+            if (e instanceof NumberFormatException){
+                System.out.println("Por favor introduzca un numero!");
+                gradoInternoVertice(g);
+                return;
+            }
+            else if (e instanceof NoSuchElementException){
+                System.out.println("El vertice no se encuentra en el grafo!");
+                return;
+            }
+        }      
+    }
+
+    /**
+     * Ciclo de seleccion para ver el grado externo de un vertice en un grafo g.
+     * 
+     * @param g Grafo a ver grado del vertice
+     */
+    public void gradoExternoVertice(Grafo g){
+        try {
+            System.out.println("Introduzca ID de un vertice: ");
+            int id = Integer.parseInt(scan.nextLine().trim());
+            int grad = ((GrafoDirigido)g).gradoExterno(g, id);
+            System.out.println("Grado externo nodo " + id + ": " + grad);
+            return;
+        } catch (NumberFormatException | NoSuchElementException e) {
+            if (e instanceof NumberFormatException){
+                System.out.println("Por favor introduzca un numero!");
+                gradoExternoVertice(g);
                 return;
             }
             else if (e instanceof NoSuchElementException){
