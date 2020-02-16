@@ -610,9 +610,9 @@ public class Cliente {
             System.out.println("Introduzca ID de la arista: ");
             int id = Integer.parseInt(scan.nextLine().trim());
             System.out.println("Introduce NOMBRE del vertice 1: ");
-            String idV1 = scan.nextLine().trim().trim();
+            String idV1 = scan.nextLine().trim();
             System.out.println("Introduce NOMBRE del vertice 2: ");
-            String idV2 = scan.nextLine().trim().trim();
+            String idV2 = scan.nextLine().trim();
             System.out.println("Introduce PESO de la arista (double permitido): ");
             double w = Double.parseDouble(scan.nextLine().trim());
             if (((GrafoNoDirigido) g).agregarArista(g, idV1, idV2, id, w)) {
@@ -697,20 +697,26 @@ public class Cliente {
             System.out.println("Introduzca ID de una vertice: ");
             int id = Integer.parseInt(scan.nextLine().trim());
             String aux = "";
-            ListIterator<Vertice> adyIterator = g.adyacentes(g, id).listIterator();
-            System.out.println("Adyacencias del vertice " + id + ":\n");
-            while (adyIterator.hasNext()){
-                Vertice act = adyIterator.next();
-                if (!adyIterator.hasNext()){
-                    aux += Vertice.obtenerID(act);
-                }
-                else{
-                    aux += Vertice.obtenerID(act) + ", ";
-                }
+            LinkedList<Vertice> ady = g.adyacentes(g, id);
+            if (ady.isEmpty()){
+                System.out.println("No tiene vertices adyacentes!");
             }
-            aux += "\n";
-            System.out.println(aux);
-            return;
+            else{
+                ListIterator<Vertice> adyIterator = ady.listIterator();
+                System.out.println("IDs de vertices adyacentes al vertice " + id + ":\n");
+                while (adyIterator.hasNext()){
+                    Vertice act = adyIterator.next();
+                    if (!adyIterator.hasNext()){
+                        aux += Vertice.obtenerID(act);
+                    }
+                    else{
+                        aux += Vertice.obtenerID(act) + ", ";
+                    }
+                }
+                aux += "\n";
+                System.out.println(aux);
+                return;
+            }
         } catch (NumberFormatException | NoSuchElementException e) {
             if (e instanceof NumberFormatException){
                 System.out.println("Por favor introduzca un numero!");
@@ -731,11 +737,11 @@ public class Cliente {
      */
     public void incidenciasVertices(Grafo g){
         try {
-            System.out.println("Introduzca ID de una vertice: ");
+            System.out.println("Introduzca ID de un vertice: ");
             int id = Integer.parseInt(scan.nextLine().trim());
             String aux = "";
-            ListIterator<Lado> lIterator = g.incidentes(g, id).listIterator();
-            System.out.println("Incidentes del vertice " + id + ":\n");
+            ListIterator<Lado> lIterator = (g.incidentes(g, id)).listIterator();
+            System.out.println("IDs de aristas incidentes al vertice " + id + ":");
             while (lIterator.hasNext()){
                 Lado act = lIterator.next();
                 if (!lIterator.hasNext()){
@@ -748,7 +754,7 @@ public class Cliente {
             aux += "\n";
             System.out.println(aux);
             return;
-        } catch (NumberFormatException | NoSuchElementException e) {
+        } catch (NumberFormatException | NoSuchElementException | NullPointerException e) {
             if (e instanceof NumberFormatException){
                 System.out.println("Por favor introduzca un numero!");
                 incidenciasVertices(g);

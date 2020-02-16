@@ -287,9 +287,9 @@ public class GrafoNoDirigido implements Grafo {
             gnd.gLados.add(a);
             gnd.sideIDs.add(Arista.obtenerTipo(a));
             for (ALNode alNode : gnd.graph) {
-                if (alNode.obtenerNombre() == Vertice.obtenerNombre(vi)) {
+                if (alNode.obtenerNombre().equals(Vertice.obtenerNombre(vi))) {
                     alNode.agregarVertice(vf);
-                } else if (alNode.obtenerNombre() == Vertice.obtenerNombre(vf)) {
+                } else if (alNode.obtenerNombre().equals(Vertice.obtenerNombre(vf))) {
                     alNode.agregarVertice(vi);
                 }
             }
@@ -320,10 +320,17 @@ public class GrafoNoDirigido implements Grafo {
             gnd.sideIDs.add(tipo);
 
             for (ALNode alNode : gnd.graph) {
-                if (alNode.obtenerNombre() == u) {
+                System.out.println("aaaaaaaaaaaaaaaaaaaa");
+                System.out.println(alNode.obtenerNombre());
+                System.out.println(u);
+                System.err.println(v);
+                System.out.println("yyyyyyyyyyyyyyyyyyyy");
+                if (alNode.obtenerNombre().equals(u)) {
                     alNode.agregarVertice(fVertice);
-                } else if (alNode.obtenerNombre() == v) {
+                    System.out.println("wuuuuuuuuuuuu");;
+                } else if (alNode.obtenerNombre().equals(u)) {
                     alNode.agregarVertice(iVertice);
+                    System.out.println("woooooooo");
                 }
             }
             return true;
@@ -479,13 +486,7 @@ public class GrafoNoDirigido implements Grafo {
             if (!estaVertice(g, id)) {
                 throw new NoSuchElementException();
             } else {
-                LinkedList<ALNode> graph = ((GrafoNoDirigido) g).graph;
-                for (ALNode alNode : graph) {
-                    if (alNode.obtenerID() == id) {
-                        return alNode.obtenerAdyacencias().size();
-                    }
-                }
-                return 0;
+                return g.lados(g).size();
             }
         } catch (NoSuchElementException e) {
             System.out.println("El nodo con identificador: " + id + " no pertenece al grafo!");
@@ -521,8 +522,8 @@ public class GrafoNoDirigido implements Grafo {
                     incidentes.add(lado);
                 }
             }
+            return incidentes;
         }
-        return null;
     }
 
     @Override
