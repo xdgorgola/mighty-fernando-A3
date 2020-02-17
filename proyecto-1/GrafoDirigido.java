@@ -228,7 +228,7 @@ public class GrafoDirigido implements Grafo {
         } else {
             LinkedList<ALNode> graph = gd.graph;
             for (ALNode alNode : graph) {
-                if (alNode.obtenerNombre() == nombre) {
+                if (alNode.obtenerNombre().equals(nombre)) {
                     return alNode.obtenerVertice();
                 }
             }

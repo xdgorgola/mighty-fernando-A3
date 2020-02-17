@@ -14,8 +14,8 @@ public class Arco extends Lado{
 
     @Override
     public String toString(Lado l) {
-        return "id: " + l.id + "iNode: (" + Vertice.toString(l.iVertice) + ", " +
-                Vertice.toString(fVertice) + ") weight: " + l.peso;
+        return "Arco id: " + l.id + "\nNodos: \niNode: (" + Vertice.toString(l.iVertice) + "\nfNode: (" +
+                Vertice.toString(fVertice) + ") \nweight: " + l.peso;
     }
 
     public Arco(int id, Vertice iVertice, Vertice fVertice, double weight) {
