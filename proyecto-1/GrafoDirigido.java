@@ -270,7 +270,7 @@ public class GrafoDirigido implements Grafo {
                 }
             }
         }
-        return false;
+        return true;
     }
     /**
      * Intenta agregar una arista al grafo. Si la arista ya existe o algun vertice
