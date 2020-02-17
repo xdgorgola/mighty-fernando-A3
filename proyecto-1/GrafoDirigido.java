@@ -11,21 +11,44 @@ import Lados.Lado;
 import Vertice.Vertice;
 
 /**
- * GrafoNoDirigido
+ * GrafoDirigido
  */
 public class GrafoDirigido implements Grafo {
-
+    
+    /**
+     * IDs de los vertices en el grafo.
+     */
     private HashSet<Integer> nodeIDs;
+    /**
+     * Nombres de los vertices en el grafo.
+     */
     private HashSet<String> nodeNames;
+    /**
+     * IDs de los arcos en el grafo.
+     */
     private HashSet<Integer> sideIDs;
+    /**
+     * Arcos en el grafo.
+     */
     private ArrayList<Lado> gLados;
-
+    /**
+     * Representacion como lista de nodos del grafo.
+     */
     private LinkedList<ALNode> graph;
 
+    /**
+     * Retorna las IDs de los vertices en el grafo.
+     * 
+     * @return HashSet con las IDs de los vertices
+     */
     public HashSet<Integer> getVerticesIDs() {
         return nodeIDs;
     }
-
+    /**
+     * Retorna la representacion del grafo.
+     * 
+     * @return Grafo como lista de adyacencia
+     */
     public LinkedList<ALNode> getGraph() {
         return graph;
     }
@@ -36,41 +59,60 @@ public class GrafoDirigido implements Grafo {
         int m = 0;
         Scanner scan = new Scanner(new File(file));
         String line = scan.nextLine();
+        GrafoDirigido gd = (GrafoDirigido) g;
         if (line.equals("D")) {
-            g = new GrafoDirigido();
+
+            gd.gLados.clear();
+            gd.sideIDs.clear();
+            gd.nodeIDs.clear();
+            gd.nodeNames.clear();
+            gd.graph.clear();
         } else {
             scan.close();
             return false;
         }
 
-        line = scan.nextLine();
-        n = Integer.parseInt(line);
-        line = scan.nextLine();
-        m = Integer.parseInt(line);
+        try {
+            line = scan.nextLine();
+            n = Integer.parseInt(line);
+            System.out.println("n: " + n);
+            line = scan.nextLine();
+            m = Integer.parseInt(line);
+            System.out.println("m: " + m);
+            if (n < 0 || m < 0){
+                scan.close();
+                return false;
+            }
+        } catch (NumberFormatException e) {
+            scan.close();
+            return false;
+        }
 
         for (int i = 0; i < n; i++) {
             line = scan.nextLine();
-            String[] results = line.split("\\s+");
+            String[] results = line.trim().split("\\s+");
             if (results.length != 5) {
                 scan.close();
                 return false;
             }
             Vertice toAdd = new Vertice(Integer.parseInt(results[0]), results[1], Integer.parseInt(results[2]),
                     Integer.parseInt(results[3]), Integer.parseInt(results[4]));
-            if (!g.agregarVertice(g, toAdd)) {
+            if (!gd.agregarVertice(g, toAdd)) {
                 scan.close();
                 return false;
             }
         }
         for (int i = 0; i < m; i++) {
             line = scan.nextLine();
-            String[] results = line.split("\\s+");
-            if (results.length != 4 || Integer.parseInt(results[2]) != 0) {
+            String[] results = line.trim().split("\\s+");
+            if (results.length != 4) {
                 scan.close();
                 return false;
             }
-            Arco toAdd = null;// new Arista(id, iVertice, fVertice, weight)
-            if (!((GrafoDirigido) g).agregarArco(g, toAdd)) {
+            Vertice vi = gd.obtenerVertice(g, results[0]);
+            Vertice vf = gd.obtenerVertice(g, results[1]);
+            Arco toAdd = new Arco(Integer.parseInt(results[2]), vi, vf, Double.parseDouble(results[3]));
+            if (!gd.agregarArco(g, toAdd)) {
                 scan.close();
                 return false;
             }
@@ -144,6 +186,13 @@ public class GrafoDirigido implements Grafo {
         return ((GrafoDirigido) g).nodeIDs.contains(id);
     }
 
+    /**
+     * Revisa si un vertice con cierto nombre pertenece al grafo g.
+     * 
+     * @param g Grafo en el que se quiere ubicar el vertice.
+     * @param nombre Nombre de vertice a buscar en el grafo.
+     * @return true si el vertice esta en el grafo; false en de no ser asi.
+     */
     public boolean estaVertice(Grafo g, String nombre) {
         return ((GrafoDirigido) g).nodeNames.contains(nombre);
     }
@@ -162,7 +211,16 @@ public class GrafoDirigido implements Grafo {
         }
         return null;
     }
-
+    /**
+     * Busca un vertice con cierto nombre en el grafo g y lo retorna. Si el vertice
+     * no se encuentra en el grafo g, levanta una excepcion.
+     * 
+     * @param g Grafo de donde obtener el vertice.
+     * @param nombre Nombre del vertice a buscar en el grafo.
+     * @return El vertice si lo encuentra en el grafo/null si no lo hace.
+     * @throws NoSuchElementException Si el vertice de identificador id no se
+     *                                encuentra en el grafo g.
+     */
     public Vertice obtenerVertice(Grafo g, String nombre) throws NoSuchElementException {
         GrafoDirigido gd = (GrafoDirigido) g;
         if (!gd.estaVertice(g, nombre)) {
@@ -186,7 +244,14 @@ public class GrafoDirigido implements Grafo {
         }
         return vertices;
     }
-
+    /**
+     * Intenta agregar un arco al grafo y retorna true si lo logra. Si el arco ya existe o algun vertice
+     * no existe en el grafo, retorna falso
+     * 
+     * @param g Grafo a agregar arco.
+     * @param a Arco a agregar.
+     * @return true si la arco se agrego; false en otro caso
+     */
     public boolean agregarArco(Grafo g, Arco a) {
         GrafoDirigido gd = (GrafoDirigido) g;
         Vertice vi = Arco.obtenerVerticeInicial(a);
@@ -207,7 +272,17 @@ public class GrafoDirigido implements Grafo {
         }
         return false;
     }
-
+    /**
+     * Intenta agregar una arista al grafo. Si la arista ya existe o algun vertice
+     * no existe en el grafo, no hace nada.
+     * 
+     * @param g Grafo a agregar arista.
+     * @param u    Nombre del vertice inicial del arco.
+     * @param v    Nombre del vertice final del arco.
+     * @param tipo Identificador del arco.
+     * @param p    Peso del arco.
+     * @return true si la arista se agrego/false en otro caso
+     */
     public boolean agregarArco(Grafo g, String u, String v, int tipo, double p) {
         GrafoDirigido gd = (GrafoDirigido) g;
         if (estaArco(g, u, v, tipo)) {
@@ -234,7 +309,15 @@ public class GrafoDirigido implements Grafo {
         return true;
         }
     }
-
+    /**
+     * Chequea si un arco existe en el grafo.
+     * 
+     * @param g    Grafo a chequear si el arco existe
+     * @param u    Nombre del vertice inicial del arco.
+     * @param v    Nombre del vertice final del arco.
+     * @param tipo Identificador del arco.
+     * @return true si existe el arco/false en caso contrario
+     */
     public boolean estaArco(Grafo g, String u, String v, int tipo) {
         GrafoDirigido gd = (GrafoDirigido) g;
         if (!gd.estaVertice(g, u) || !gd.estaVertice(g, v) || !gd.estaArco(g, tipo)) {
@@ -262,52 +345,70 @@ public class GrafoDirigido implements Grafo {
         return false;
     }
 
+    /**
+     * Chequea si un arco existe en el grafo.
+     * 
+     * @param tipo Identificador del arco.
+     * @return true si existe el arclo/false en caso contrario
+     */
+    public boolean estaArco(Grafo g, int tipo) {
+        return ((GrafoDirigido) g).sideIDs.contains(tipo);
+    }
+    /**
+     * Intenta eliminar un arco en el grafo g.
+     * 
+     * @param g    Grafo en el que se intenta eliminar el arco.
+     * @param u    Nombre del vertice inicial del arco.
+     * @param v    Nombre del vertice final del arco.
+     * @param tipo Identificador del arco.
+     * @return true si se elimina el arco/false en caso contrario
+     */
     public boolean eliminarArco(Grafo g, String u, String v, int tipo){
         GrafoDirigido gd = (GrafoDirigido) g;
         if (!gd.estaArco(g, u, v, tipo)) {
             return false;
         } else {
-            for (ALNode alNode : gd.graph) {
-                g.obtenerArco();
-                Vertice ver = alNode.obtenerVertice();
-                if (Vertice.obtenerNombre(ver).equals(u)) {
-                    LinkedList<Vertice> sucesors = alNode.obtenerAdyacencias();
-                    for (Vertice suce : sucesors) {
-                        if (Vertice.obtenerNombre(suce).equals(v)) {
-                            sucesors.remove(suce);
-                            return true;
-                        }
-                    }
-                } else if (Vertice.obtenerNombre(ver).equals(v)) {
-                    LinkedList<Vertice> predecesors = alNode.obtenerPredecesores();
-                    for (Vertice pred : predecesors) {
-                        if (Vertice.obtenerNombre(pred).equals(v)) {
-                            predecesors.remove(pred);
-                            return true;
-                        }
-                    }
+            Arco arco = gd.obtenerArco(g, tipo);
+            gd.sideIDs.remove(tipo);
+            gd.gLados.remove(arco);
+
+            Vertice idu = gd.obtenerVertice(g, u);
+            Vertice idv = gd.obtenerVertice(g, v);
+
+            for (ALNode node : gd.graph){
+
+                if (node.obtenerPredecesores().contains(idu)){
+                    node.obtenerPredecesores().remove(idu);
+                }
+
+                if (node.obtenerAdyacencias().contains(idv)){
+                    node.obtenerAdyacencias().remove(idv);
                 }
             }
+            return true;
         }
     }
 
+    /**
+     * Obtiene un arco en el grafo g con un identificador en especifico.
+     * 
+     * @param g Grafo a buscar arco.
+     * @param tipo Identificador del arco a buscar
+     * @return Arco buscado
+     * @throws NoSuchElementException Si no existe el arco buscado
+     */
     public Arco obtenerArco(Grafo g , int tipo){
-        if (!((GrafoDirigido) g).estaArco(g, tipo)) {
+        if (!(((GrafoDirigido) g).estaArco(g, tipo))) {
             throw new NoSuchElementException();
         } else {
             ArrayList<Lado> glados = ((GrafoDirigido) g).gLados;
             for (Lado lado : glados) {
-                if (lado.obtenerID() == id) {
-                    return alNode.obtenerVertice();
+                if (Lado.obtenerTipo(lado) == tipo) {
+                    return (Arco) lado;
                 }
             }
         }
         return null;
-    }
-    
-
-    public boolean estaArco(Grafo g, int tipo) {
-        return ((GrafoDirigido) g).sideIDs.contains(tipo);
     }
 
     @Override
@@ -325,6 +426,15 @@ public class GrafoDirigido implements Grafo {
         return ((GrafoDirigido) g).gLados.size();
     }
 
+    /**
+     * 
+     * Devuelve el grado interno de un nodo en especifico.
+     * 
+     * @param g Grafo que contiene al nodo.
+     * @param id identificador del nodo.
+     * @return grado interno del nodo con identificador id.
+     * @throws NoSuchElementException si el nodo no esta en el grafo especificado.
+     */
     public int gradoInterno(Grafo g, int id) throws NoSuchElementException {
         try {
             if (!estaVertice(g, id)) {
@@ -343,6 +453,15 @@ public class GrafoDirigido implements Grafo {
         }
     }
 
+    /**
+     * 
+     * Devuelve el grado externo de un nodo en especifico.
+     * 
+     * @param g Grafo que contiene al nodo.
+     * @param id identificador del nodo.
+     * @return grado externo del nodo con identificador id.
+     * @throws NoSuchElementException si el nodo no esta en el grafo especificado.
+     */
     public int gradoExterno(Grafo g, int id) throws NoSuchElementException {
         try {
             if (!estaVertice(g, id)) {
@@ -375,6 +494,15 @@ public class GrafoDirigido implements Grafo {
         }
     }
 
+    /**
+     * 
+     * Devuelve todos los sucesores de un nodo en especifico.
+     * 
+     * @param g Grafo que contiene al nodo.
+     * @param id identificador del nodo.
+     * @return lista con los nodos sucesores.
+     * @throws NoSuchElementException si el nodo no esta en el grafo especificado.
+     */
     public LinkedList<Vertice> sucesores(Grafo g, int id) throws NoSuchElementException {
         if (!g.estaVertice(g, id)) {
             throw new NoSuchElementException();
@@ -388,7 +516,15 @@ public class GrafoDirigido implements Grafo {
         }
         return null;
     }
-
+    /**
+     * 
+     * Devuelve todos los predecesores de un nodo en especifico.
+     * 
+     * @param g Grafo que contiene al nodo.
+     * @param id identificador del nodo.
+     * @return lista con los nodos predecesores.
+     * @throws NoSuchElementException si el nodo no esta en el grafo especificado.
+     */
     public LinkedList<Vertice> predecesores(Grafo g, int id) throws NoSuchElementException {
         if (!g.estaVertice(g, id)) {
             throw new NoSuchElementException();
@@ -478,19 +614,4 @@ public class GrafoDirigido implements Grafo {
         graph = new LinkedList<ALNode>();
     }
 
-    public static void main(String[] args) {
-        GrafoDirigido g = new GrafoDirigido();
-        g.agregarVertice(g, 0, "mano", 0, 0, 10);
-        g.agregarVertice(g, 1, "que", 0, 0, 10);
-        g.agregarVertice(g, 2, "chorizos", 0, 0, 10);
-        g.agregarArco(g, "mano", "chorizos", 0, 10);
-        g.agregarArco(g, "que", "chorizos", 1, 10);
-        g.agregarArco(g, "que", "chorizos", 2, 10);
-
-        System.out.println(g.estaArco(g, "mano", "chorizos", 0));
-
-        g.eliminarArco(g, "mano", "chorizos", 0);
-
-
-    }
 }
