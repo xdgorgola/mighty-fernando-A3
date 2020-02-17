@@ -285,10 +285,7 @@ public class GrafoDirigido implements Grafo {
      */
     public boolean agregarArco(Grafo g, String u, String v, int tipo, double p) {
         GrafoDirigido gd = (GrafoDirigido) g;
-        if (estaArco(g, u, v, tipo)) {
-            return false;
-        }
-        if (!gd.estaVertice(g, u) || !gd.estaVertice(g, v)) {
+        if (estaArco(g, u, v, tipo) || !gd.estaVertice(g, u) || !gd.estaVertice(g, v) || estaArco(g, tipo) ) {
             return false;
         } else {
             Vertice vi = gd.obtenerVertice(g, u);
@@ -298,14 +295,13 @@ public class GrafoDirigido implements Grafo {
             gd.sideIDs.add(tipo);
 
             for (ALNode alNode : gd.graph) {
-                if (alNode.obtenerNombre() == u){
+                if (alNode.obtenerNombre().equals(u)){
                     alNode.agregarVertice(vf);
                 }
-                else if (alNode.obtenerNombre() == v){
+                else if (alNode.obtenerNombre().equals(v)){
                     alNode.agregarPredecesor(vi);
                 }
             }
-
         return true;
         }
     }
