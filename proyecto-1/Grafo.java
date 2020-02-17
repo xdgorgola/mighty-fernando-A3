@@ -6,6 +6,8 @@ import java.util.NoSuchElementException;
 import Lados.Lado;
 import Vertice.Vertice;
 
+// AUTORES: Mariangela Rizzo 17-10538 Pedro Rodriguez 15-11264
+
 public interface Grafo {
 
     /**

@@ -11,6 +11,8 @@ import Lados.Arista;
 import Lados.Lado;
 import Vertice.Vertice;
 
+// AUTORES: Mariangela Rizzo 17-10538 Pedro Rodriguez 15-11264
+
 public class Cliente {
 
     /**

@@ -1,6 +1,8 @@
 package Lados;
 import Vertice.Vertice;
 
+// AUTORES: Mariangela Rizzo 17-10538 Pedro Rodriguez 15-11264
+
 public abstract class Lado {
     
     protected int id;
