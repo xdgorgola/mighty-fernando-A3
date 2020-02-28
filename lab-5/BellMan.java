@@ -83,7 +83,7 @@ public class BellMan {
 }
 
 
-// Estructura
+// ESTRUCUTRA
 class DijkBellResults {
     public Double[] costs;
     public Integer[] pred;
