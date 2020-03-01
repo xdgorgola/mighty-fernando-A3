@@ -1,11 +1,16 @@
-import java.io.FileNotFoundException;
-import java.text.DecimalFormat;
 import java.util.Arrays;
 import java.util.LinkedList;
-import java.util.ListIterator;
+
 public class BellMan {
 
-    public static DijkBellResults bellManOrigin(Grafo g, int origin){
+    /**
+     * Algoritmo de BellMan aplicado a un grafo g desde un origen arbitrario
+     * 
+     * @param g Grafo a aplicar BellMan
+     * @param origin Nodo a conseguir los caminos mas cortos
+     * @return Estructura con los resultados del algoritmo
+     */
+    public static BellResults bellManOrigin(Grafo g, int origin){
         int n = g.obtenerGrafo().size();
 
         LinkedList<Integer[]> lados = g.obtenerLados();
@@ -36,11 +41,21 @@ public class BellMan {
                 return null;
             }
         }
-        return new DijkBellResults(costs, preds);
+        return new BellResults(costs, preds);
     }
 
+
+    /**
+     * Construye un camino de costo minimo entre un vertice y otro
+     * partiendo de un array de predecesores generado por BellMan.
+     * <b>IMPORTANTE: Bellman debe haber sido ejecutado desde el vertice origen.</b>
+     * 
+     * @param origen Origen del camino
+     * @param objetivo Objetivo del camino
+     * @param preds Arreglo de predecesores
+     * @return Camino de costo minimo partiendo de origen a objetivo
+     */
     public static LinkedList<Integer> construirCamino(int origen, int objetivo, Integer[] preds){
-        // se usa como stack
         LinkedList<Integer> camino = new LinkedList<Integer>();
         int act = objetivo;
         camino.add(objetivo);
@@ -54,41 +69,16 @@ public class BellMan {
         }
         return camino;
     }
-
-
-    public static void main(String[] args) throws FileNotFoundException{
-        Grafo g = new Grafo();
-        g.cargarGrafo(args[0]);
-        DijkBellResults res = BellMan.bellManOrigin(g, Integer.parseInt(args[1]));
-        DecimalFormat df = new DecimalFormat("0.0#");
-
-        System.out.println();
-        int n = g.obtenerGrafo().size();
-
-        for (int i = 0; i < n; i++){
-            String aux = "Nodo " + i + ": " + args[1];
-
-            LinkedList<Integer> path = BellMan.construirCamino(Integer.parseInt(args[1]), i, res.pred);
-            ListIterator<Integer> listIterator = path.listIterator(path.size() - 1);
-
-            while (listIterator.hasPrevious()){
-                aux += "->" + listIterator.previous();
-            }
-            aux += "\t\t" + (path.size() - 1) + " lados (costo " + df.format(res.costs[i]) + ")"; 
-            
-            System.out.println(aux);
-        }
-    }
-
 }
 
-
-// ESTRUCUTRA
-class DijkBellResults {
+/**
+ * Estructura que contiene los resultados del BellMan
+ */
+class BellResults {
     public Double[] costs;
     public Integer[] pred;
 
-    public DijkBellResults(Double[] costs, Integer[] pred){
+    public BellResults(Double[] costs, Integer[] pred){
         this.costs = costs;
         this.pred = pred;
     }
