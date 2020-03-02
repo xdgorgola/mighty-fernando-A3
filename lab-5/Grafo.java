@@ -4,6 +4,11 @@ import java.io.File;
 import java.io.FileNotFoundException;
 import java.lang.Math;
 
+/* Autores:
+ * 		Pedro Rodriguez 15-11264
+ * 		Mariangela Rizzo 17-10538
+ */
+
 /**
  * Representacion de un gafo como lista de adyacencia
  */

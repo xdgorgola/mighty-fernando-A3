@@ -1,6 +1,11 @@
 import java.util.Arrays;
 import java.util.LinkedList;
 
+/* Autores:
+ * 		Pedro Rodriguez 15-11264
+ * 		Mariangela Rizzo 17-10538
+ */
+
 public class BellMan {
 
     /**

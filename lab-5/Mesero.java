@@ -3,6 +3,11 @@ import java.text.DecimalFormat;
 import java.util.LinkedList;
 import java.util.ListIterator;
 
+/* Autores:
+ * 		Pedro Rodriguez 15-11264
+ * 		Mariangela Rizzo 17-10538
+ */
+
 public class Mesero {
 
     public static void main(String[] args) throws FileNotFoundException {
