@@ -6,26 +6,23 @@ import Vertice.Vertice;
 public abstract class Lado {
     
     protected int id;
+    protected String linea;
 
     protected Vertice iVertice;
     protected Vertice fVertice;
 
     protected double peso;
 
-    public static int obtenerID(Lado l){
-        return l.id;
+    public int obtenerID(){
+        return this.id;
+    }
+    
+    public boolean incide(Vertice v){
+        return v.equals(this.iVertice) || v.equals(this.fVertice);
     }
 
-    public static double obtenerPeso(Lado l){
-        return l.peso;
-    }
-
-    public static boolean incide(Lado l, Vertice v){
-        return v.equals(l.iVertice) || v.equals(l.fVertice);
-    }
-
-    public static int obtenerTipo(Lado l){
-        return l.id;
+    public int obtenerTipo(){
+        return this.id;
     }
 
     public abstract String toString(Lado l);

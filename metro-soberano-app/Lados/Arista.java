@@ -6,12 +6,12 @@ import Vertice.Vertice;
 
 public class Arista extends Lado{
 
-    public static Vertice obtenerVertice1(Arista a) {
-        return a.iVertice;
+    public Vertice obtenerVertice1() {
+        return iVertice;
     }
 
-    public static Vertice obtenerVertice2(Arista a){
-        return a.fVertice;
+    public Vertice obtenerVertice2(){
+        return fVertice;
     }
 
     @Override

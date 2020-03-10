@@ -18,7 +18,7 @@ public interface Grafo {
      * @return true si se logro cargar el archivo/false en caso contrario
      * @throws FileNotFoundException Si el archivo no existe
      */
-    public boolean cargarGrafo(Grafo g, String archivo) throws FileNotFoundException;
+    public boolean cargarGrafo(String archivo) throws FileNotFoundException;
 
     /**
      * Intenta agregar un vertice v al grafo g. Si un vertice con el mismo
@@ -28,7 +28,7 @@ public interface Grafo {
      * @param v Vertice a agregar.
      * @return true si se agrego el vertice/false en caso contrario
      */
-    public boolean agregarVertice(Grafo g, Vertice v);
+    public boolean agregarVertice(Vertice v);
 
     /**
      * Se crea un nuevo vertice v al grafo con distintos atributos deseados y se
@@ -43,7 +43,7 @@ public interface Grafo {
      * @param w    Peso del vertice a agregar.
      * @return true si se agrego el vertice/false en caso contrario.
      */
-    public boolean agregarVertice(Grafo g, int id, String name, double x, double y, double w);
+    public boolean agregarVertice(int id, String name, double x, double y, double w);
 
     /**
      * Se elimina del grafo g un vertice con cierto identificador. Si no existe un
@@ -53,7 +53,7 @@ public interface Grafo {
      * @param id ID del vertice a eliminar
      * @return Si se logro eliminar el vertice o no
      */
-    public boolean eliminarVertice(Grafo g, int id);
+    public boolean eliminarVertice(int id);
 
     /**
      * Chequea si un vertice con cierto identificador pertenece al grafo g.
@@ -62,7 +62,7 @@ public interface Grafo {
      * @param id Identificador de vertice a buscar en g.
      * @return true si el vertice se encuentra en el grafo/false en caso contrario.
      */
-    public boolean estaVertice(Grafo g, int id);
+    public boolean estaVertice(int id);
 
     /**
      * Busca un vertice con cierto identificador en el grafo g y lo retorna. Si el
@@ -74,7 +74,7 @@ public interface Grafo {
      * @throws NoSuchElementException Si el vertice de identificador id no se
      *                                encuentra en el grafo g.
      */
-    public Vertice obtenerVertice(Grafo g, int id) throws NoSuchElementException;
+    public Vertice obtenerVertice(int id) throws NoSuchElementException;
 
     /**
      * Retorna los vertices de un grafo g como una lista enlazada que contiende
@@ -84,7 +84,7 @@ public interface Grafo {
      * @param g Grafo a retornar sus vertices
      * @return Lista enlanzada con vertices del grafo g
      */
-    public LinkedList<Vertice> vertices(Grafo g);
+    public LinkedList<Vertice> vertices();
 
     /**
      * Retorna una lista con los lados de un grafo.
@@ -93,7 +93,7 @@ public interface Grafo {
      * @return ArrayList con los lados de un grafo g, representados con el objeto
      *         <code>Lado</code>.
      */
-    public ArrayList<Lado> lados(Grafo g);
+    public ArrayList<Lado> lados();
 
     /**
      * Calcula el numero de vertices de un grafo.
@@ -101,7 +101,7 @@ public interface Grafo {
      * @param g Grafo a calcular el numero de vertices.
      * @return El numero de vertices del grafo.
      */
-    public int numeroVertices(Grafo g);
+    public int numeroVertices();
 
     /**
      * Calcula el numero de lados de un grafo.
@@ -109,7 +109,7 @@ public interface Grafo {
      * @param g Grafo a calcular el numero de lados.
      * @return El numero de lados del grafo.
      */
-    public int numeroLados(Grafo g);
+    public int numeroLados();
 
     /**
      * Calcula el grado de un vertice con cierto identificador en un grafo.
@@ -120,7 +120,7 @@ public interface Grafo {
      * @throws NoSuchElementException Si el vertice a calcular el grado no se
      *                                encuentra en el grafo.
      */
-    public int grado(Grafo g, int id) throws NoSuchElementException;
+    public int grado(int id) throws NoSuchElementException;
 
     /**
      * Busca los vertices adyacentes de un vertice con cierto identificador en un grafo
@@ -131,7 +131,7 @@ public interface Grafo {
      * @return Lista enlazada con los vertices adyacentes del vertice
      * @throws NoSuchElementException Si el vertice no se encuentra en el grafo
      */
-    public LinkedList<Vertice> adyacentes(Grafo g, int id) throws NoSuchElementException;
+    public LinkedList<Vertice> adyacentes(int id) throws NoSuchElementException;
 
     /**
      * Busca los lados incidentes de un vertice con cierto identificador en un grafo
@@ -142,7 +142,7 @@ public interface Grafo {
      * @return Lados que incident en el vertice a buscar.
      * @throws NoSuchElementException Si el vertice no se encuentra en el grafo.
      */
-    public LinkedList<Lado> incidentes(Grafo g, int id) throws NoSuchElementException;
+    public LinkedList<Lado> incidentes(int id) throws NoSuchElementException;
 
     /**
      * Clona el grafo.
@@ -150,9 +150,9 @@ public interface Grafo {
      * @param g Grafo a clonar
      * @return deepcopy del grafo g
      */
-    public Grafo clone(Grafo g);
+    public Grafo clone();
 
-    public String toString(Grafo g);
+    public String toString();
 }
 
 /**
@@ -189,7 +189,7 @@ class ALNode {
      * @return ID del vertice del nodo
      */
     public int obtenerID() {
-        return Vertice.obtenerID(vertex);
+        return vertex.obtenerID();
     }
 
     /**
@@ -198,7 +198,7 @@ class ALNode {
      * @return Nombre del vertice del nodo
      */
     public String obtenerNombre() {
-        return Vertice.obtenerNombre(vertex);
+        return vertex.obtenerNombre();
     }
 
     /**
@@ -208,7 +208,7 @@ class ALNode {
      */
     public void agregarVertice(Vertice v) {
         for (Vertice vertice : adyacencias) {
-            if (Vertice.obtenerID(vertice) == Vertice.obtenerID(v)){
+            if (vertice.obtenerID() == v.obtenerID()){
                 return;
             }
         }

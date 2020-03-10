@@ -4,30 +4,31 @@ package Vertice;
 public class Vertice {
     private int id;
     private String nombre;
+    private String linea;
     
     private double xCord;
     private double yCord;
 
     private double peso;
 
-    public static int obtenerID(Vertice v){
-        return v.id;
+    public int obtenerID(){
+        return this.id;
     }
 
-    public static double obtenerPeso(Vertice v){
-        return v.peso;
+    public double obtenerPeso(){
+        return this.peso;
     }
 
-    public static String obtenerNombre(Vertice v){
-        return v.nombre;
+    public String obtenerNombre(){
+        return this.nombre;
     }
 
-    public static double obtenerX(Vertice v){
-        return v.xCord;
+    public double obtenerX(){
+        return this.xCord;
     }
 
-    public static double obtenerY(Vertice v){
-        return v.yCord;
+    public double obtenerY(){
+        return this.yCord;
     }
 
     public static String toString(Vertice v){
@@ -44,10 +45,10 @@ public class Vertice {
     }
 
     public Vertice(Vertice v){
-        this.id = Vertice.obtenerID(v);
-        this.peso = Vertice.obtenerPeso(v);
-        this.nombre = Vertice.obtenerNombre(v);
-        this.xCord = Vertice.obtenerX(v);
-        this.yCord = Vertice.obtenerY(v);
+        this.id = v.obtenerID();
+        this.peso = v.obtenerPeso();
+        this.nombre = v.obtenerNombre();
+        this.xCord = v.obtenerX();
+        this.yCord = v.obtenerY();
     }
 }
