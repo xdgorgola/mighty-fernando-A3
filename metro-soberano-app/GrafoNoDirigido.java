@@ -33,16 +33,10 @@ public class GrafoNoDirigido implements Grafo {
      * Lados en el grafo.
      */
     private ArrayList<Lado> gLados;
-
-    // Usamos HashSet porque el get del hashset es O(1) si se mantiene un buen load
-    // factor
-    // (de eso se encarga java) y el remove igualmente es O(1), tiempo bastante
-    // aceptable para
-    // chequear si existe un nodo en vez de tener que iterar en toda la lista para
-    // ver primero
-    // si el nodo existe. En caso de que exista, fino, pero si no existe, iteraste
-    // toda una lista
-    // para nada :(.
+    /**
+     * Lineas habilitadas
+     */
+    private ArrayList<String> gLineas;
 
     /**
      * Representacion como lista de adyacencia del grafo.
@@ -67,6 +61,15 @@ public class GrafoNoDirigido implements Grafo {
         return graph;
     }
 
+    /***
+     * Retorna las lineas habilitadas en el grafo.
+     * 
+     * @return Las lineas habilitadas como ArrayList de string
+     */
+    public ArrayList<String> getLineas() {
+        return gLineas;
+    }
+
     @Override
     public boolean cargarGrafo(String file) throws FileNotFoundException {
         int n = 0;
@@ -74,8 +77,7 @@ public class GrafoNoDirigido implements Grafo {
         Scanner scan = new Scanner(new File(file));
 
         String line = scan.nextLine();
-        if (line.equals("ND")) {
-
+        if (line.equals("n")) {
             gLados.clear();
             sideIDs.clear();
             nodeIDs.clear();
@@ -87,10 +89,12 @@ public class GrafoNoDirigido implements Grafo {
         }
 
         try {
-            line = scan.nextLine();
+            line = scan.nextLine().trim();
+            // Numero de paradas/vertices
             n = Integer.parseInt(line);
             System.out.println("n: " + n);
-            line = scan.nextLine();
+            line = scan.nextLine().trim();
+            // Numero de tramos/aristas
             m = Integer.parseInt(line);
             System.out.println("m: " + m);
             if (n < 0 || m < 0){
@@ -98,6 +102,7 @@ public class GrafoNoDirigido implements Grafo {
                 return false;
             }
         } catch (NumberFormatException e) {
+            System.err.println("Formato incorrecto, no hay un numero en nro de paradas/tramos.");
             scan.close();
             return false;
         }
@@ -106,12 +111,16 @@ public class GrafoNoDirigido implements Grafo {
             line = scan.nextLine();
             String[] results = line.trim().split("\\s+");
             if (results.length != 5) {
+                System.err.println("Error en parada: " + i);
+                System.err.println("Definicion de parada incompleta o con datos extra.");
                 scan.close();
                 return false;
             }
-            Vertice toAdd = new Vertice(Integer.parseInt(results[0]), results[1], Integer.parseInt(results[2]),
-                    Integer.parseInt(results[3]), Integer.parseInt(results[4]));
+            Vertice toAdd = new Vertice(Integer.parseInt(results[0]), results[1].trim(), Double.parseDouble(results[2]),
+                Double.parseDouble(results[3]), Double.parseDouble(results[4]));
             if (!agregarVertice(toAdd)) {
+                System.err.println("Error en parada: " + i);
+                System.err.println("No pudo agregarse.");
                 scan.close();
                 return false;
             }
@@ -120,13 +129,17 @@ public class GrafoNoDirigido implements Grafo {
             line = scan.nextLine();
             String[] results = line.trim().split("\\s+");
             if (results.length != 4) {
+                System.err.println("Error en tramo: " + i);
+                System.err.println("Definicion de parada incompleta o con datos extra.");
                 scan.close();
                 return false;
             }
-            Vertice vi = obtenerVertice(results[0]);
-            Vertice vf = obtenerVertice(results[1]);
-            Arista toAdd = new Arista(Integer.parseInt(results[2]), vi, vf, Double.parseDouble(results[3]));
+            Vertice vi = obtenerVertice(Integer.parseInt(results[0]));
+            Vertice vf = obtenerVertice(Integer.parseInt(results[1]));
+            Arista toAdd = new Arista(i, vi, vf, Double.parseDouble(results[3]), results[2].trim());
             if (!agregarArista(toAdd)) {
+                System.err.println("Error en tramo: " + i);
+                System.err.println("No pudo agregarse.");
                 scan.close();
                 return false;
             }
@@ -208,7 +221,6 @@ public class GrafoNoDirigido implements Grafo {
     /**
      * Chequea si un vertice con cierto nombre pertenece al grafo 
      * 
-     * @param g      Grafo a buscar vertice.
      * @param nombre Nombre de vertice a buscar en 
      * @return true si el vertice se encuentra en el grafo/false en caso contrario.
      */
@@ -235,7 +247,6 @@ public class GrafoNoDirigido implements Grafo {
      * Busca un vertice con cierto nombre en el grafo g y lo retorna. Si el vertice
      * no se encuentra en el grao g, levanta una excepcion.
      * 
-     * @param g      Grafo de donde obtener el vertice
      * @param nombre Nombre del vertice a buscar en el grafo
      * @return El vertice si lo encuentra en el grafo/null sino.
      * @throws NoSuchElementException Si el vertice de identificador id no se
@@ -268,7 +279,6 @@ public class GrafoNoDirigido implements Grafo {
      * Intenta agregar una arista al grafo. Si la arista ya existe o algun vertice
      * no existe en el grafo, no hace nada.
      * 
-     * @param g Grafo a agregar arista.
      * @param a Arista a agregar.
      * @return true si la arista se agrego/false en otro caso
      */
@@ -296,20 +306,19 @@ public class GrafoNoDirigido implements Grafo {
      * Intenta agregar una arista al grafo. Si la arista ya existe o algun vertice
      * no existe en el grafo, no hace nada.
      * 
-     * @param g    Grafo a agregar arista
      * @param u    Nombre del vertice 1 de la arista
      * @param v    Nombre del vertice 2 de la arista
      * @param tipo Identificador de la arista
      * @param p    Peso de la arista
      * @return true si se agrego la arista/false en caso contrario
      */
-    public boolean agregarArista(String u, String v, int tipo, double p) {
+    public boolean agregarArista(String u, String v, int tipo, double p, String linea) {
         if (estaArista(u, v, tipo) || !estaVertice(u) || !estaVertice(v) || estaArista(tipo)) {
             return false;
         } else {
             Vertice iVertice = obtenerVertice(u);
             Vertice fVertice = obtenerVertice(v);
-            Arista toAdd = new Arista(tipo, iVertice, fVertice, p);
+            Arista toAdd = new Arista(tipo, iVertice, fVertice, p, linea);
             gLados.add(toAdd);
             sideIDs.add(tipo);
 
@@ -327,7 +336,6 @@ public class GrafoNoDirigido implements Grafo {
     /**
      * Chequea si una arista existe en el grafo.
      * 
-     * @param g    Grafo a chequear si la arista existe
      * @param u    Nombre del vertice 1 de la arista
      * @param v    Nombre del vertice 2 de la arista
      * @param tipo Identificador de la arista
@@ -355,7 +363,6 @@ public class GrafoNoDirigido implements Grafo {
     /**
      * Chequea si una arista existe en el grafo.
      * 
-     * @param g  Grafo a buscar arista
      * @param id Identificador de la arista a buscar
      * @return true si la arista esta en el grafo/false en caso contrario
      */
@@ -366,7 +373,6 @@ public class GrafoNoDirigido implements Grafo {
     /**
      * Chequea si existe una arista en el grafo g que conecte dos vertices en especifico.
      * 
-     * @param g Grafo a chequear si existe arista
      * @param id1 Vertice 1 del grafo
      * @param id2 Vertice 2 del grafo
      * @return true si existe la arista/false en otro caso
@@ -387,7 +393,6 @@ public class GrafoNoDirigido implements Grafo {
     /**
      * Obtiene una arista en el grafo g con un identificador en especifico.
      * 
-     * @param g Grafo a buscar arista
      * @param id Identificador de la arista a buscar
      * @return Arista buscada
      * @throws NoSuchElementException Si no existe la arista buscada
@@ -408,7 +413,6 @@ public class GrafoNoDirigido implements Grafo {
     /**
      * En el grafo g elimina una arista con un identificador en especifico.
      * 
-     * @param g Grafo a eliminar arista
      * @param id Identificador de la arista a eliminar
      * @return true si se elimino la arista/false en caso contrario
      */
@@ -468,7 +472,12 @@ public class GrafoNoDirigido implements Grafo {
             if (!estaVertice(id)) {
                 throw new NoSuchElementException();
             } else {
-                return lados().size();
+                int c = 0;
+                Vertice v = obtenerVertice(id);
+                for (Lado lado : gLados) {
+                    if (lado.incide(v)) c++;
+                }
+                return c;
             }
         } catch (NoSuchElementException e) {
             System.out.println("El nodo con identificador: " + id + " no pertenece al grafo!");
@@ -551,5 +560,11 @@ public class GrafoNoDirigido implements Grafo {
         sideIDs = new HashSet<Integer>();
         gLados = new ArrayList<Lado>();
         graph = new LinkedList<ALNode>();
+    }
+
+    public static void main(String[] args) throws FileNotFoundException{
+        GrafoNoDirigido g = new GrafoNoDirigido();
+        g.cargarGrafo("Londres.txt");
+        System.out.println(g.toString());
     }
 }

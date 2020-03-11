@@ -4,27 +4,23 @@ import Vertice.Vertice;
 
 // AUTORES: Mariangela Rizzo 17-10538 Pedro Rodriguez 15-11264
 
-public class Arista extends Lado{
+public class Arco extends Lado{
 
-    public Vertice obtenerVertice1() {
+    public Vertice obtenerVerticeInicial() {
         return iVertice;
     }
 
-    public Vertice obtenerVertice2(){
+    public Vertice obtenerVerticeFinal(){
         return fVertice;
     }
 
     @Override
     public String toString(Lado l) {
-        return "Arista id: " + l.id + "\nNodos: \niNode: (" + Vertice.toString(l.iVertice) + "\nfNode: (" +
+        return "Arco id: " + l.id + "\nNodos: \niNode: (" + Vertice.toString(l.iVertice) + "\nfNode: (" +
                 Vertice.toString(fVertice) + ") \nweight: " + l.peso + "\nlinea: " + l.linea;
     }
 
-    public Arista(int id, Vertice iVertice, Vertice fVertice, double weight, String linea) {
+    public Arco(int id, Vertice iVertice, Vertice fVertice, double weight, String linea) {
         super(id, iVertice, fVertice, weight, linea);
-    }
-
-    public Arista(Arista a){
-        super(a);
     }
 }

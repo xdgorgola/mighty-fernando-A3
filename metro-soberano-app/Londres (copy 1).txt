@@ -1,0 +1,12 @@
+n
+4
+4
+105 Warwick 0.4 52.1 3
+21 Westbourne 0.4 51.5 6
+104 Paddington 0.7 51.8 18
+103 BakerStreet 1.1 51.8 10
+105 104 Yellow 6
+21 104 Red 6
+104 103 Yellow 10
+104 103 Red 10
+

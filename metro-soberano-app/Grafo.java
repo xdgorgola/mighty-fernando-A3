@@ -3,6 +3,8 @@ import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.NoSuchElementException;
 
+import Lados.Arco;
+import Lados.Arista;
 import Lados.Lado;
 import Vertice.Vertice;
 
@@ -13,7 +15,6 @@ public interface Grafo {
     /**
      * Carga un grafo desde un archivo.
      * 
-     * @param g       Grafo donde se almacenara la informacion
      * @param archivo Archivo a cargar
      * @return true si se logro cargar el archivo/false en caso contrario
      * @throws FileNotFoundException Si el archivo no existe
@@ -24,7 +25,6 @@ public interface Grafo {
      * Intenta agregar un vertice v al grafo g. Si un vertice con el mismo
      * identificador ya se encuentra en el grafo g, no hace nada.
      * 
-     * @param g Grafo a agregar vertice.
      * @param v Vertice a agregar.
      * @return true si se agrego el vertice/false en caso contrario
      */
@@ -35,7 +35,6 @@ public interface Grafo {
      * intenta agregar en el grafo g. Si un vertice con el mismo identificador se
      * encuentra en el grafo g, no hace nada.
      * 
-     * @param g    Grafo a agregar vertice.
      * @param id   ID del vertice a agregar.
      * @param name Nombre del vertice a agregar.
      * @param x    Coordenada X del vertice a agregar.
@@ -49,7 +48,6 @@ public interface Grafo {
      * Se elimina del grafo g un vertice con cierto identificador. Si no existe un
      * vertice con ese identiicador en el grafo g, no hace nada.
      * 
-     * @param g  Grafo a eliminar vertice.
      * @param id ID del vertice a eliminar
      * @return Si se logro eliminar el vertice o no
      */
@@ -58,7 +56,6 @@ public interface Grafo {
     /**
      * Chequea si un vertice con cierto identificador pertenece al grafo g.
      * 
-     * @param g  Grafo a buscar vertice.
      * @param id Identificador de vertice a buscar en g.
      * @return true si el vertice se encuentra en el grafo/false en caso contrario.
      */
@@ -68,7 +65,6 @@ public interface Grafo {
      * Busca un vertice con cierto identificador en el grafo g y lo retorna. Si el
      * vertice no se encuentra en el grao g, levanta una excepcion.
      * 
-     * @param g  Grafo de donde obtener el vertice
      * @param id Identificador del vertice a buscar en el grafo
      * @return El vertice si lo encuentra en el grafo/null sino.
      * @throws NoSuchElementException Si el vertice de identificador id no se
@@ -81,7 +77,6 @@ public interface Grafo {
      * objetos de la clase <code>Vertice</code> que representan los vertices del
      * grafo g
      * 
-     * @param g Grafo a retornar sus vertices
      * @return Lista enlanzada con vertices del grafo g
      */
     public LinkedList<Vertice> vertices();
@@ -89,7 +84,6 @@ public interface Grafo {
     /**
      * Retorna una lista con los lados de un grafo.
      * 
-     * @param g Grado a retornar lados.
      * @return ArrayList con los lados de un grafo g, representados con el objeto
      *         <code>Lado</code>.
      */
@@ -98,7 +92,6 @@ public interface Grafo {
     /**
      * Calcula el numero de vertices de un grafo.
      * 
-     * @param g Grafo a calcular el numero de vertices.
      * @return El numero de vertices del grafo.
      */
     public int numeroVertices();
@@ -106,7 +99,6 @@ public interface Grafo {
     /**
      * Calcula el numero de lados de un grafo.
      * 
-     * @param g Grafo a calcular el numero de lados.
      * @return El numero de lados del grafo.
      */
     public int numeroLados();
@@ -114,7 +106,6 @@ public interface Grafo {
     /**
      * Calcula el grado de un vertice con cierto identificador en un grafo.
      * 
-     * @param g  Grafo donde calcular el grado del vertice.
      * @param id Identificador del vertice a calcular el grado.
      * @return El grado del vertice en el grafo.
      * @throws NoSuchElementException Si el vertice a calcular el grado no se
@@ -126,7 +117,6 @@ public interface Grafo {
      * Busca los vertices adyacentes de un vertice con cierto identificador en un grafo
      * y los devuelve.
      * 
-     * @param g Grafo a buscar adyacentes
      * @param id Identificador del vertice a calcular adyacencias
      * @return Lista enlazada con los vertices adyacentes del vertice
      * @throws NoSuchElementException Si el vertice no se encuentra en el grafo
@@ -137,7 +127,6 @@ public interface Grafo {
      * Busca los lados incidentes de un vertice con cierto identificador en un grafo
      * y los devuelve.
      * 
-     * @param g  Grafo a buscar incidentes.
      * @param id Identificador del vertice a calcular incidentes.
      * @return Lados que incident en el vertice a buscar.
      * @throws NoSuchElementException Si el vertice no se encuentra en el grafo.
@@ -147,7 +136,6 @@ public interface Grafo {
     /**
      * Clona el grafo.
      * 
-     * @param g Grafo a clonar
      * @return deepcopy del grafo g
      */
     public Grafo clone();
@@ -258,5 +246,89 @@ class ALNode {
         for (Vertice pred : alNode.predecesores) {
             this.predecesores.add(new Vertice(pred));
         }
+    }
+}
+
+class NodePath{
+    private LinkedList<Lado> path;
+    private LinkedList<Vertice> pathV;
+    private double cost;
+
+    public LinkedList<Lado> getPathE(){
+        return path;
+    }
+
+    public void extendPathArco(Arco toAdd){
+        path.add(toAdd);
+        pathV.add(toAdd.obtenerVerticeFinal());
+    }
+
+    public void extendPathArista(Arista toAdd){
+        path.add(toAdd);
+        if (getLastVert().obtenerID() == toAdd.obtenerVertice1().obtenerID()){
+            pathV.add(toAdd.obtenerVertice2());
+        }
+        else{
+            pathV.add(toAdd.obtenerVertice1());
+        }
+    }
+
+    public Lado getLastEdge(){
+        return path.getLast();
+    }
+
+    public Lado getFirstEdge(){
+        return path.getFirst();
+    }
+
+    public Vertice getLastVert(){
+        return pathV.getLast();
+    }
+
+    public Vertice getFirstVert(){
+        return pathV.getFirst();
+    }
+
+    public void calculateCost(){
+
+        cost = getFirstVert().obtenerPeso();
+        String currentLine = getFirstEdge().obtenerLinea();
+        for (Lado lado : path) {
+            if (lado.obtenerLinea() != currentLine){
+                currentLine = lado.obtenerLinea();
+                
+            }
+        }
+    }
+
+    public double getCost(){
+        return cost;
+    }
+
+    public boolean isBeforeLast(Lado toCheck){
+        for (Lado lado : path) {
+            if (lado.obtenerID() == getLastEdge().obtenerID());
+            else if (lado.obtenerID() == toCheck.obtenerID()) return true;
+        }
+        return false;
+    }
+
+    public NodePath(){
+        path = new LinkedList<Lado>();
+        pathV = new LinkedList<Vertice>();
+        cost = Double.POSITIVE_INFINITY;
+    }
+
+    public NodePath(NodePath toClone){
+        path = new LinkedList<Lado>(toClone.path);
+        pathV = new LinkedList<Vertice>(toClone.pathV);
+        cost = Double.POSITIVE_INFINITY;
+    }
+
+    public NodePath(Vertice init){
+        path = new LinkedList<Lado>();
+        pathV = new LinkedList<Vertice>();
+        pathV.add(init); 
+        calculateCost();
     }
 }

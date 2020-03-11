@@ -17,8 +17,13 @@ public abstract class Lado {
         return this.id;
     }
     
+    public String obtenerLinea(){
+        return linea;
+    }
+
     public boolean incide(Vertice v){
-        return v.equals(this.iVertice) || v.equals(this.fVertice);
+        return v.obtenerID() == this.iVertice.obtenerID() || 
+        v.obtenerID() == this.fVertice.obtenerID();
     }
 
     public int obtenerTipo(){
@@ -27,11 +32,12 @@ public abstract class Lado {
 
     public abstract String toString(Lado l);
 
-    public Lado(int id, Vertice iVertice, Vertice fVertice, double peso) {
+    public Lado(int id, Vertice iVertice, Vertice fVertice, double peso, String linea) {
         this.id = id;
         this.iVertice = new Vertice(iVertice);
         this.fVertice = new Vertice(fVertice);
         this.peso = peso;
+        this.linea = linea;
     }
 
     public Lado(Lado l){
@@ -39,5 +45,6 @@ public abstract class Lado {
         this.iVertice = new Vertice(l.iVertice);
         this.fVertice = new Vertice(l.fVertice);
         this.peso = l.peso;
+        this.linea = l.linea;
     }
 }

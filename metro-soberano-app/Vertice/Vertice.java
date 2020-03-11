@@ -4,7 +4,6 @@ package Vertice;
 public class Vertice {
     private int id;
     private String nombre;
-    private String linea;
     
     private double xCord;
     private double yCord;

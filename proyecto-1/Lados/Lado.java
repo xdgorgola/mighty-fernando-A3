@@ -21,7 +21,8 @@ public abstract class Lado {
     }
 
     public static boolean incide(Lado l, Vertice v){
-        return v.equals(l.iVertice) || v.equals(l.fVertice);
+        return Vertice.obtenerID(v) == Vertice.obtenerID(l.iVertice) || 
+        (Vertice.obtenerID(v)) == Vertice.obtenerID(l.fVertice);
     }
 
     public static int obtenerTipo(Lado l){

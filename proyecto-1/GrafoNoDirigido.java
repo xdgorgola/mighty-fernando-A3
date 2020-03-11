@@ -481,7 +481,12 @@ public class GrafoNoDirigido implements Grafo {
             if (!estaVertice(g, id)) {
                 throw new NoSuchElementException();
             } else {
-                return g.lados(g).size();
+                Vertice v = obtenerVertice(g, id);
+                int c = 0;
+                for (Lado lado : gLados) {
+                    if (Lado.incide(lado, v)) c++;
+                }
+                return c;
             }
         } catch (NoSuchElementException e) {
             System.out.println("El nodo con identificador: " + id + " no pertenece al grafo!");
