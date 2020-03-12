@@ -261,6 +261,7 @@ class NodePath{
     public void extendPathArco(Arco toAdd){
         path.add(toAdd);
         pathV.add(toAdd.obtenerVerticeFinal());
+        calculateCost();
     }
 
     public void extendPathArista(Arista toAdd){
@@ -271,6 +272,7 @@ class NodePath{
         else{
             pathV.add(toAdd.obtenerVertice1());
         }
+        calculateCost();
     }
 
     public Lado getLastEdge(){
@@ -290,13 +292,18 @@ class NodePath{
     }
 
     public void calculateCost(){
+        //cost = getFirstVert().obtenerPeso();
+        cost = 0;
+        if (path.size() != 0){
+            String currentLine = getFirstEdge().obtenerLinea();
 
-        cost = getFirstVert().obtenerPeso();
-        String currentLine = getFirstEdge().obtenerLinea();
-        for (Lado lado : path) {
-            if (lado.obtenerLinea() != currentLine){
-                currentLine = lado.obtenerLinea();
-                
+            for (int i = 0; i < path.size(); i++){
+                if (!path.get(i).obtenerLinea().equals(currentLine)){
+                    currentLine = path.get(i).obtenerLinea();
+                    System.out.println(pathV.get(i).obtenerPeso());
+                    //cost += pathV.get(i).obtenerPeso();
+                    cost += 1;
+                }
             }
         }
     }
@@ -323,7 +330,7 @@ class NodePath{
         path = new LinkedList<Lado>(toClone.path);
         pathV = new LinkedList<Vertice>(toClone.pathV);
         cost = Double.POSITIVE_INFINITY;
-    }
+    } 
 
     public NodePath(Vertice init){
         path = new LinkedList<Lado>();

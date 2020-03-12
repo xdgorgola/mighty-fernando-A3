@@ -58,7 +58,10 @@ public class MejorRuta {
 
     public static void main(String[] args) throws FileNotFoundException{
         GrafoNoDirigido g = new GrafoNoDirigido();
-        g.cargarGrafo("Londres (copy 1).txt");
-        MejorRuta.getBestRouteND(g, 105, 103);
+        //g.cargarGrafo("Londres (copy 1).txt");
+        g.cargarGrafo("Londres.txt");
+        NodePath xd = MejorRuta.getBestRouteND(g, 21, 101);
+        xd.calculateCost();
+        System.out.println("Total trasbordos!: " + xd.getCost());
     }
 }
