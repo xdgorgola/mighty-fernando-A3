@@ -249,21 +249,50 @@ class ALNode {
     }
 }
 
-class NodePath{
-    private LinkedList<Lado> path;
-    private LinkedList<Vertice> pathV;
-    private double cost;
 
+/**
+ * Clase que se usa para representar un camino/cadena en un grafo.
+ * Mantiene dos listas, una de lados y vertices que se han tomado en orden.
+ */
+class NodePath{
+    /**
+     * Lados tomados en el camino (en orden)
+     */
+    private LinkedList<Lado> path;
+    /**
+     * Vertices tomados en el camino (en orden)
+     */
+    private LinkedList<Vertice> pathV;
+    /**
+     * Costo transbordos (cuantos transbordos se hacen en el camino)
+     */
+    private double costTrasbordos;
+
+    /**
+     * Obtiene el camino de lados.
+     * 
+     * @return Camino de lados
+     */
     public LinkedList<Lado> getPathE(){
         return path;
     }
 
+    /**
+     * Extiende el camino con un arco.
+     * 
+     * @param toAdd Arco para extender
+     */
     public void extendPathArco(Arco toAdd){
         path.add(toAdd);
         pathV.add(toAdd.obtenerVerticeFinal());
-        calculateCost();
+        calculateTrasbordosCost();
     }
 
+    /**
+     * Extiende el camino con una arista.
+     * 
+     * @param toAdd Arista para extender
+     */
     public void extendPathArista(Arista toAdd){
         path.add(toAdd);
         if (getLastVert().obtenerID() == toAdd.obtenerVertice1().obtenerID()){
@@ -272,46 +301,80 @@ class NodePath{
         else{
             pathV.add(toAdd.obtenerVertice1());
         }
-        calculateCost();
+        calculateTrasbordosCost();
     }
 
+    /**
+     * Obtiene el ultimo lado del camino.
+     * 
+     * @return Ultimo lado del camino
+     */
     public Lado getLastEdge(){
         return path.getLast();
     }
 
+    /**
+     * Obtiene el primer lado del camino.
+     * 
+     * @return Primer lado del camino
+     */
     public Lado getFirstEdge(){
         return path.getFirst();
     }
 
+    /**
+     * Obtiene el ultimo vertice del camino.
+     * 
+     * @return Ultimo vertice del camino
+     */
     public Vertice getLastVert(){
         return pathV.getLast();
     }
 
+    /**
+     * Obtiene el primer vertice del camino.
+     * 
+     * @return Primer vertice del camino
+     */
     public Vertice getFirstVert(){
         return pathV.getFirst();
     }
 
-    public void calculateCost(){
+    /**
+     * Calcula cuantos transbordos se realizan en el camino
+     */
+    public void calculateTrasbordosCost(){
         //cost = getFirstVert().obtenerPeso();
-        cost = 0;
+        costTrasbordos = 0;
         if (path.size() != 0){
             String currentLine = getFirstEdge().obtenerLinea();
-
             for (int i = 0; i < path.size(); i++){
+                // Si hay cambio de linea, aumenta en transbordo
                 if (!path.get(i).obtenerLinea().equals(currentLine)){
                     currentLine = path.get(i).obtenerLinea();
-                    System.out.println(pathV.get(i).obtenerPeso());
+                    costTrasbordos += 1;
+                    //System.out.println(pathV.get(i).obtenerPeso());
                     //cost += pathV.get(i).obtenerPeso();
-                    cost += 1;
                 }
             }
         }
     }
 
-    public double getCost(){
-        return cost;
+    /**
+     * Obtiene el numero de transbordos realizados en el camino
+     * 
+     * @return Numero de transbordos en el camino
+     */
+    public double getCostTrasbordos(){
+        return costTrasbordos;
     }
 
+    /**
+     * Chequea si un lado ya se tomo en el camino antes del ultimo
+     * 
+     * @param toCheck Camino a chequear
+     * @return Si un lado ya se tomo en el camino antes del ultimo
+     */
     public boolean isBeforeLast(Lado toCheck){
         for (Lado lado : path) {
             if (lado.obtenerID() == getLastEdge().obtenerID());
@@ -320,22 +383,56 @@ class NodePath{
         return false;
     }
 
+    public String toString(){
+        String aux ="";
+        if (path.size() != 0){
+            String currentLine = getFirstEdge().obtenerLinea();
+            aux += "Toma la linea " + currentLine + " desde " + getFirstVert().obtenerID() + " " + getFirstVert().obtenerNombre() +
+                " hasta ";
+            for (int i = 0; i < path.size(); i++){
+                // Si hay cambio de linea, aumenta en transbordo
+                if (!path.get(i).obtenerLinea().equals(currentLine)){
+                    currentLine = path.get(i).obtenerLinea();
+                    Vertice ult = pathV.get(i);
+                    aux += ult.obtenerID() + " " + ult.obtenerNombre() + "\n";
+                    aux += "Toma la linea " + currentLine + " desde " + ult.obtenerID() + " " + 
+                        ult.obtenerNombre() + " hasta ";
+                }
+            }
+            aux += getLastVert().obtenerID() + " " + getLastVert().obtenerNombre();
+        }
+        return aux;
+    }
+
+    /**
+     * Constructor basico
+     */
     public NodePath(){
         path = new LinkedList<Lado>();
         pathV = new LinkedList<Vertice>();
-        cost = Double.POSITIVE_INFINITY;
+        costTrasbordos = Double.POSITIVE_INFINITY;
     }
 
+    /**
+     * Constructor que clona otro camino.
+     * 
+     * @param toClone Camino a clonar
+     */
     public NodePath(NodePath toClone){
         path = new LinkedList<Lado>(toClone.path);
         pathV = new LinkedList<Vertice>(toClone.pathV);
-        cost = Double.POSITIVE_INFINITY;
+        calculateTrasbordosCost();
     } 
 
+    /**
+     * Constructor con vertice inicial.
+     * 
+     * @param init Vertice con el que se inicia el camino
+     */
     public NodePath(Vertice init){
         path = new LinkedList<Lado>();
         pathV = new LinkedList<Vertice>();
         pathV.add(init); 
-        calculateCost();
+        calculateTrasbordosCost();
     }
 }

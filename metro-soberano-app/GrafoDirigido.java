@@ -76,7 +76,7 @@ public class GrafoDirigido implements Grafo {
         Scanner scan = new Scanner(new File(file));
 
         String line = scan.nextLine();
-        if (line.equals("n")) {
+        if (line.equals("d")) {
             gLados.clear();
             sideIDs.clear();
             nodeIDs.clear();
@@ -109,14 +109,14 @@ public class GrafoDirigido implements Grafo {
         for (int i = 0; i < n; i++) {
             line = scan.nextLine();
             String[] results = line.trim().split("\\s+");
-            if (results.length != 6) {
+            if (results.length != 5) {
                 System.err.println("Error en parada: " + i);
                 System.err.println("Definicion de parada incompleta o con datos extra.");
                 scan.close();
                 return false;
             }
-            Vertice toAdd = new Vertice(Integer.parseInt(results[0]), results[1], Integer.parseInt(results[2]),
-                    Integer.parseInt(results[3]), Integer.parseInt(results[4]));
+            Vertice toAdd = new Vertice(Integer.parseInt(results[0]), results[1].trim(), Double.parseDouble(results[2]),
+            Double.parseDouble(results[3]), Double.parseDouble(results[4]));
             if (!agregarVertice(toAdd)) {
                 System.err.println("Error en parada: " + i);
                 System.err.println("No pudo agregarse.");
@@ -133,9 +133,9 @@ public class GrafoDirigido implements Grafo {
                 scan.close();
                 return false;
             }
-            Vertice vi = obtenerVertice(results[0]);
-            Vertice vf = obtenerVertice(results[1]);
-            Arco toAdd = new Arco(i, vi, vf, Double.parseDouble(results[2]), results[3]);
+            Vertice vi = obtenerVertice(Integer.parseInt(results[0]));
+            Vertice vf = obtenerVertice(Integer.parseInt(results[1]));
+            Arco toAdd = new Arco(i, vi, vf, Double.parseDouble(results[3]), results[2].trim());
             if (!agregarArco(toAdd)) {
                 System.err.println("Error en tramo: " + i);
                 System.err.println("No pudo agregarse.");
@@ -596,10 +596,19 @@ public class GrafoDirigido implements Grafo {
     public Grafo clone() {
 
         GrafoDirigido c = new GrafoDirigido();
-        c.graph = new LinkedList<ALNode>(graph);
+        c.graph = new LinkedList<ALNode>();
+        for (ALNode node : graph) {
+            ALNode clon = new ALNode(node);
+            c.graph.add(clon);
+        }
         c.nodeIDs = new HashSet<Integer>(nodeIDs);
+        c.nodeNames = new HashSet<String>(nodeNames);
         c.sideIDs = new HashSet<Integer>(sideIDs);
-        c.gLados = new ArrayList<Lado>(gLados);
+        c.gLados = new ArrayList<Lado>();
+        for (Lado lado : gLados) {
+            Lado clon = new Arco((Arco)lado);
+            c.gLados.add(clon);
+        }
         return c;
     }
 

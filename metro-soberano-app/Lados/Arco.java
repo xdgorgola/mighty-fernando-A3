@@ -23,4 +23,9 @@ public class Arco extends Lado{
     public Arco(int id, Vertice iVertice, Vertice fVertice, double weight, String linea) {
         super(id, iVertice, fVertice, weight, linea);
     }
+
+
+    public Arco(Arco a){
+        super(a);
+    }
 }

@@ -525,6 +525,7 @@ public class GrafoNoDirigido implements Grafo {
             xd.graph.add(clon);
         }
         xd.nodeIDs = new HashSet<Integer>(nodeIDs);
+        xd.nodeNames = new HashSet<String>(nodeNames);
         xd.sideIDs = new HashSet<Integer>(sideIDs);
         xd.gLados = new ArrayList<Lado>();
         for (Lado lado : gLados) {
