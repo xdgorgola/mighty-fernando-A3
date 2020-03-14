@@ -7,6 +7,7 @@ import java.io.File;
 import java.io.FileNotFoundException;
 import java.util.ArrayList;
 import java.util.LinkedList;
+import java.util.NoSuchElementException;
 import java.util.Scanner;
 
 public class PlanearTransbordos {
@@ -84,7 +85,11 @@ public class PlanearTransbordos {
      * @param dst Estacion destino
      * @return Ruta con menor numero de trasbordos entre src y dst
      */
-    public static NodePath getBestRouteND(GrafoNoDirigido g, int src, int dst) {
+    public static NodePath getBestRouteND(GrafoNoDirigido g, int src, int dst){
+        if (!g.estaVertice(src) || !g.estaVertice(dst)) {
+            System.err.println("Una de las estaciones no se encuentra en el mapa!");
+            return null;
+        }
         NodePath initial = new NodePath(g.obtenerVertice(src));
         NodePath best  = PlanearTransbordos.getBestRouteRecurND(g, src, dst, initial, null);
         // Si sigue siendo null es que nunca llego jejejejje
@@ -134,6 +139,10 @@ public class PlanearTransbordos {
      * @return Ruta con menor numero de trasbordos entre src y dst
      */
     public static NodePath getBestRouteD(GrafoDirigido g, int src, int dst) {
+        if (!g.estaVertice(src) || !g.estaVertice(dst)) {
+            System.err.println("Una de las estaciones no se encuentra en el mapa!");
+            return null;
+        }
         NodePath initial = new NodePath(g.obtenerVertice(src));
         NodePath best  = PlanearTransbordos.getBestRouteRecurD(g, src, dst, initial, null);
         // Si sigue siendo null es que nunca llego jejejejje
@@ -249,46 +258,63 @@ public class PlanearTransbordos {
         return finals;
     }
 
-    public static void main(String[] args) throws FileNotFoundException{
-        GrafoNoDirigido g = new GrafoNoDirigido();
-        g.cargarGrafo("Caracas.txt");
-        NodePath xd = PlanearTransbordos.getBestRouteND(g, 3, 6);
-        if (xd == null){
-            System.out.println("Puta no llegas.");
+    public static void main(String[] args){
+        if (args.length != 4){
+            System.err.println("No introdujiste los parametros pedidos!");
             return;
         }
-        xd.calculateTrasbordosCost();
-        System.out.println("Total trasbordos!: " + xd.getCostTrasbordos());
-        System.out.println(xd.toString());
-
-        GrafoNoDirigido otro = PlanearTransbordos.generateLinesGraphND(g, "Lineas.txt");
-        xd = PlanearTransbordos.getBestRouteND(otro, 3, 6);
-        if (xd == null){
-            System.out.println("Puta no llegas.");
+        try {
+            Scanner map = new Scanner(new File(args[0]));
+            String t = map.nextLine().trim();
+            int src = Integer.parseInt(args[2]);
+            int dst = Integer.parseInt(args[3]);
+            Grafo g;
+            Grafo act;
+            NodePath all = null;
+            NodePath actives = null;
+            switch (t) {
+                case "d":
+                    g = new GrafoDirigido();
+                    ((GrafoDirigido)g).cargarGrafo(args[0]);
+                    act = PlanearTransbordos.generateLinesGraphD((GrafoDirigido)g, args[1]);
+                    all = PlanearTransbordos.getBestRouteD((GrafoDirigido)g, src, dst);
+                    actives = PlanearTransbordos.getBestRouteD((GrafoDirigido)act, src, dst);
+                    break;
+                case "n":
+                    g = new GrafoNoDirigido();
+                    ((GrafoNoDirigido)g).cargarGrafo(args[0]);
+                    act = PlanearTransbordos.generateLinesGraphND((GrafoNoDirigido)g, args[1]);
+                    all = PlanearTransbordos.getBestRouteND((GrafoNoDirigido)g, src, dst);
+                    actives = PlanearTransbordos.getBestRouteND((GrafoNoDirigido)act, src, dst);
+                    break;
+                default:
+                    break;
+            }
+            map.close();
+            if (all == null) {
+                System.out.println("No se puede llegar a la estacion de ninguna forma :(");
+            }
+            else{
+                System.out.println(all.toString());
+                System.out.println();
+                if (actives != null){
+                    System.out.println(actives.toString());
+                }
+                else{
+                    System.out.println("No se puede llegar a la estacion unicamente con esas lineas!");
+                }
+            }
+        } catch (Exception e) {
+            if (e instanceof FileNotFoundException){
+                System.err.println("Archivo no encontrado! Por favor revise el path especificado.");
+            }
+            else if (e instanceof NumberFormatException){
+                System.err.println("Introdujiste algo que no es numero donde deberia ir uno :(");
+            }
+            else if (e instanceof NoSuchElementException){
+                System.err.println("Una estacion introducida no existe en el mapa :(");
+            }
             return;
         }
-        xd.calculateTrasbordosCost();
-        System.out.println("Total trasbordos!: " + xd.getCostTrasbordos());
-        System.out.println(xd.toString());
-    
-        //GrafoDirigido g = new GrafoDirigido();
-        ////g.cargarGrafo("Londres (copy 1).txt");
-        //g.cargarGrafo("LondresD.txt");
-        //NodePath xd = MejorRuta.getBestRouteD(g, 105, 101);
-        //if (xd == null){
-        //    System.out.println("Puta no llegas.");
-        //    return;
-        //}
-        //xd.calculateTrasbordosCost();
-        //System.out.println("Total trasbordos!: " + xd.getCostTrasbordos());
-    //
-        //GrafoDirigido otro = MejorRuta.generateLinesGraphD(g, "Lineas.txt");
-        //xd = MejorRuta.getBestRouteD(otro, 105, 101);
-        //if (xd == null){
-        //    System.out.println("Puta no llegas.");
-        //    return;
-        //}
-        //xd.calculateTrasbordosCost();
-        //System.out.println("Total trasbordos!: " + xd.getCostTrasbordos());
     }
 }

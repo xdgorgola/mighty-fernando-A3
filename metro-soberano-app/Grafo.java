@@ -400,6 +400,8 @@ class NodePath{
                 }
             }
             aux += getLastVert().obtenerID() + " " + getLastVert().obtenerNombre();
+            calculateTrasbordosCost();
+            aux += "\nTotal de " + getCostTrasbordos() + " trasbordos";
         }
         return aux;
     }
