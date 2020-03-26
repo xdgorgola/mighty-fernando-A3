@@ -278,6 +278,15 @@ class NodePath{
     }
 
     /**
+     * Obtiene el camino de vertices.
+     * 
+     * @return Camino de vertices
+     */
+    public LinkedList<Vertice> getPathV(){
+        return pathV;
+    }
+
+    /**
      * Extiende el camino con un arco.
      * 
      * @param toAdd Arco para extender
@@ -372,13 +381,27 @@ class NodePath{
     /**
      * Chequea si un lado ya se tomo en el camino antes del ultimo
      * 
-     * @param toCheck Camino a chequear
+     * @param toCheck Lado a chequear
      * @return Si un lado ya se tomo en el camino antes del ultimo
      */
-    public boolean isBeforeLast(Lado toCheck){
+    public boolean isBeforeLastLado(Lado toCheck){
         for (Lado lado : path) {
             if (lado.obtenerID() == getLastEdge().obtenerID());
             else if (lado.obtenerID() == toCheck.obtenerID()) return true;
+        }
+        return false;
+    }
+
+    /**
+     * Chequea si un vertice ya se tomo en el camino antes del ultimo
+     * 
+     * @param toCheck Vertice a chequear
+     * @return Si un vertice ya se tomo en el camino antes del ultimo
+     */
+    public boolean isBeforeLastVert(Vertice toCheck){
+        for (Vertice vert : pathV){
+            if (vert.obtenerID() == getLastVert().obtenerID());
+            else if (vert.obtenerID() == toCheck.obtenerID()) return true;
         }
         return false;
     }

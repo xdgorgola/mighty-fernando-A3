@@ -13,14 +13,30 @@ public abstract class Lado {
 
     protected double peso;
 
+    /**
+     * Obtiene la ID del lado.
+     * 
+     * @return retorna la ID del lado
+     */
     public int obtenerID(){
         return this.id;
     }
     
+    /**
+     * Obtiene la linea a la que pertenece el lado.
+     * 
+     * @return retorna la linea del lado
+     */
     public String obtenerLinea(){
         return linea;
     }
 
+    /**
+     * Chequea si el lado incide en un vertice.
+     * 
+     * @param v Vertice a chequear incidencia
+     * @return true si el vertice v incide en el lado/false de otro modo
+     */
     public boolean incide(Vertice v){
         return v.obtenerID() == this.iVertice.obtenerID() || 
         v.obtenerID() == this.fVertice.obtenerID();

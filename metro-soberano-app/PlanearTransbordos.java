@@ -10,6 +10,13 @@ import java.util.LinkedList;
 import java.util.NoSuchElementException;
 import java.util.Scanner;
 
+// AUTORES: Mariangela Rizzo 17-10538 Pedro Rodriguez 15-11264
+
+/**
+ * Clase que contiene el algoritmo y programa principal para calcular
+ * el minimo numero de transbordos con su ruta asociada de una estacion
+ * a otra
+ */
 public class PlanearTransbordos {
 
     /**
@@ -90,8 +97,19 @@ public class PlanearTransbordos {
             System.err.println("Una de las estaciones no se encuentra en el mapa!");
             return null;
         }
+        // Calcula si es alcanzable consiguiendo un camino de src a dst cualquiera.
+        // este camino puede no ser el mejor pero se toma como el mejor para evitar
+        // explorar soluciones mas costosas!
+        NodePath randomPath = DFS.alcanzaNoDirigido(g, g.obtenerVertice(src), g.obtenerVertice(dst));
+        if (randomPath == null){
+            return null;
+        }
+        randomPath.calculateTrasbordosCost();
+        
+        // Si es alcanzable
+        System.out.println("Planeando...");
         NodePath initial = new NodePath(g.obtenerVertice(src));
-        NodePath best  = PlanearTransbordos.getBestRouteRecurND(g, src, dst, initial, null);
+        NodePath best  = PlanearTransbordos.getBestRouteRecurND(g, src, dst, initial, randomPath);
         // Si sigue siendo null es que nunca llego jejejejje
         // se usa null para representar el mejor camino no encontrado aun
         return best;
@@ -143,8 +161,15 @@ public class PlanearTransbordos {
             System.err.println("Una de las estaciones no se encuentra en el mapa!");
             return null;
         }
+        NodePath randomPath = DFS.alcanzaDirigido(g, g.obtenerVertice(src), g.obtenerVertice(dst));
+        if (randomPath == null){
+            return null;
+        }
+        randomPath.calculateTrasbordosCost();
+
+        System.out.println("Planeando...");
         NodePath initial = new NodePath(g.obtenerVertice(src));
-        NodePath best  = PlanearTransbordos.getBestRouteRecurD(g, src, dst, initial, null);
+        NodePath best  = PlanearTransbordos.getBestRouteRecurD(g, src, dst, initial, randomPath);
         // Si sigue siendo null es que nunca llego jejejejje
         // se usa null para representar el mejor camino no encontrado aun
         return best;
@@ -225,9 +250,22 @@ public class PlanearTransbordos {
         LinkedList<Lado> adys = g.incidentes(lastID);
         LinkedList<Lado> finals = new LinkedList<Lado>();
         if (act.getPathE().size() > 0) adys.remove(act.getLastEdge());
+        // Si no fue recorrido ya esa arista y el vertice/estacion no ha sido visitado antes en el camino
         for (Lado lado : adys) {
-            if (!act.isBeforeLast(lado)) finals.add(lado);
-        }
+            Arista arista = (Arista)lado;
+            if (!act.isBeforeLastLado(lado) ){
+                if (last.obtenerID() == arista.obtenerVertice1().obtenerID()){
+                    if (!act.isBeforeLastVert(arista.obtenerVertice2())){
+                        finals.add(lado);
+                    }
+                }
+                else if (last.obtenerID() == arista.obtenerVertice2().obtenerID()){
+                    if (!act.isBeforeLastVert(arista.obtenerVertice1())){
+                        finals.add(lado);
+                    }
+                }
+            }
+        }   
         return finals;
     }
 
@@ -251,8 +289,11 @@ public class PlanearTransbordos {
         // pero ya fue usado
         if (act.getPathE().size() > 0) incs.remove(act.getLastEdge());
         for (Lado lado : incs) {
-            // Si no fue recorrido ya ese arco y ademas el ult vertice es vertice inicial, agarralo
-            if (!act.isBeforeLast(lado) && ((Arco)lado).obtenerVerticeInicial().obtenerID() == last.obtenerID())
+            Arco arco = (Arco)lado;
+            // Si no fue recorrido ya ese arco, ademas el ult vertice es vertice inicial y
+            // el vertice/estacion no ha sido visitado antes en el camino
+            if (!act.isBeforeLastLado(arco) && arco.obtenerVerticeInicial().obtenerID() == last.obtenerID() && 
+            !act.getPathV().contains(arco.obtenerVerticeFinal()))
                 finals.add(lado);
             }
         return finals;

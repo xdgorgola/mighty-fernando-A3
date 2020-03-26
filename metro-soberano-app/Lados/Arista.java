@@ -6,10 +6,20 @@ import Vertice.Vertice;
 
 public class Arista extends Lado{
 
+    /**
+     * Obtiene vertice 1 de la arista.
+     * 
+     * @return retorna vertice 1 de la arista
+     */
     public Vertice obtenerVertice1() {
         return iVertice;
     }
 
+    /**
+     * Obtiene vertice 2 de la arista.
+     * 
+     * @return retorna vertice 2 de la arista
+     */
     public Vertice obtenerVertice2(){
         return fVertice;
     }

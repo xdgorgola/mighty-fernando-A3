@@ -162,7 +162,7 @@ public class GrafoNoDirigido implements Grafo {
     }
 
     @Override
-    public boolean agregarVertice( int id, String name, double x, double y, double w) {
+    public boolean agregarVertice(int id, String name, double x, double y, double w) {
         if (estaVertice(id) || estaVertice(name)) {
             return false;
         } else {
@@ -467,7 +467,7 @@ public class GrafoNoDirigido implements Grafo {
     }
 
     @Override
-    public int grado( int id) throws NoSuchElementException {
+    public int grado(int id) throws NoSuchElementException {
         try {
             if (!estaVertice(id)) {
                 throw new NoSuchElementException();
@@ -493,7 +493,7 @@ public class GrafoNoDirigido implements Grafo {
             LinkedList<ALNode> graph = this.graph;
             for (ALNode alNode : graph) {
                 if (alNode.obtenerID() == id) {
-                    return alNode.obtenerAdyacencias();
+                    return alNode.obtenerAdyacencias(); 
                 }
             }
         }
@@ -561,11 +561,5 @@ public class GrafoNoDirigido implements Grafo {
         sideIDs = new HashSet<Integer>();
         gLados = new ArrayList<Lado>();
         graph = new LinkedList<ALNode>();
-    }
-
-    public static void main(String[] args) throws FileNotFoundException{
-        GrafoNoDirigido g = new GrafoNoDirigido();
-        g.cargarGrafo("Londres.txt");
-        System.out.println(g.toString());
     }
 }

@@ -1,8 +1,12 @@
 package Vertice;
 
-/** */
+/** 
+ * Vertice de un grafo
+*/
 public class Vertice {
+    
     private int id;
+
     private String nombre;
     
     private double xCord;
@@ -10,22 +14,47 @@ public class Vertice {
 
     private double peso;
 
+    /**
+     * Obtiene la ID del vertice.
+     * 
+     * @return retorna la ID del vertice
+     */
     public int obtenerID(){
         return this.id;
     }
 
+    /**
+     * Obtiene el peso del vertice.
+     * 
+     * @return retorna el peso del vertice
+     */
     public double obtenerPeso(){
         return this.peso;
     }
 
+    /**
+     * Obtiene el nombre del vertice.
+     * 
+     * @return retorna el nombre del vertice
+     */
     public String obtenerNombre(){
         return this.nombre;
     }
 
+    /**
+     * Obtiene la posicion X del vertice.
+     * 
+     * @return retorna la posicion X del vertice
+     */
     public double obtenerX(){
         return this.xCord;
     }
 
+    /**
+     * Obtiene la posicion Y del vertice.
+     * 
+     * @return retorna la posicion Y del vertice
+     */
     public double obtenerY(){
         return this.yCord;
     }

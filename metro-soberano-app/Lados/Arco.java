@@ -6,10 +6,20 @@ import Vertice.Vertice;
 
 public class Arco extends Lado{
 
+    /**
+     * Obtiene el vertice inicial del arco.
+     * 
+     * @return retorna vertice inicial del arco
+     */
     public Vertice obtenerVerticeInicial() {
         return iVertice;
     }
 
+    /**
+     * Obtiene el vertice final del arco.
+     * 
+     * @return retorna vertice final del arco
+     */
     public Vertice obtenerVerticeFinal(){
         return fVertice;
     }
