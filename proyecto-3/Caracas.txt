@@ -1,0 +1,273 @@
+d
+98
+172
+1     Propatria               -66.955 10.505  14
+2     PerezBonalde            -66.948 10.509  12
+3     PlazaSucre              -66.946 10.516  12
+4     GatoNegro               -66.939 10.515  22
+5     AguaSalud               -66.931 10.513  22
+6     CannoAmarillo           -66.923 10.508  12
+7     Capitolio               -66.917 10.505  15
+8     LaHoyada                -66.910 10.503  35
+9     ParqueCarabobo          -66.904 10.502  12
+10    BellasArtes             -66.900 10.501  18
+11    ColegiodeIngenieros     -66.892 10.501  12
+12    PlazaVenezuela          -66.883 10.496  25.67
+13    SabanaGrande            -66.876 10.494  12
+14    Chacaito                -66.868 10.492  43
+15    Chacao                  -66.854 10.493  12
+16    Altamira                -66.849 10.496  49
+17    Miranda                 -66.841 10.497  40
+18    LosDosCaminos           -66.832 10.494  12
+19    LosCortijos             -66.826 10.489  32
+20    LaCalifornia            -66.818 10.481  20
+21    Petare                  -66.806 10.479  18
+22    PaloVerde               -66.797 10.479  14
+24    Capuchinos              -66.925 10.499  25
+44    Teatros                 -66.916 10.501  30
+45    NuevoCirco              -66.909 10.499  40
+46    ParqueCentral           -66.901 10.498  28
+48    BelloMonte              -66.874 10.487  32
+20202 SantaFe                 -66.864 10.463  71.25
+20203 Av.LaGuairita           -66.860 10.435  90
+20204 CentroMedicoLaTrinidad  -66.856 10.433  90
+20205 LasEsmeraldas           -66.846 10.431  90
+20206 Cigarral                -66.842 10.431  90
+20207 LaBoyera                -66.840 10.427  90
+20208 LosPinos                -66.837 10.427  90
+20209 Mediterraneo            -66.832 10.426  90
+20210 HatilloI                -66.827 10.427  90
+20211 HatilloII               -66.824 10.425  90
+20212 LaLagunita              -66.810 10.425  90
+20214 LaMuralla               -66.829 10.427  90
+20216 LaCabanna               -66.836 10.426  90
+20302 RiodeJaneiro            -66.855 10.482  45
+20303 Veracruz                -66.857 10.480  43.75
+20304 PaseoLasMercedes        -66.858 10.477  52.5
+20306 ParqueHumbolt           -66.873 10.450  52.5
+20307 ClubHipico              -66.871 10.447  52.5
+20308 PradosdelEste           -66.876 10.453  45
+20309 LaTrinidad              -66.869 10.434  52.5
+20310 Sorocaima               -66.864 10.433  45
+20311 GonzalezRincones        -66.863 10.435  45
+20312 ZonaIndustrial          -66.864 10.436  45
+20313 LasVegas                -66.865 10.436  45
+20317 SantaInes               -66.864 10.463  52.5
+20320 Teatro8                 -66.853 10.481  45
+20321 LaGuairita              -66.852 10.482  43.33
+20322 Tamanaco                -66.854 10.482  52.5
+20323 LaEstancia              -66.854 10.485  45
+20324 LaFloresta              -66.848 10.491  45
+22102 CaroniconRio            -66.856 10.483  42.5
+22103 ElevadoLasMercedes      -66.865 10.487  40
+22104 Mohedano                -66.864 10.490  40
+22105 MonterreyconPpal        -66.863 10.483  48.33
+22106 MonterreyconRio         -66.863 10.486  42.5
+22107 MucuchiesconRio         -66.861 10.485  42.5
+22108 NuevaYorkconPpal        -66.861 10.481  48.33
+22109 NuevaYorkconRio         -66.858 10.483  42.5
+22110 OrinococonParis         -66.856 10.481  42.5
+22111 OrinococonPpal          -66.859 10.480  48.33
+22112 Ppal.LasMercedes        -66.865 10.485  48.33
+22113 TrinidadconRio          -66.860 10.484  42.5
+22210 America                 -66.874 10.447  60
+22211 ElPennon                -66.876 10.439  60
+22212 ElPlacerdeMaria         -66.877 10.437  60
+22213 LaIndustrial            -66.874 10.436  60
+22214 SanSebastian            -66.872 10.436  60
+22215 LaProvidencia           -66.870 10.436  60
+22217 LaValiente              -66.873 10.431  60
+22218 PiedraAzul              -66.875 10.431  60
+22219 Baruta                  -66.874 10.434  60
+31502 Lincoln                 -66.881 10.490  45
+31503 DaVinci                 -66.882 10.489  45
+31504 PlazaLincoln            -66.878 10.489  45
+31505 Sorbona                 -66.878 10.489  45
+31506 Beethoven               -66.876 10.487  45
+31507 Av.Caurimare            -66.876 10.485  45
+31508 Caura                   -66.877 10.484  45
+31509 SanPablo                -66.879 10.483  45
+31510 Tocuyo                  -66.880 10.482  45
+31511 Motatan                 -66.878 10.483  45
+31512 CauraII                 -66.877 10.483  45
+31513 Chama                   -66.875 10.485  45
+31514 Cervantes               -66.873 10.486  45
+31515 Miguelangel             -66.871 10.486  45
+31516 Ppal.BelloMonte         -66.871 10.487  45
+31517 Ibarra                  -66.874 10.487  45
+31518 Oxford                  -66.876 10.489  45
+31519 Acacias                 -66.878 10.490  45
+68102 Av.Miguelangel          -66.871 10.486  45
+68116 Alejandria              -66.872 10.487  45
+1     2     1delMetro        5.54
+2     3     1delMetro        4.25
+3     4     1delMetro        4.18
+4     5     1delMetro        4.63
+5     6     1delMetro        5.64
+6     7     1delMetro        4.88
+7     8     1delMetro        3.72
+8     9     1delMetro        3.70
+9     10    1delMetro        2.50
+10    11    1delMetro        5.14
+11    12    1delMetro        5.71
+12    13    1delMetro        5.08
+13    14    1delMetro        4.45
+14    15    1delMetro        8.22
+15    16    1delMetro        3.58
+16    17    1delMetro        5.35
+17    18    1delMetro        6.47
+18    19    1delMetro        5.08
+19    20    1delMetro        6.13
+20    21    1delMetro        8.08
+21    22    1delMetro        4.96
+2     1     1delMetro        5.54
+3     2     1delMetro        4.25
+4     3     1delMetro        4.18
+5     4     1delMetro        4.63
+6     5     1delMetro        5.64
+7     6     1delMetro        4.88
+8     7     1delMetro        3.72
+9     8     1delMetro        3.70
+10    9     1delMetro        2.50
+11    10    1delMetro        5.14
+12    11    1delMetro        5.71
+13    12    1delMetro        5.08
+14    13    1delMetro        4.45
+15    14    1delMetro        8.22
+16    15    1delMetro        3.58
+17    16    1delMetro        5.35
+18    17    1delMetro        6.47
+19    18    1delMetro        5.08
+20    19    1delMetro        6.13
+21    20    1delMetro        8.08
+22    21    1delMetro        4.96
+7     24    23delMetro       5.64
+24    7     23delMetro       5.64
+24    44    4delMetro        5.78
+44    45    4delMetro        5.31
+45    46    4delMetro        4.30
+46    12    4delMetro        12.73
+12    48    4delMetro        7.09
+16    20202 202delMetrobus   14.83
+20202 20203 202delMetrobus   11.78
+20203 20204 202delMetrobus   2.22
+20204 20205 202delMetrobus   5.50
+20205 20206 202delMetrobus   2.22
+20206 20207 202delMetrobus   1.34
+20207 20208 202delMetrobus   0.96
+20208 20209 202delMetrobus   3.39
+20209 20210 202delMetrobus   1.49
+20210 20211 202delMetrobus   1.70
+20211 20212 202delMetrobus   6.03
+20212 20211 202delMetrobus   7.62
+20211 20214 202delMetrobus   3.12
+20214 20209 202delMetrobus   1.29
+20209 20216 202delMetrobus   1.52
+20216 20207 202delMetrobus   1.70
+20207 20206 202delMetrobus   1.92
+20206 20205 202delMetrobus   1.89
+20205 20204 202delMetrobus   5.64
+20204 20203 202delMetrobus   2.35
+20203 20202 202delMetrobus   14.84
+20202 16    202delMetrobus   12.81
+16    20302 203delMetrobus   5.58
+20302 20303 203delMetrobus   1.29
+20303 20304 203delMetrobus   1.16
+20304 20202 203delMetrobus   5.35
+20202 20306 203delMetrobus   8.03
+20306 20307 203delMetrobus   1.56
+20307 20308 203delMetrobus   2.88
+20308 20309 203delMetrobus   9.18
+20309 20310 203delMetrobus   2.03
+20310 20311 203delMetrobus   0.97
+20311 20312 203delMetrobus   0.79
+20312 20313 203delMetrobus   0.62
+20313 20308 203delMetrobus   7.15
+20308 20307 203delMetrobus   4.05
+20307 20306 203delMetrobus   1.15
+20306 20317 203delMetrobus   8.07
+20317 20304 203delMetrobus   7.91
+20304 20303 203delMetrobus   1.21
+20303 20320 203delMetrobus   1.25
+20320 20321 203delMetrobus   1.35
+20321 20322 203delMetrobus   1.12
+20322 20323 203delMetrobus   1.69
+20323 20324 203delMetrobus   3.59
+20324 14    203delMetrobus   1.59
+14    22112 221delMetrobus   3.42
+22112 22105 221delMetrobus   1.09
+22105 22108 221delMetrobus   1.20
+22108 22111 221delMetrobus   0.94
+22111 20303 221delMetrobus   1.43
+20303 20321 221delMetrobus   3.00
+20321 22110 221delMetrobus   1.74
+22110 22102 221delMetrobus   1.19
+22102 22109 221delMetrobus   1.03
+22109 22113 221delMetrobus   0.61
+22113 22107 221delMetrobus   0.64
+22107 22106 221delMetrobus   0.87
+22106 22103 221delMetrobus   1.17
+22103 22104 221delMetrobus   1.57
+22104 14    221delMetrobus   1.95
+14    22112 222delMetrobus   3.31
+22112 22105 222delMetrobus   1.01
+22105 22108 222delMetrobus   1.32
+22108 22111 222delMetrobus   0.63
+22111 20304 222delMetrobus   1.04
+20304 20202 222delMetrobus   7.83
+20202 20306 222delMetrobus   6.91
+20306 20307 222delMetrobus   1.76
+20307 22210 222delMetrobus   1.09
+22210 22211 222delMetrobus   4.15
+22211 22212 222delMetrobus   1.36
+22212 22213 222delMetrobus   1.32
+22213 22214 222delMetrobus   1.02
+22214 22215 222delMetrobus   1.11
+22215 20309 222delMetrobus   1.10
+20309 22217 222delMetrobus   2.82
+22217 22218 222delMetrobus   0.44
+22218 22219 222delMetrobus   1.28
+22219 22212 222delMetrobus   1.74
+22212 22211 222delMetrobus   1.06
+22211 22210 222delMetrobus   3.60
+22210 20307 222delMetrobus   0.85
+20307 20306 222delMetrobus   1.69
+20306 20317 222delMetrobus   9.00
+20317 20304 222delMetrobus   7.13
+20304 20322 222delMetrobus   8.61
+20322 14    222delMetrobus   1.60
+12    31502 315delMetrobus   2.25
+31502 31503 315delMetrobus   0.63
+31503 31504 315delMetrobus   1.54
+31504 31505 315delMetrobus   0.00
+31505 31506 315delMetrobus   1.11
+31506 31507 315delMetrobus   1.06
+31507 31508 315delMetrobus   0.55
+31508 31509 315delMetrobus   0.93
+31509 31510 315delMetrobus   0.91
+31510 31511 315delMetrobus   0.73
+31511 31512 315delMetrobus   0.72
+31512 31513 315delMetrobus   1.08
+31513 31514 315delMetrobus   1.41
+31514 31515 315delMetrobus   0.93
+31515 31516 315delMetrobus   0.49
+31516 31517 315delMetrobus   1.94
+31517 31518 315delMetrobus   1.39
+31518 31519 315delMetrobus   0.97
+31519 12    315delMetrobus   3.35
+48    68102 P-681delMetrobus 1.93
+68102 22112 P-681delMetrobus 2.34
+22112 22105 P-681delMetrobus 0.82
+22105 22108 P-681delMetrobus 1.29
+22108 22111 P-681delMetrobus 0.98
+22111 20303 P-681delMetrobus 1.12
+20303 20321 P-681delMetrobus 2.25
+20321 22110 P-681delMetrobus 2.40
+22110 22102 P-681delMetrobus 1.03
+22102 22109 P-681delMetrobus 0.81
+22109 22113 P-681delMetrobus 0.89
+22113 22107 P-681delMetrobus 0.79
+22107 22106 P-681delMetrobus 1.06
+22106 31516 P-681delMetrobus 3.38
+31516 68116 P-681delMetrobus 0.78
+68116 48    P-681delMetrobus 1.08
